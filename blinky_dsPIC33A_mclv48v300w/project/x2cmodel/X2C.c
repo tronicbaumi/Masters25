@@ -1,9 +1,9 @@
 /* This file is part of X2C. http://x2c.lcm.at/                                                                       */
 
 /* Model: blinky_dspic33a_mclv48v300w                                                                                 */
-/* Date:  2025-06-18 11:07                                                                                            */
+/* Date:  2025-06-18 17:36                                                                                            */
 
-/* X2C-Version: 6.5.3600                                                                                              */
+/* X2C-Version: 6.5.3765                                                                                              */
 /* X2C-Edition: Free                                                                                                  */
 
 /* Common includes                                                                                                    */
@@ -20,7 +20,7 @@
 struct x2cModel x2cModel;
 
 /* Model identifier                                                                                                   */
-const uint32 x2cModelIdentifier = 0xB74B51E3u;
+const uint32 x2cModelIdentifier = 0x2AF80209u;
 
 /**********************************************************************************************************************/
 /**                                                       Scope                                                      **/
@@ -71,7 +71,7 @@ const tMaskParamDataRecord maskParamDataTable[] = {
 /**********************************************************************************************************************/
 float_CoT getModelSampleTime()
 {
-    return ((float_CoT)1.0E-4);
+    return ((float_CoT)5.0E-5);
 }
 
 /**********************************************************************************************************************/
@@ -88,6 +88,16 @@ void X2C_Init(void)
     x2cModel.blocks.bGain.V = 16384;
     x2cModel.blocks.bGain.sfr = 14;
 
+    /* Block: Gain1                                                                                                   */
+    /* Gain = 1.0                                                                                                     */
+    x2cModel.blocks.bGain1.V = 16384;
+    x2cModel.blocks.bGain1.sfr = 14;
+
+    /* Block: Gain2                                                                                                   */
+    /* Gain = 1.0                                                                                                     */
+    x2cModel.blocks.bGain2.V = 16384;
+    x2cModel.blocks.bGain2.sfr = 14;
+
 
     /******************************************************************************************************************/
     /**                                              Initialize Inports                                              **/
@@ -103,22 +113,32 @@ void X2C_Init(void)
 
     /* Block Gain                                                                                                     */
     x2cModel.blocks.bGain.In =
+        &x2cModel.inports.bSW2;
+
+    /* Block Gain1                                                                                                    */
+    x2cModel.blocks.bGain1.In =
         &x2cModel.inports.bSW1;
+
+    /* Block Gain2                                                                                                    */
+    x2cModel.blocks.bGain2.In =
+        &x2cModel.inports.bV_POT;
 
     /******************************************************************************************************************/
     /**                                                 Link Outports                                                **/
     /******************************************************************************************************************/
     x2cModel.outports.bLED1 =
-        &x2cModel.blocks.bGain.Out;
+        &x2cModel.blocks.bGain1.Out;
     x2cModel.outports.bLED2 =
-        &x2cModel.inports.bSW2;
+        &x2cModel.blocks.bGain.Out;
     x2cModel.outports.bPWM1 =
-        &x2cModel.inports.bV_POT;
+        &x2cModel.blocks.bGain2.Out;
 
     /******************************************************************************************************************/
     /**                                           Run Block Init Functions                                           **/
     /******************************************************************************************************************/
     Gain_FiP16_Init(&x2cModel.blocks.bGain);
+    Gain_FiP16_Init(&x2cModel.blocks.bGain1);
+    Gain_FiP16_Init(&x2cModel.blocks.bGain2);
     Scope_Main_Init(&x2cScope);
 
     /* Initialize TableStruct tables                                                                                  */
@@ -142,6 +162,8 @@ void X2C_Update(void)
 void X2C_Update_1(void)
 {
     Gain_FiP16_Update(&x2cModel.blocks.bGain);
+    Gain_FiP16_Update(&x2cModel.blocks.bGain1);
+    Gain_FiP16_Update(&x2cModel.blocks.bGain2);
     Scope_Main_Update(&x2cScope);
 }
 
