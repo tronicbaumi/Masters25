@@ -82,6 +82,8 @@ void UpdateOutports(void) {
       A_PeripheralVariable = *x2cModel.outports.bPWM3*Scaling
      */   
     
+    
+    
         PWM_PDC1 = ((LOOPTIME_TCY>>1) + (int16)(__builtin_mulss(*x2cModel.outports.bPWM1, (LOOPTIME_TCY>>1))>>15));     
         PWM_PDC2 = ((LOOPTIME_TCY>>1) + (int16)(__builtin_mulss(0, (LOOPTIME_TCY>>1))>>15));            
         PWM_PDC3 = ((LOOPTIME_TCY>>1) + (int16)(__builtin_mulss(0, (LOOPTIME_TCY>>1))>>15));

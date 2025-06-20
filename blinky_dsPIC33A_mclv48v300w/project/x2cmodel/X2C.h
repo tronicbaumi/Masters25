@@ -2,7 +2,7 @@
  * @file
  * @brief Generated model file.
  * 
- * Date:  2025-06-18 17:36
+ * Date:  2025-06-20 10:06
  * 
  * X2C-Version: 6.5.3765
  * X2C-Edition: Free
@@ -10,7 +10,7 @@
 /* This file is part of X2C. http://x2c.lcm.at/                                                                       */
 
 /* Model: blinky_dspic33a_mclv48v300w                                                                                 */
-/* Date:  2025-06-18 17:36                                                                                            */
+/* Date:  2025-06-20 10:06                                                                                            */
 
 /* X2C-Version: 6.5.3765                                                                                              */
 /* X2C-Edition: Free                                                                                                  */
@@ -27,6 +27,9 @@ extern "C" {
 /**********************************************************************************************************************/
 /* Common includes                                                                                                    */
 #include "Gain_FiP16.h"
+#include "SinGen_FiP16.h"
+#include "Constant_FiP16.h"
+#include "AutoSwitch_FiP16.h"
 #include "Scope_Main.h"
 #include "CommonFcts.h"
 
@@ -35,24 +38,32 @@ extern "C" {
 /**********************************************************************************************************************/
 #define FUNCTIONS \
     GAIN_FIP16_FUNCTIONS , \
+    SINGEN_FIP16_FUNCTIONS , \
+    CONSTANT_FIP16_FUNCTIONS , \
+    AUTOSWITCH_FIP16_FUNCTIONS , \
     SCOPE_MAIN_FUNCTIONS
 
 #define PARAMETER_TABLE \
-    { 1u, &x2cModel.blocks.bGain } , \
-    { 2u, &x2cModel.blocks.bGain1 } , \
-    { 3u, &x2cModel.blocks.bGain2 } , \
-    { 11u, &x2cScope }
+    { 1u, &x2cModel.blocks.bAutoSwitch } , \
+    { 2u, &x2cModel.blocks.bAutoSwitch1 } , \
+    { 3u, &x2cModel.blocks.bConstant } , \
+    { 4u, &x2cModel.blocks.bConstant1 } , \
+    { 5u, &x2cModel.blocks.bConstant2 } , \
+    { 6u, &x2cModel.blocks.bConstant3 } , \
+    { 7u, &x2cModel.blocks.bGain1 } , \
+    { 8u, &x2cModel.blocks.bSinGen } , \
+    { 16u, &x2cScope }
 
 #define INPORT_PARAMID_TABLE \
-    { 4u, 2u, &x2cModel.inports.bCPU_LOAD } , \
-    { 5u, 2u, &x2cModel.inports.bSW1 } , \
-    { 6u, 2u, &x2cModel.inports.bSW2 } , \
-    { 7u, 2u, &x2cModel.inports.bV_POT } 
+    { 9u, 2u, &x2cModel.inports.bCPU_LOAD } , \
+    { 10u, 2u, &x2cModel.inports.bSW1 } , \
+    { 11u, 2u, &x2cModel.inports.bSW2 } , \
+    { 12u, 2u, &x2cModel.inports.bV_POT } 
 
 #define OUTPORT_PARAMID_TABLE \
-    { 8u, 2u, &x2cModel.outports.bLED1 } , \
-    { 9u, 2u, &x2cModel.outports.bLED2 } , \
-    { 10u, 2u, &x2cModel.outports.bPWM1 } 
+    { 13u, 2u, &x2cModel.outports.bLED1 } , \
+    { 14u, 2u, &x2cModel.outports.bLED2 } , \
+    { 15u, 2u, &x2cModel.outports.bPWM1 } 
 
 
 /**********************************************************************************************************************/
@@ -61,9 +72,14 @@ extern "C" {
 struct x2cModel {
 /*  Control Blocks                                                                                                    */
     struct {
-        GAIN_FIP16 bGain;
+        AUTOSWITCH_FIP16 bAutoSwitch;
+        AUTOSWITCH_FIP16 bAutoSwitch1;
+        CONSTANT_FIP16 bConstant;
+        CONSTANT_FIP16 bConstant1;
+        CONSTANT_FIP16 bConstant2;
+        CONSTANT_FIP16 bConstant3;
         GAIN_FIP16 bGain1;
-        GAIN_FIP16 bGain2;
+        SINGEN_FIP16 bSinGen;
     } blocks;
 /*  Inports                                                                                                           */
     struct {

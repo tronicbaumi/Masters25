@@ -1,7 +1,7 @@
 /* This file is part of X2C. http://x2c.lcm.at/                                                                       */
 
 /* Model: blinky_dspic33a_mclv48v300w                                                                                 */
-/* Date:  2025-06-18 17:36                                                                                            */
+/* Date:  2025-06-20 10:06                                                                                            */
 
 /* X2C-Version: 6.5.3765                                                                                              */
 /* X2C-Edition: Free                                                                                                  */
@@ -20,7 +20,7 @@
 struct x2cModel x2cModel;
 
 /* Model identifier                                                                                                   */
-const uint32 x2cModelIdentifier = 0x2AF80209u;
+const uint32 x2cModelIdentifier = 0x16D4B6B0u;
 
 /**********************************************************************************************************************/
 /**                                                       Scope                                                      **/
@@ -83,21 +83,54 @@ void X2C_Init(void)
     /**                                          Initialize Block Parameters                                         **/
     /******************************************************************************************************************/
 
-    /* Block: Gain                                                                                                    */
-    /* Gain = 1.0                                                                                                     */
-    x2cModel.blocks.bGain.V = 16384;
-    x2cModel.blocks.bGain.sfr = 14;
+    /* Block: AutoSwitch                                                                                              */
+    /* Thresh_up = 0.0                                                                                                */
+    /* Thresh_down = 0.0                                                                                              */
+    x2cModel.blocks.bAutoSwitch.Thresh_up = 0;
+    x2cModel.blocks.bAutoSwitch.Thresh_down = 0;
+    x2cModel.blocks.bAutoSwitch.Status = &RamTable_int16[0];
+
+    /* Block: AutoSwitch1                                                                                             */
+    /* Thresh_up = 0.0                                                                                                */
+    /* Thresh_down = 0.0                                                                                              */
+    x2cModel.blocks.bAutoSwitch1.Thresh_up = 0;
+    x2cModel.blocks.bAutoSwitch1.Thresh_down = 0;
+    x2cModel.blocks.bAutoSwitch1.Status = &RamTable_int16[1];
+
+    /* Block: Constant                                                                                                */
+    /* Value = 1.0                                                                                                    */
+    x2cModel.blocks.bConstant.K = 32767;
+
+    /* Block: Constant1                                                                                               */
+    /* Value = 1.0                                                                                                    */
+    x2cModel.blocks.bConstant1.K = 32767;
+
+    /* Block: Constant2                                                                                               */
+    /* Value = 0.0                                                                                                    */
+    x2cModel.blocks.bConstant2.K = 0;
+
+    /* Block: Constant3                                                                                               */
+    /* Value = 1.0                                                                                                    */
+    x2cModel.blocks.bConstant3.K = 32767;
 
     /* Block: Gain1                                                                                                   */
-    /* Gain = 1.0                                                                                                     */
-    x2cModel.blocks.bGain1.V = 16384;
+    /* Gain = -1.0                                                                                                    */
+    x2cModel.blocks.bGain1.V = -16384;
     x2cModel.blocks.bGain1.sfr = 14;
 
-    /* Block: Gain2                                                                                                   */
-    /* Gain = 1.0                                                                                                     */
-    x2cModel.blocks.bGain2.V = 16384;
-    x2cModel.blocks.bGain2.sfr = 14;
+    /* Block: SinGen                                                                                                  */
+    /* fmax = 10.0                                                                                                    */
+    /* Offset = 0.0                                                                                                   */
+    /* Phase = 0.0                                                                                                    */
+    /* ts_fact = 1.0                                                                                                  */
+    x2cModel.blocks.bSinGen.delta_phi = 33;
+    x2cModel.blocks.bSinGen.phase = 0;
+    x2cModel.blocks.bSinGen.offset = 0;
+    x2cModel.blocks.bSinGen.phi = 0;
 
+
+    /* Initialize RAM table content */
+    initRamTables();
 
     /******************************************************************************************************************/
     /**                                              Initialize Inports                                              **/
@@ -111,17 +144,39 @@ void X2C_Init(void)
     /**                                               Link Block Inputs                                              **/
     /******************************************************************************************************************/
 
-    /* Block Gain                                                                                                     */
-    x2cModel.blocks.bGain.In =
+    /* Block AutoSwitch                                                                                               */
+    x2cModel.blocks.bAutoSwitch.In1 =
+        &x2cModel.blocks.bConstant.Out;
+    x2cModel.blocks.bAutoSwitch.Switch =
         &x2cModel.inports.bSW2;
+    x2cModel.blocks.bAutoSwitch.In3 =
+        &x2cModel.inports.bV_POT;
+
+    /* Block AutoSwitch1                                                                                              */
+    x2cModel.blocks.bAutoSwitch1.In1 =
+        &x2cModel.blocks.bConstant1.Out;
+    x2cModel.blocks.bAutoSwitch1.Switch =
+        &x2cModel.blocks.bSinGen.u;
+    x2cModel.blocks.bAutoSwitch1.In3 =
+        &x2cModel.blocks.bConstant2.Out;
+
+    /* Block Constant                                                                                                 */
+
+    /* Block Constant1                                                                                                */
+
+    /* Block Constant2                                                                                                */
+
+    /* Block Constant3                                                                                                */
 
     /* Block Gain1                                                                                                    */
     x2cModel.blocks.bGain1.In =
         &x2cModel.inports.bSW1;
 
-    /* Block Gain2                                                                                                    */
-    x2cModel.blocks.bGain2.In =
-        &x2cModel.inports.bV_POT;
+    /* Block SinGen                                                                                                   */
+    x2cModel.blocks.bSinGen.A =
+        &x2cModel.blocks.bConstant3.Out;
+    x2cModel.blocks.bSinGen.f =
+        &x2cModel.blocks.bAutoSwitch.Out;
 
     /******************************************************************************************************************/
     /**                                                 Link Outports                                                **/
@@ -129,16 +184,21 @@ void X2C_Init(void)
     x2cModel.outports.bLED1 =
         &x2cModel.blocks.bGain1.Out;
     x2cModel.outports.bLED2 =
-        &x2cModel.blocks.bGain.Out;
+        &x2cModel.blocks.bAutoSwitch1.Out;
     x2cModel.outports.bPWM1 =
-        &x2cModel.blocks.bGain2.Out;
+        &x2cModel.blocks.bSinGen.u;
 
     /******************************************************************************************************************/
     /**                                           Run Block Init Functions                                           **/
     /******************************************************************************************************************/
-    Gain_FiP16_Init(&x2cModel.blocks.bGain);
+    AutoSwitch_FiP16_Init(&x2cModel.blocks.bAutoSwitch);
+    AutoSwitch_FiP16_Init(&x2cModel.blocks.bAutoSwitch1);
+    Constant_FiP16_Init(&x2cModel.blocks.bConstant);
+    Constant_FiP16_Init(&x2cModel.blocks.bConstant1);
+    Constant_FiP16_Init(&x2cModel.blocks.bConstant2);
+    Constant_FiP16_Init(&x2cModel.blocks.bConstant3);
     Gain_FiP16_Init(&x2cModel.blocks.bGain1);
-    Gain_FiP16_Init(&x2cModel.blocks.bGain2);
+    SinGen_FiP16_Init(&x2cModel.blocks.bSinGen);
     Scope_Main_Init(&x2cScope);
 
     /* Initialize TableStruct tables                                                                                  */
@@ -161,9 +221,10 @@ void X2C_Update(void)
 /* X2C_Update for blocks with 1*Ts                                                                                    */
 void X2C_Update_1(void)
 {
-    Gain_FiP16_Update(&x2cModel.blocks.bGain);
+    AutoSwitch_FiP16_Update(&x2cModel.blocks.bAutoSwitch);
+    SinGen_FiP16_Update(&x2cModel.blocks.bSinGen);
+    AutoSwitch_FiP16_Update(&x2cModel.blocks.bAutoSwitch1);
     Gain_FiP16_Update(&x2cModel.blocks.bGain1);
-    Gain_FiP16_Update(&x2cModel.blocks.bGain2);
     Scope_Main_Update(&x2cScope);
 }
 

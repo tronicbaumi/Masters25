@@ -128,6 +128,29 @@ int main(void)
     
     ClearPWMPCIFault();
     EnablePWMOutputs();
+    
+        /** Set Override Data on all PWM outputs */
+    /* 0b00 = State for PWM3H,L, if Override is Enabled */
+    PG3IOCONbits.OVRDAT = 0;
+    /* 0b00 = State for PWM2H,L, if Override is Enabled */
+    PG2IOCONbits.OVRDAT = 0; 
+    /* 0b00 = State for PWM1H,L, if Override is Enabled */
+    PG1IOCONbits.OVRDAT = 0;  
+
+    /* 1 = OVRDAT<1> provides data for output on PWM3H */
+    PG3IOCONbits.OVRENH = 1; 
+    /* 1 = OVRDAT<0> provides data for output on PWM3L */
+    PG3IOCONbits.OVRENL = 1; 
+    
+    /* 1 = OVRDAT<1> provides data for output on PWM2H */
+    PG2IOCONbits.OVRENH = 1;
+    /* 1 = OVRDAT<0> provides data for output on PWM2L */
+    PG2IOCONbits.OVRENL = 1; 
+    
+    /* 1 = OVRDAT<1> provides data for output on PWM1H */
+    PG1IOCONbits.OVRENH = 1;  
+    /* 1 = OVRDAT<0> provides data for output on PWM1L */
+    PG1IOCONbits.OVRENL = 0;    
 
     while(1)
     {
