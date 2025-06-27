@@ -15,9 +15,6 @@
 #include "../userparms.h"
 #include "../hal/measure.h"
 #include "../hal/pwm.h"
-#include "../foc/clarke_park.h"
-#include "../foc/control.h"
-#include "../foc/estim_qei.h"
 #include "../hal/port_config.h"
 #include "qei.h"
 #include "X2CMain.h"
@@ -26,13 +23,16 @@
 #warning "Please generate the code from the model!"
 #endif
 
+/**
+ * General system flag data type
+ */
+
     static int16_t CpuLoad;
 //    static uint16_t POS1CNTtemp;
 
     volatile int16_t offset_AN1_IA=0, offset_AN4_IB=0;
 
     extern MCAPP_MEASURE_T measureInputs;
-    extern MC_ABC_T vabc,iabc;
     extern UGF_T uGF;
 
 int16_t GetQEIVel(void)
@@ -144,13 +144,6 @@ void UpdateOutports(void) {
         /* if run motor command is not activated */   
         
         PWM_TRIGA = ADC_SAMPLING_POINT;
-#ifdef SINGLE_SHUNT
-        SINGLE_SHUNT_TRIGGER1 = LOOPTIME_TCY>>2;
-        SINGLE_SHUNT_TRIGGER2 = LOOPTIME_TCY>>1;
-        PWM_PHASE3 = MIN_DUTY;
-        PWM_PHASE2 = MIN_DUTY;
-        PWM_PHASE1 = MIN_DUTY;
-#endif
         PWM_PDC3  = MIN_DUTY;
         PWM_PDC2  = MIN_DUTY;
         PWM_PDC1  = MIN_DUTY;

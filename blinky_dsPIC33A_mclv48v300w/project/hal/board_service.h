@@ -56,7 +56,7 @@
 #include <stdbool.h>
 #include <xc.h>
 
-#include "svm.h"
+//#include "svm.h"
 #include "port_config.h"
 #include "uart1.h"
 #include "pwm.h"
@@ -125,9 +125,9 @@ void BoardService(void);
 bool IsPressed_Button1(void);
 bool IsPressed_Button2(void);
 void InitPeripherals(void);
-void PWMDutyCycleSetDualEdge(MC_DUTYCYCLEOUT_T *,MC_DUTYCYCLEOUT_T *);
-void PWMDutyCycleSet(MC_DUTYCYCLEOUT_T *);
-void pwmDutyCycleLimitCheck(MC_DUTYCYCLEOUT_T *,uint32_t,uint32_t);
+//void PWMDutyCycleSetDualEdge(MC_DUTYCYCLEOUT_T *,MC_DUTYCYCLEOUT_T *);
+//void PWMDutyCycleSet(MC_DUTYCYCLEOUT_T *);
+//void pwmDutyCycleLimitCheck(MC_DUTYCYCLEOUT_T *,uint32_t,uint32_t);
 
 // </editor-fold>
 

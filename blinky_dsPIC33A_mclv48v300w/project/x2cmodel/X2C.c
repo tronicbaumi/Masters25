@@ -1,9 +1,9 @@
 /* This file is part of X2C. http://x2c.lcm.at/                                                                       */
 
 /* Model: blinky_dspic33a_mclv48v300w                                                                                 */
-/* Date:  2025-06-20 10:06                                                                                            */
+/* Date:  2025-06-25 12:10                                                                                            */
 
-/* X2C-Version: 6.5.3765                                                                                              */
+/* X2C-Version: 6.5.3600                                                                                              */
 /* X2C-Edition: Free                                                                                                  */
 
 /* Common includes                                                                                                    */
@@ -84,10 +84,10 @@ void X2C_Init(void)
     /******************************************************************************************************************/
 
     /* Block: AutoSwitch                                                                                              */
-    /* Thresh_up = 0.0                                                                                                */
-    /* Thresh_down = 0.0                                                                                              */
-    x2cModel.blocks.bAutoSwitch.Thresh_up = 0;
-    x2cModel.blocks.bAutoSwitch.Thresh_down = 0;
+    /* Thresh_up = 0.5                                                                                                */
+    /* Thresh_down = 0.5                                                                                              */
+    x2cModel.blocks.bAutoSwitch.Thresh_up = 16384;
+    x2cModel.blocks.bAutoSwitch.Thresh_down = 16384;
     x2cModel.blocks.bAutoSwitch.Status = &RamTable_int16[0];
 
     /* Block: AutoSwitch1                                                                                             */
@@ -110,8 +110,8 @@ void X2C_Init(void)
     x2cModel.blocks.bConstant2.K = 0;
 
     /* Block: Constant3                                                                                               */
-    /* Value = 1.0                                                                                                    */
-    x2cModel.blocks.bConstant3.K = 32767;
+    /* Value = 0.1                                                                                                    */
+    x2cModel.blocks.bConstant3.K = 3277;
 
     /* Block: Gain1                                                                                                   */
     /* Gain = -1.0                                                                                                    */

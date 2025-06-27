@@ -1,9 +1,9 @@
 /* This file is part of X2C. http://x2c.lcm.at/                                                                       */
 
 /* Model: mc_foc_sl_fip_dspic33ck_mclv48v300w                                                                         */
-/* Date:  2025-06-18 17:11                                                                                            */
+/* Date:  2025-06-27 13:29                                                                                            */
 
-/* X2C-Version: 6.5.3765                                                                                              */
+/* X2C-Version: 6.5.3600                                                                                              */
 /* X2C-Edition: Free                                                                                                  */
 
 /* Common includes                                                                                                    */
@@ -1089,17 +1089,17 @@ void X2C_Init(void)
 /**********************************************************************************************************************/
 /**                                            Run Block Update Functions                                            **/
 /**********************************************************************************************************************/
-static uint16 cnt_4 = X2C_UPDATE_4_DIVIDER - 1u;
-static uint16 cnt_10 = X2C_UPDATE_10_DIVIDER - 1u;
+static uint16 cnt_4 = X2C_UPDATE_4_DIVIDER - 1;
+static uint16 cnt_10 = X2C_UPDATE_10_DIVIDER - 1;
 void X2C_Update(void)
 {
     X2C_Update_1();
-    if (cnt_4 == 0u)
+    if (cnt_4 == 0)
     {
         cnt_4 = X2C_UPDATE_4_DIVIDER;
         X2C_Update_4();
     }
-    if (cnt_10 == 0u)
+    if (cnt_10 == 0)
     {
         cnt_10 = X2C_UPDATE_10_DIVIDER;
         X2C_Update_10();

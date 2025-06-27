@@ -52,15 +52,14 @@
 
 #include "userparms.h"
 #include "board_service.h"
-#include "control.h"
-#include "estim.h"
-#include "foc/estim_qei.h"
-#include "pi.h"
-#include "svm.h"
-#include "clarke_park.h"
-#include "fdweak.h"
-#include "singleshunt.h"
- 
+//#include "control.h"
+//#include "estim.h"
+//#include "foc/estim_qei.h"
+//#include "pi.h"
+//#include "svm.h"
+//#include "clarke_park.h"
+
+
 #include "x2cmodel/X2CMain.h"
 #include "x2cmodel/X2CUtils.h"
 
@@ -69,22 +68,22 @@
 // <editor-fold defaultstate="collapsed" desc=" Global Variables ">
  
 MCAPP_MEASURE_T measureInputs;
-CTRL_PARM_T CtrlParm;
-MOTOR_STARTUP_DATA_T motorStartUpData;
-UGF_T uGF;
+//CTRL_PARM_T CtrlParm;
+//MOTOR_STARTUP_DATA_T motorStartUpData;
+//UGF_T uGF;
 
-MC_PIPARMIN_T     piInputIq;
-MC_PIPARMOUT_T    piOutputIq;
-MC_PIPARMIN_T     piInputId;   
-MC_PIPARMOUT_T    piOutputId;
-MC_PIPARMIN_T     piInputOmega;    
-MC_PIPARMOUT_T    piOutputOmega;
-MC_SINCOS_T sincosTheta;
-MC_ALPHABETA_T valphabeta,ialphabeta;
-MC_DQ_T vdq,idq;
-MC_ABC_T vabc,iabc;
-MC_DUTYCYCLEOUT_T pwmDutycycle;
-SINGLE_SHUNT_PARM_T singleShuntParam;
+//MC_PIPARMIN_T     piInputIq;
+//MC_PIPARMOUT_T    piOutputIq;
+//MC_PIPARMIN_T     piInputId;   
+//MC_PIPARMOUT_T    piOutputId;
+//MC_PIPARMIN_T     piInputOmega;    
+//MC_PIPARMOUT_T    piOutputOmega;
+//MC_SINCOS_T sincosTheta;
+//MC_ALPHABETA_T valphabeta,ialphabeta;
+//MC_DQ_T vdq,idq;
+//MC_ABC_T vabc,iabc;
+//MC_DUTYCYCLEOUT_T pwmDutycycle;
+
 
 float pwmPeriod;
 float thetaElectricalOpenLoop;

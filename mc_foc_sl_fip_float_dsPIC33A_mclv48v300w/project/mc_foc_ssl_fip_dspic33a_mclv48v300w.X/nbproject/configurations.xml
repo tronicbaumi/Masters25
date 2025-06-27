@@ -4,16 +4,6 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
-      <logicalFolder name="foc" displayName="foc" projectFiles="true">
-        <itemPath>../foc/clarke_park.h</itemPath>
-        <itemPath>../foc/control.h</itemPath>
-        <itemPath>../foc/estim.h</itemPath>
-        <itemPath>../foc/fdweak.h</itemPath>
-        <itemPath>../foc/general.h</itemPath>
-        <itemPath>../foc/pi.h</itemPath>
-        <itemPath>../foc/svm.h</itemPath>
-        <itemPath>../foc/estim_qei.h</itemPath>
-      </logicalFolder>
       <logicalFolder name="hal" displayName="hal" projectFiles="true">
         <itemPath>../hal/adc.h</itemPath>
         <itemPath>../hal/board_service.h</itemPath>
@@ -25,14 +15,6 @@
         <itemPath>../hal/timer1.h</itemPath>
         <itemPath>../hal/uart1.h</itemPath>
         <itemPath>../hal/qei.h</itemPath>
-      </logicalFolder>
-      <logicalFolder name="motor" displayName="motor" projectFiles="true">
-        <itemPath>../motor/hurst075.h</itemPath>
-        <itemPath>../motor/hurst300.h</itemPath>
-        <itemPath>../motor/ACT57BLF02.h</itemPath>
-      </logicalFolder>
-      <logicalFolder name="singleshunt" displayName="singleshunt" projectFiles="true">
-        <itemPath>../singleshunt/singleshunt.h</itemPath>
       </logicalFolder>
       <logicalFolder name="x2cscope" displayName="x2cmodel" projectFiles="true">
         <itemPath>../x2cmodel/X2C.h</itemPath>
@@ -55,15 +37,6 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
-      <logicalFolder name="foc" displayName="foc" projectFiles="true">
-        <itemPath>../foc/clarke_park.c</itemPath>
-        <itemPath>../foc/estim.c</itemPath>
-        <itemPath>../foc/fdweak.c</itemPath>
-        <itemPath>../foc/general.c</itemPath>
-        <itemPath>../foc/pi.c</itemPath>
-        <itemPath>../foc/svm.c</itemPath>
-        <itemPath>../foc/estim_qei.c</itemPath>
-      </logicalFolder>
       <logicalFolder name="hal" displayName="hal" projectFiles="true">
         <itemPath>../hal/adc.c</itemPath>
         <itemPath>../hal/board_service.c</itemPath>
@@ -75,9 +48,6 @@
         <itemPath>../hal/timer1.c</itemPath>
         <itemPath>../hal/uart1.c</itemPath>
         <itemPath>../hal/qei.c</itemPath>
-      </logicalFolder>
-      <logicalFolder name="singleshunt" displayName="singleshunt" projectFiles="true">
-        <itemPath>../singleshunt/singleshunt.c</itemPath>
       </logicalFolder>
       <logicalFolder name="f1" displayName="x2cmodel" projectFiles="true">
         <logicalFolder name="f1" displayName="Controller" projectFiles="true">

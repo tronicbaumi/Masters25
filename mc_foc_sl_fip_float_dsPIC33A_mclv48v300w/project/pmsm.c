@@ -52,14 +52,6 @@
 
 #include "userparms.h"
 #include "board_service.h"
-#include "control.h"
-#include "estim.h"
-#include "foc/estim_qei.h"
-#include "pi.h"
-#include "svm.h"
-#include "clarke_park.h"
-#include "fdweak.h"
-#include "singleshunt.h"
  
 #include "x2cmodel/X2CMain.h"
 #include "x2cmodel/X2CUtils.h"
@@ -69,22 +61,22 @@
 // <editor-fold defaultstate="collapsed" desc=" Global Variables ">
  
 MCAPP_MEASURE_T measureInputs;
-CTRL_PARM_T CtrlParm;
-MOTOR_STARTUP_DATA_T motorStartUpData;
+//CTRL_PARM_T CtrlParm;
+//MOTOR_STARTUP_DATA_T motorStartUpData;
 UGF_T uGF;
 
-MC_PIPARMIN_T     piInputIq;
-MC_PIPARMOUT_T    piOutputIq;
-MC_PIPARMIN_T     piInputId;   
-MC_PIPARMOUT_T    piOutputId;
-MC_PIPARMIN_T     piInputOmega;    
-MC_PIPARMOUT_T    piOutputOmega;
-MC_SINCOS_T sincosTheta;
-MC_ALPHABETA_T valphabeta,ialphabeta;
-MC_DQ_T vdq,idq;
-MC_ABC_T vabc,iabc;
-MC_DUTYCYCLEOUT_T pwmDutycycle;
-SINGLE_SHUNT_PARM_T singleShuntParam;
+//MC_PIPARMIN_T     piInputIq;
+//MC_PIPARMOUT_T    piOutputIq;
+//MC_PIPARMIN_T     piInputId;   
+//MC_PIPARMOUT_T    piOutputId;
+//MC_PIPARMIN_T     piInputOmega;    
+//MC_PIPARMOUT_T    piOutputOmega;
+//MC_SINCOS_T sincosTheta;
+//MC_ALPHABETA_T valphabeta,ialphabeta;
+//MC_DQ_T vdq,idq;
+//MC_ABC_T vabc,iabc;
+//MC_DUTYCYCLEOUT_T pwmDutycycle;
+//ChBSINGLE_SHUNT_PARM_T singleShuntParam;
 
 float pwmPeriod;
 float thetaElectricalOpenLoop;
@@ -175,30 +167,11 @@ int main(void)
 void __attribute__((__interrupt__, no_auto_psv))ADCInterrupt(void)
 {   
 
-#ifdef SINGLE_SHUNT
-    volatile int16_t ibusTemp1 = 0,ibusTemp2 = 0;
-    ibusTemp1 = (ADCBUF_IBUS1 - measureInputs.current.offsetIbus);
-    ibusTemp2 = (ADCBUF_IBUS2 - measureInputs.current.offsetIbus);
-#else
+
     measureInputs.current.Ia = ADCBUF_IA ;
     measureInputs.current.Ib = ADCBUF_IB ;
     MCAPP_MeasureCurrentCalibrate(&measureInputs);    
-#endif
-    
-#ifdef SINGLE_SHUNT
-        /*Convert ADC Counts to real value*/
-        singleShuntParam.Ibus1 = (float)(ibusTemp1 * ADC_CURRENT_SCALE);
-        singleShuntParam.Ibus2 = (float)(ibusTemp2 * ADC_CURRENT_SCALE);
-        /* Reconstruct Phase currents from Bus Current*/                
-        SingleShunt_PhaseCurrentReconstruction(&singleShuntParam);
-        
-        iabc.a = singleShuntParam.Ia;
-        iabc.b = singleShuntParam.Ib;
-#else        
-        /*Convert ADC Counts to real value*/
-        iabc.a = (float)(measureInputs.current.Ia * ADC_CURRENT_SCALE); 
-        iabc.b = (float)(measureInputs.current.Ib * ADC_CURRENT_SCALE);
-#endif       
+
     
     
     X2C_Task();
@@ -207,31 +180,14 @@ void __attribute__((__interrupt__, no_auto_psv))ADCInterrupt(void)
     if(uGF.bits.RunMotor == 1)  
     {
      
-        //Do nothing, Model handles
-
-        
-#ifdef SINGLE_SHUNT
-// Set from model
-//        SingleShunt_CalculateSpaceVectorPhaseShifted(&vabc,pwmPeriod, &singleShuntParam);
-//        PWMDutyCycleSetDualEdge(&singleShuntParam.pwmDutycycle1, &singleShuntParam.pwmDutycycle2);
-#else
-// Set from model
-//        MC_CalculateSpaceVectorPhaseShifted(&vabc,pwmPeriod, &pwmDutycycle);
-//        PWMDutyCycleSet(&pwmDutycycle);
-#endif        
+        //Do nothing, Model handles 
     }
     else
     {
         /* if run motor command is not activated */   
         
         PWM_TRIGA = ADC_SAMPLING_POINT;
-#ifdef SINGLE_SHUNT
-        SINGLE_SHUNT_TRIGGER1 = LOOPTIME_TCY>>2;
-        SINGLE_SHUNT_TRIGGER2 = LOOPTIME_TCY>>1;
-        PWM_PHASE3 = MIN_DUTY;
-        PWM_PHASE2 = MIN_DUTY;
-        PWM_PHASE1 = MIN_DUTY;
-#endif
+
         PWM_PDC3  = MIN_DUTY;
         PWM_PDC2  = MIN_DUTY;
         PWM_PDC1  = MIN_DUTY;
@@ -275,8 +231,6 @@ void ResetParameters(void)
 {
     /* Stop the motor   */
     uGF.bits.RunMotor = 0;        
-    /* Set the reference speed value to 0 */
-    CtrlParm.VelRef = 0.0;
     /* Restart in open loop */
     uGF.bits.OpenLoop = 1;
     //SincosParm.openLoop = 1;
@@ -306,15 +260,7 @@ void ResetPeripherals(void)
 {
     /* Make sure ADC does not generate interrupt while initializing parameters*/
 	DisableADCInterrupt();
-#ifdef SINGLE_SHUNT
-    /* Initialize Single Shunt Related parameters */
-    SingleShunt_InitializeParameters(&singleShuntParam);
-    SINGLE_SHUNT_TRIGGER1 = LOOPTIME_TCY>>2;
-    SINGLE_SHUNT_TRIGGER2 = LOOPTIME_TCY>>1;
-    PWM_PHASE3 = MIN_DUTY;
-    PWM_PHASE2 = MIN_DUTY;
-    PWM_PHASE1 = MIN_DUTY;
-#endif
+
     PWM_TRIGA = ADC_SAMPLING_POINT;
     /* Re initialize the duty cycle to minimum value */
     PWM_PDC3 = MIN_DUTY;
