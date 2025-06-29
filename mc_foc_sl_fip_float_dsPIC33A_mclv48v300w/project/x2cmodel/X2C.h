@@ -2,17 +2,17 @@
  * @file
  * @brief Generated model file.
  * 
- * Date:  2025-06-27 13:29
+ * Date:  2025-06-27 17:00
  * 
- * X2C-Version: 6.5.3600
+ * X2C-Version: 6.5.3765
  * X2C-Edition: Free
  */
 /* This file is part of X2C. http://x2c.lcm.at/                                                                       */
 
-/* Model: mc_foc_sl_fip_dspic33ck_mclv48v300w                                                                         */
-/* Date:  2025-06-27 13:29                                                                                            */
+/* Model: mc_foc_sl_fip_dspic33ck_mclv48v300w_Melody                                                                  */
+/* Date:  2025-06-27 17:00                                                                                            */
 
-/* X2C-Version: 6.5.3600                                                                                              */
+/* X2C-Version: 6.5.3765                                                                                              */
 /* X2C-Edition: Free                                                                                                  */
 
 #ifndef X2C_H
@@ -363,8 +363,8 @@ extern const tMaskParameterEntry maskParamIdTable[];
 extern const tMaskParamExtRecord maskParamExtTable[];
 extern const tMaskParamDataRecord maskParamDataTable[];
 
-#define X2C_UPDATE_4_DIVIDER 4
-#define X2C_UPDATE_10_DIVIDER 10
+#define X2C_UPDATE_4_DIVIDER (4u)
+#define X2C_UPDATE_10_DIVIDER (10u)
 
 /**********************************************************************************************************************/
 /**     Prototypes                                                                                                   **/
@@ -372,8 +372,8 @@ extern const tMaskParamDataRecord maskParamDataTable[];
 void X2C_Init(void);
 void X2C_Update(void);
 void X2C_Update_1(void);
-void X2C_Update_4(void);
 void X2C_Update_10(void);
+void X2C_Update_4(void);
 
 #ifdef __cplusplus
 }

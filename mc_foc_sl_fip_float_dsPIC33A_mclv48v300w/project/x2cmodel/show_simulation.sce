@@ -48,4 +48,8 @@ scf(21);
 plot(motor_out.time, [motor_out.values(:,7) dbg2.values(:,3)]);
 
 
+scf(22);
+plot(dbg_speed.time, dbg_speed.values)
+title("setpont = blue, measured/estimated = green, pi output = red");
+
 

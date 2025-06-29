@@ -1,9 +1,9 @@
 /* This file is part of X2C. http://x2c.lcm.at/                                                                       */
 
 /* Model: blinky_dspic33a_mclv48v300w                                                                                 */
-/* Date:  2025-06-25 12:10                                                                                            */
+/* Date:  2025-06-27 16:30                                                                                            */
 
-/* X2C-Version: 6.5.3600                                                                                              */
+/* X2C-Version: 6.5.3765                                                                                              */
 /* X2C-Edition: Free                                                                                                  */
 
 /* Common includes                                                                                                    */
@@ -98,8 +98,8 @@ void X2C_Init(void)
     x2cModel.blocks.bAutoSwitch1.Status = &RamTable_int16[1];
 
     /* Block: Constant                                                                                                */
-    /* Value = 1.0                                                                                                    */
-    x2cModel.blocks.bConstant.K = 32767;
+    /* Value = 0.05                                                                                                   */
+    x2cModel.blocks.bConstant.K = 1638;
 
     /* Block: Constant1                                                                                               */
     /* Value = 1.0                                                                                                    */
@@ -110,8 +110,8 @@ void X2C_Init(void)
     x2cModel.blocks.bConstant2.K = 0;
 
     /* Block: Constant3                                                                                               */
-    /* Value = 0.1                                                                                                    */
-    x2cModel.blocks.bConstant3.K = 3277;
+    /* Value = 1.0                                                                                                    */
+    x2cModel.blocks.bConstant3.K = 32767;
 
     /* Block: Gain1                                                                                                   */
     /* Gain = -1.0                                                                                                    */

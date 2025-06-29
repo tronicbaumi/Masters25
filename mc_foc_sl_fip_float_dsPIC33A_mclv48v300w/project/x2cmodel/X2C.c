@@ -1,9 +1,9 @@
 /* This file is part of X2C. http://x2c.lcm.at/                                                                       */
 
-/* Model: mc_foc_sl_fip_dspic33ck_mclv48v300w                                                                         */
-/* Date:  2025-06-27 13:29                                                                                            */
+/* Model: mc_foc_sl_fip_dspic33ck_mclv48v300w_Melody                                                                  */
+/* Date:  2025-06-27 17:00                                                                                            */
 
-/* X2C-Version: 6.5.3600                                                                                              */
+/* X2C-Version: 6.5.3765                                                                                              */
 /* X2C-Edition: Free                                                                                                  */
 
 /* Common includes                                                                                                    */
@@ -132,41 +132,41 @@ void X2C_Init(void)
     /* Block: FOC_main/Not                                                                                            */
 
     /* Block: FOC_main/PI_flux                                                                                        */
-    /* Kp = 0.3                                                                                                       */
+    /* Kp = 1.0                                                                                                       */
     /* Ki = 10.0                                                                                                      */
     /* ts_fact = 1.0                                                                                                  */
     x2cModel.blocks.sFOC_main.bPI_flux.b0 = 16;
-    x2cModel.blocks.sFOC_main.bPI_flux.b1 = 9830;
+    x2cModel.blocks.sFOC_main.bPI_flux.b1 = 16384;
     x2cModel.blocks.sFOC_main.bPI_flux.sfrb0 = 15;
-    x2cModel.blocks.sFOC_main.bPI_flux.sfrb1 = 15;
+    x2cModel.blocks.sFOC_main.bPI_flux.sfrb1 = 14;
     x2cModel.blocks.sFOC_main.bPI_flux.i_old = 0;
     x2cModel.blocks.sFOC_main.bPI_flux.enable_old = 0;
 
     /* Block: FOC_main/PI_torque                                                                                      */
-    /* Kp = 0.3                                                                                                       */
+    /* Kp = 1.0                                                                                                       */
     /* Ki = 10.0                                                                                                      */
     /* ts_fact = 1.0                                                                                                  */
     x2cModel.blocks.sFOC_main.bPI_torque.b0 = 16;
-    x2cModel.blocks.sFOC_main.bPI_torque.b1 = 9830;
+    x2cModel.blocks.sFOC_main.bPI_torque.b1 = 16384;
     x2cModel.blocks.sFOC_main.bPI_torque.sfrb0 = 15;
-    x2cModel.blocks.sFOC_main.bPI_torque.sfrb1 = 15;
+    x2cModel.blocks.sFOC_main.bPI_torque.sfrb1 = 14;
     x2cModel.blocks.sFOC_main.bPI_torque.i_old = 0;
     x2cModel.blocks.sFOC_main.bPI_torque.enable_old = 0;
 
     /* Block: FOC_main/PLLEstimator/Average                                                                           */
-    /* n = 64                                                                                                         */
+    /* n = 32                                                                                                         */
     /* ts_fact = 1.0                                                                                                  */
-    x2cModel.blocks.sFOC_main.sPLLEstimator.bAverage.n = 64;
-    x2cModel.blocks.sFOC_main.sPLLEstimator.bAverage.sfrn = 6;
+    x2cModel.blocks.sFOC_main.sPLLEstimator.bAverage.n = 32;
+    x2cModel.blocks.sFOC_main.sPLLEstimator.bAverage.sfrn = 5;
     x2cModel.blocks.sFOC_main.sPLLEstimator.bAverage.sum = 0;
     x2cModel.blocks.sFOC_main.sPLLEstimator.bAverage.count = 0;
     x2cModel.blocks.sFOC_main.sPLLEstimator.bAverage.avg = &RamTable_int16[256];
 
     /* Block: FOC_main/PLLEstimator/Average1                                                                          */
-    /* n = 64                                                                                                         */
+    /* n = 32                                                                                                         */
     /* ts_fact = 1.0                                                                                                  */
-    x2cModel.blocks.sFOC_main.sPLLEstimator.bAverage1.n = 64;
-    x2cModel.blocks.sFOC_main.sPLLEstimator.bAverage1.sfrn = 6;
+    x2cModel.blocks.sFOC_main.sPLLEstimator.bAverage1.n = 32;
+    x2cModel.blocks.sFOC_main.sPLLEstimator.bAverage1.sfrn = 5;
     x2cModel.blocks.sFOC_main.sPLLEstimator.bAverage1.sum = 0;
     x2cModel.blocks.sFOC_main.sPLLEstimator.bAverage1.count = 0;
     x2cModel.blocks.sFOC_main.sPLLEstimator.bAverage1.avg = &RamTable_int16[512];
@@ -203,16 +203,16 @@ void X2C_Init(void)
     x2cModel.blocks.sFOC_main.sPLLEstimator.sSuperBlock.bAutoSwitch.Status = &RamTable_int16[768];
 
     /* Block: FOC_main/PLLEstimator/SuperBlock/Gain                                                                   */
-    /* Gain = 0.7                                                                                                     */
-    x2cModel.blocks.sFOC_main.sPLLEstimator.sSuperBlock.bGain.V = 22938;
+    /* Gain = 0.65                                                                                                    */
+    x2cModel.blocks.sFOC_main.sPLLEstimator.sSuperBlock.bGain.V = 21299;
     x2cModel.blocks.sFOC_main.sPLLEstimator.sSuperBlock.bGain.sfr = 15;
 
     /* Block: FOC_main/PLLEstimator/SuperBlock/Sub                                                                    */
 
     /* Block: FOC_main/PLLEstimator/uI                                                                                */
-    /* Ki = 1500.0                                                                                                    */
+    /* Ki = 1550.0                                                                                                    */
     /* ts_fact = 1.0                                                                                                  */
-    x2cModel.blocks.sFOC_main.sPLLEstimator.buI.b0 = 2458;
+    x2cModel.blocks.sFOC_main.sPLLEstimator.buI.b0 = 2540;
     x2cModel.blocks.sFOC_main.sPLLEstimator.buI.sfr = 15;
     x2cModel.blocks.sFOC_main.sPLLEstimator.buI.i_old = 0;
     x2cModel.blocks.sFOC_main.sPLLEstimator.buI.enable_old = 0;
@@ -404,11 +404,11 @@ void X2C_Init(void)
     x2cModel.blocks.sstartup.bFlux_select1.Status = &RamTable_int16[771];
 
     /* Block: startup/IdRateLimiter                                                                                   */
-    /* Tr = 0.5                                                                                                       */
-    /* Tf = 0.5                                                                                                       */
+    /* Tr = 1.0                                                                                                       */
+    /* Tf = 1.0                                                                                                       */
     /* ts_fact = 1.0                                                                                                  */
-    x2cModel.blocks.sstartup.bIdRateLimiter.RateUp = 214748;
-    x2cModel.blocks.sstartup.bIdRateLimiter.RateDown = 214748;
+    x2cModel.blocks.sstartup.bIdRateLimiter.RateUp = 107374;
+    x2cModel.blocks.sstartup.bIdRateLimiter.RateDown = 107374;
     x2cModel.blocks.sstartup.bIdRateLimiter.out_old = 0;
     x2cModel.blocks.sstartup.bIdRateLimiter.enable_old = 0;
 
@@ -459,12 +459,12 @@ void X2C_Init(void)
     /* Delay1 = 0.25                                                                                                  */
     /* Delay2 = 0.5                                                                                                   */
     /* Delay3 = 2.0                                                                                                   */
-    /* Delay4 = 2.2                                                                                                   */
+    /* Delay4 = 2.5                                                                                                   */
     /* ts_fact = 4.0                                                                                                  */
     x2cModel.blocks.sstartup.bSequencer.delay1 = 1250;
     x2cModel.blocks.sstartup.bSequencer.delay2 = 2500;
     x2cModel.blocks.sstartup.bSequencer.delay3 = 10000;
-    x2cModel.blocks.sstartup.bSequencer.delay4 = 11000;
+    x2cModel.blocks.sstartup.bSequencer.delay4 = 12500;
     x2cModel.blocks.sstartup.bSequencer.cnt = 0;
     x2cModel.blocks.sstartup.bSequencer.start_old = 0;
 
@@ -1089,17 +1089,17 @@ void X2C_Init(void)
 /**********************************************************************************************************************/
 /**                                            Run Block Update Functions                                            **/
 /**********************************************************************************************************************/
-static uint16 cnt_4 = X2C_UPDATE_4_DIVIDER - 1;
-static uint16 cnt_10 = X2C_UPDATE_10_DIVIDER - 1;
+static uint16 cnt_4 = X2C_UPDATE_4_DIVIDER - 1u;
+static uint16 cnt_10 = X2C_UPDATE_10_DIVIDER - 1u;
 void X2C_Update(void)
 {
     X2C_Update_1();
-    if (cnt_4 == 0)
+    if (cnt_4 == 0u)
     {
         cnt_4 = X2C_UPDATE_4_DIVIDER;
         X2C_Update_4();
     }
-    if (cnt_10 == 0)
+    if (cnt_10 == 0u)
     {
         cnt_10 = X2C_UPDATE_10_DIVIDER;
         X2C_Update_10();
