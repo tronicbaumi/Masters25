@@ -95,7 +95,7 @@ void QEI_Initialize(void)
 // /* Set higher encoder boundary counts */
 //  QEI1GEC = (ENCODER_COUNTS_HALF_ELEC - 1);  // ChB
   
-  
+  QEI1IOCbits.SWPAB = 1;
   
   QEI1CONbits.PIMOD = 0b101;  //ChB no index
   QEI1GEC = 1024;     // ChB            ENCODER_COUNTS_ELEC

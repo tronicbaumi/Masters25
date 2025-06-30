@@ -2,14 +2,14 @@
  * @file
  * @brief Generated RAM table file.
  * 
- * Date:  2025-06-27 17:00
+ * Date:  2025-06-30 15:54
  * 
  * X2C-Version: 6.5.3765
  * X2C-Edition: Free
  */
 /* This file is part of X2C. http://x2c.lcm.at/                                                                       */
 
-/* Date:  2025-06-27 17:00                                                                                            */
+/* Date:  2025-06-30 15:54                                                                                            */
 
 /* X2C-Version: 6.5.3765                                                                                              */
 /* X2C-Edition: Free                                                                                                  */
@@ -26,7 +26,7 @@ extern "C" {
 /* public prototypes */
 void initRamTables(void);
 
-extern int16 RamTable_int16[774];
+extern int16 RamTable_int16[775];
 
 #ifdef __cplusplus
 }
