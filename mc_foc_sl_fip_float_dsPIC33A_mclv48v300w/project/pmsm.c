@@ -168,9 +168,9 @@ void __attribute__((__interrupt__, no_auto_psv))ADCInterrupt(void)
 {   
 
 
-    measureInputs.current.Ia = ADCBUF_IA ;
-    measureInputs.current.Ib = ADCBUF_IB ;
-    MCAPP_MeasureCurrentCalibrate(&measureInputs);    
+// ChB    measureInputs.current.Ia = ADCBUF_IA ;
+// ChB    measureInputs.current.Ib = ADCBUF_IB ;
+//ChB     MCAPP_MeasureCurrentCalibrate(&measureInputs);    
 
     
     
@@ -210,7 +210,7 @@ void __attribute__((__interrupt__, no_auto_psv))ADCInterrupt(void)
         BoardServiceStepIsr(); 
     }
     
-    measureInputs.potValue = ADCBUF_POT;
+    //ChB measureInputs.potValue = ADCBUF_POT;
    
     ADCInterruptFlagClear;
 }

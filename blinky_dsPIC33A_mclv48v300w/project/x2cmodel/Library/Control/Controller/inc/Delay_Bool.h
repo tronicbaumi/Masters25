@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2014, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,11 +28,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/* Description:	  Delay the input signal by one sample time interval.   	  */
+/* Description:   Delay the input signal by one sample time interval.         */
 /* USERCODE-END:Description                                                                                           */
 #ifndef DELAY_BOOL_H
 #define DELAY_BOOL_H
@@ -48,14 +49,14 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     bool            *In;
     bool            Out;
     bool            In_old;
 } DELAY_BOOL;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     BOOL_PTR        In;
     bool            Out;
     bool            In_old;
@@ -68,14 +69,14 @@ typedef struct {
     (void (*)(void*))Delay_Bool_Init, \
     (tLoadImplementationParameter)Common_Load, \
     (tSaveImplementationParameter)Common_Save, \
-    (void* (*)(const void*, uint16))Delay_Bool_GetAddress }
+    (void* (*)(void*, uint16))Delay_Bool_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Delay_Bool_Update(DELAY_BOOL *pTDelay_Bool);
-void Delay_Bool_Init(DELAY_BOOL *pTDelay_Bool);
-void* Delay_Bool_GetAddress(const DELAY_BOOL *block, uint16 elementId);
+void Delay_Bool_Update(DELAY_BOOL *block);
+void Delay_Bool_Init(DELAY_BOOL *block);
+void* Delay_Bool_GetAddress(DELAY_BOOL *block, uint16 elementId);
 
 #endif
 

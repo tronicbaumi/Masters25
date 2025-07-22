@@ -3,7 +3,7 @@
  * @brief Generic block services.
  */
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -32,9 +32,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 1852 $
- * $LastChangedDate:: 2020-03-10 16:35:19 +0100#$
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3640 $
+ * $LastChangedDate:: 2025-02-24 19:40:07 +0100#$
  */
 #ifndef BLOCKSERVICES_H
 #define BLOCKSERVICES_H
@@ -45,8 +45,9 @@ extern "C" {
 
 #include "CommonFcts.h"
 
-/* public prototypes */
+/* Public functions */
 void addBlockServices(tProtocol* protocol);
+void addBlockApplicationServices(tProtocol* protocol);
 void addExtendedBlockServices(tProtocol* protocol);
 void putBlockData(tProtocol* protocol);
 void getBlockData(tProtocol* protocol);

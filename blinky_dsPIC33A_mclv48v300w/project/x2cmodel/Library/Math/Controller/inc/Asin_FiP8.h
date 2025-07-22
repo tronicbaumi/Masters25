@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2014, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,8 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2841 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description:
@@ -50,13 +51,13 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int8            *In;
     int8            Out;
 } ASIN_FIP8;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT8_PTR        In;
     int8            Out;
 } ASIN_FIP8;
@@ -68,14 +69,14 @@ typedef struct {
     (void (*)(void*))Asin_FiP8_Init, \
     (tLoadImplementationParameter)Common_Load, \
     (tSaveImplementationParameter)Common_Save, \
-    (void* (*)(const void*, uint16))Asin_FiP8_GetAddress }
+    (void* (*)(void*, uint16))Asin_FiP8_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Asin_FiP8_Update(ASIN_FIP8 *pTAsin_FiP8);
-void Asin_FiP8_Init(ASIN_FIP8 *pTAsin_FiP8);
-void* Asin_FiP8_GetAddress(const ASIN_FIP8 *block, uint16 elementId);
+void Asin_FiP8_Update(ASIN_FIP8 *block);
+void Asin_FiP8_Init(ASIN_FIP8 *block);
+void* Asin_FiP8_GetAddress(ASIN_FIP8 *block, uint16 elementId);
 
 #endif
 

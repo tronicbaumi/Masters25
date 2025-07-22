@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,19 +28,20 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/**     Description:    First order proportional element with adjustable cut-off frequency							 **/
-/**						Calculation:																				 **/
-/**	       						  b0							   													 **/
-/** 						y = ------ u						   		 											 **/
-/**          					z + a0									 											 **/
-/**							-> y(k) = u(k-1).b0 - y(k-1).a0        													 **/
-/**								with a0 = -exp(-2*pi*Ts*fc)															 **/
-/**								and  b0 = V*(1 - exp(-2*pi*Ts*fc))													 **/
-/**																													 **/
+/**     Description:    First order proportional element with adjustable cut-off frequency                           **/
+/**                     Calculation:                                                                                 **/
+/**                               b0                                                                                 **/
+/**                         y = ------ u                                                                             **/
+/**                             z + a0                                                                               **/
+/**                         -> y(k) = u(k-1).b0 - y(k-1).a0                                                          **/
+/**                             with a0 = -exp(-2*pi*Ts*fc)                                                          **/
+/**                             and  b0 = V*(1 - exp(-2*pi*Ts*fc))                                                   **/
+/**                                                                                                                  **/
 /* USERCODE-END:Description                                                                                           */
 #ifndef ADAPTIVEPT1_FLOAT32_H
 #define ADAPTIVEPT1_FLOAT32_H
@@ -56,7 +57,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float32         *In;
     float32         *fc;
     float32         Out;
@@ -66,7 +67,7 @@ typedef struct {
 } ADAPTIVEPT1_FLOAT32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT32_PTR     In;
     FLOAT32_PTR     fc;
     float32         Out;
@@ -82,16 +83,16 @@ typedef struct {
     (void (*)(void*))AdaptivePT1_Float32_Init, \
     (tLoadImplementationParameter)AdaptivePT1_Float32_Load, \
     (tSaveImplementationParameter)AdaptivePT1_Float32_Save, \
-    (void* (*)(const void*, uint16))AdaptivePT1_Float32_GetAddress }
+    (void* (*)(void*, uint16))AdaptivePT1_Float32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void AdaptivePT1_Float32_Update(ADAPTIVEPT1_FLOAT32 *pTAdaptivePT1_Float32);
-void AdaptivePT1_Float32_Init(ADAPTIVEPT1_FLOAT32 *pTAdaptivePT1_Float32);
-uint8 AdaptivePT1_Float32_Load(const ADAPTIVEPT1_FLOAT32 *pTAdaptivePT1_Float32, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 AdaptivePT1_Float32_Save(ADAPTIVEPT1_FLOAT32 *pTAdaptivePT1_Float32, const uint8 data[], uint16 dataLength);
-void* AdaptivePT1_Float32_GetAddress(const ADAPTIVEPT1_FLOAT32 *block, uint16 elementId);
+void AdaptivePT1_Float32_Update(ADAPTIVEPT1_FLOAT32 *block);
+void AdaptivePT1_Float32_Init(ADAPTIVEPT1_FLOAT32 *block);
+uint8 AdaptivePT1_Float32_Load(const ADAPTIVEPT1_FLOAT32 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 AdaptivePT1_Float32_Save(ADAPTIVEPT1_FLOAT32 *block, const uint8 data[], uint16 dataLength);
+void* AdaptivePT1_Float32_GetAddress(ADAPTIVEPT1_FLOAT32 *block, uint16 elementId);
 
 #endif
 

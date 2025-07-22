@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2018, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,9 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 3344 $
- * $LastChangedDate:: 2024-07-04 13:08:58 +0200#$
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description: */
@@ -49,7 +49,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int32           *In;
     int32           *n;
     int32           Out;
@@ -57,7 +57,7 @@ typedef struct {
     int32           a_fact;
     int32           b_fact;
     int32           c_fact;
-    int8            sfrA;
+    uint8           sfrA;
     int32           a1;
     int32           a2;
     int32           b1;
@@ -70,7 +70,7 @@ typedef struct {
 } ADAPTIVENOTCH_FIP32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT32_PTR       In;
     INT32_PTR       n;
     int32           Out;
@@ -78,7 +78,7 @@ typedef struct {
     int32           a_fact;
     int32           b_fact;
     int32           c_fact;
-    int8            sfrA;
+    uint8           sfrA;
     int32           a1;
     int32           a2;
     int32           b1;
@@ -97,16 +97,16 @@ typedef struct {
     (void (*)(void*))AdaptiveNotch_FiP32_Init, \
     (tLoadImplementationParameter)AdaptiveNotch_FiP32_Load, \
     (tSaveImplementationParameter)AdaptiveNotch_FiP32_Save, \
-    (void* (*)(const void*, uint16))AdaptiveNotch_FiP32_GetAddress }
+    (void* (*)(void*, uint16))AdaptiveNotch_FiP32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void AdaptiveNotch_FiP32_Update(ADAPTIVENOTCH_FIP32 *pTAdaptiveNotch_FiP32);
-void AdaptiveNotch_FiP32_Init(ADAPTIVENOTCH_FIP32 *pTAdaptiveNotch_FiP32);
-uint8 AdaptiveNotch_FiP32_Load(const ADAPTIVENOTCH_FIP32 *pTAdaptiveNotch_FiP32, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 AdaptiveNotch_FiP32_Save(ADAPTIVENOTCH_FIP32 *pTAdaptiveNotch_FiP32, const uint8 data[], uint16 dataLength);
-void* AdaptiveNotch_FiP32_GetAddress(const ADAPTIVENOTCH_FIP32 *block, uint16 elementId);
+void AdaptiveNotch_FiP32_Update(ADAPTIVENOTCH_FIP32 *block);
+void AdaptiveNotch_FiP32_Init(ADAPTIVENOTCH_FIP32 *block);
+uint8 AdaptiveNotch_FiP32_Load(const ADAPTIVENOTCH_FIP32 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 AdaptiveNotch_FiP32_Save(ADAPTIVENOTCH_FIP32 *block, const uint8 data[], uint16 dataLength);
+void* AdaptiveNotch_FiP32_GetAddress(ADAPTIVENOTCH_FIP32 *block, uint16 elementId);
 
 #endif
 

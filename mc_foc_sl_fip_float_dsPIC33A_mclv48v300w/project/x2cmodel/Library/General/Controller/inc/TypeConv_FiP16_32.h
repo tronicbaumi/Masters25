@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,12 +28,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/**     Description:	Data Type Conversion from 16 to 32 Bit               **/
-/**																			 **/
+/**     Description:    Data Type Conversion from 16 to 32 Bit               **/
+/**                                                                          **/
 /* USERCODE-END:Description                                                                                           */
 #ifndef TYPECONV_FIP16_32_H
 #define TYPECONV_FIP16_32_H
@@ -49,13 +50,13 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int16           *In;
     int32           Out;
 } TYPECONV_FIP16_32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT16_PTR       In;
     int32           Out;
 } TYPECONV_FIP16_32;
@@ -67,14 +68,14 @@ typedef struct {
     (void (*)(void*))TypeConv_FiP16_32_Init, \
     (tLoadImplementationParameter)Common_Load, \
     (tSaveImplementationParameter)Common_Save, \
-    (void* (*)(const void*, uint16))TypeConv_FiP16_32_GetAddress }
+    (void* (*)(void*, uint16))TypeConv_FiP16_32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void TypeConv_FiP16_32_Update(TYPECONV_FIP16_32 *pTTypeConv_FiP16_32);
-void TypeConv_FiP16_32_Init(TYPECONV_FIP16_32 *pTTypeConv_FiP16_32);
-void* TypeConv_FiP16_32_GetAddress(const TYPECONV_FIP16_32 *block, uint16 elementId);
+void TypeConv_FiP16_32_Update(TYPECONV_FIP16_32 *block);
+void TypeConv_FiP16_32_Init(TYPECONV_FIP16_32 *block);
+void* TypeConv_FiP16_32_GetAddress(TYPECONV_FIP16_32 *block, uint16 elementId);
 
 #endif
 

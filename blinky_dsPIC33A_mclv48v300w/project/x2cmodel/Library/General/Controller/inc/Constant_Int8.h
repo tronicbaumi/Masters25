@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2017, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,9 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
- * $LastChangedDate:: 2022-05-03 15:06:23 +0200#$
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description: */
@@ -49,13 +49,13 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int8            Out;
     int8            K;
 } CONSTANT_INT8;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int8            Out;
     int8            K;
 } CONSTANT_INT8;
@@ -67,15 +67,15 @@ typedef struct {
     (void (*)(void*))Constant_Int8_Init, \
     (tLoadImplementationParameter)Constant_Int8_Load, \
     (tSaveImplementationParameter)Constant_Int8_Save, \
-    (void* (*)(const void*, uint16))Constant_Int8_GetAddress }
+    (void* (*)(void*, uint16))Constant_Int8_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Constant_Int8_Init(CONSTANT_INT8 *pTConstant_Int8);
-uint8 Constant_Int8_Load(const CONSTANT_INT8 *pTConstant_Int8, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 Constant_Int8_Save(CONSTANT_INT8 *pTConstant_Int8, const uint8 data[], uint16 dataLength);
-void* Constant_Int8_GetAddress(const CONSTANT_INT8 *block, uint16 elementId);
+void Constant_Int8_Init(CONSTANT_INT8 *block);
+uint8 Constant_Int8_Load(const CONSTANT_INT8 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 Constant_Int8_Save(CONSTANT_INT8 *block, const uint8 data[], uint16 dataLength);
+void* Constant_Int8_GetAddress(CONSTANT_INT8 *block, uint16 elementId);
 
 #endif
 

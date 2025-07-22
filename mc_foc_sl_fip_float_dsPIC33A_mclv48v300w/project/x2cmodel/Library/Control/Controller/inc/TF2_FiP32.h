@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,18 +28,19 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/**     Description:	Second order transfer function                      										 **/
-/**						Calculation:																				 **/
-/**	       						 b2.z^2 + b1.z + b0					   												 **/
-/** 						y = ------------------ u				   												 **/
-/**          					  z^2 + a1.z + a0																	 **/
-/**							-> y(k) = u(k).b2 + u(k-1).b1 + u(k-2).b0												 **/
-/**									- y(k-1).a1 - y(k-2).a0															 **/
-/**																													 **/
+/**     Description:    Second order transfer function                                                               **/
+/**                     Calculation:                                                                                 **/
+/**                              b2.z^2 + b1.z + b0                                                                  **/
+/**                         y = ------------------ u                                                                 **/
+/**                               z^2 + a1.z + a0                                                                    **/
+/**                         -> y(k) = u(k).b2 + u(k-1).b1 + u(k-2).b0                                                **/
+/**                                 - y(k-1).a1 - y(k-2).a0                                                          **/
+/**                                                                                                                  **/
 /* USERCODE-END:Description                                                                                           */
 #ifndef TF2_FIP32_H
 #define TF2_FIP32_H
@@ -55,7 +56,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int32           *In;
     int32           Out;
     int32           b0;
@@ -63,8 +64,8 @@ typedef struct {
     int32           b2;
     int32           a0;
     int32           a1;
-    int8            sfrb;
-    int8            sfra;
+    uint8           sfrb;
+    uint8           sfra;
     int32           in_old;
     int32           in_veryold;
     int32           out_old;
@@ -72,7 +73,7 @@ typedef struct {
 } TF2_FIP32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT32_PTR       In;
     int32           Out;
     int32           b0;
@@ -80,8 +81,8 @@ typedef struct {
     int32           b2;
     int32           a0;
     int32           a1;
-    int8            sfrb;
-    int8            sfra;
+    uint8           sfrb;
+    uint8           sfra;
     int32           in_old;
     int32           in_veryold;
     int32           out_old;
@@ -95,16 +96,16 @@ typedef struct {
     (void (*)(void*))TF2_FiP32_Init, \
     (tLoadImplementationParameter)TF2_FiP32_Load, \
     (tSaveImplementationParameter)TF2_FiP32_Save, \
-    (void* (*)(const void*, uint16))TF2_FiP32_GetAddress }
+    (void* (*)(void*, uint16))TF2_FiP32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void TF2_FiP32_Update(TF2_FIP32 *pTTF2_FiP32);
-void TF2_FiP32_Init(TF2_FIP32 *pTTF2_FiP32);
-uint8 TF2_FiP32_Load(const TF2_FIP32 *pTTF2_FiP32, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 TF2_FiP32_Save(TF2_FIP32 *pTTF2_FiP32, const uint8 data[], uint16 dataLength);
-void* TF2_FiP32_GetAddress(const TF2_FIP32 *block, uint16 elementId);
+void TF2_FiP32_Update(TF2_FIP32 *block);
+void TF2_FiP32_Init(TF2_FIP32 *block);
+uint8 TF2_FiP32_Load(const TF2_FIP32 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 TF2_FiP32_Save(TF2_FIP32 *block, const uint8 data[], uint16 dataLength);
+void* TF2_FiP32_GetAddress(TF2_FIP32 *block, uint16 elementId);
 
 #endif
 

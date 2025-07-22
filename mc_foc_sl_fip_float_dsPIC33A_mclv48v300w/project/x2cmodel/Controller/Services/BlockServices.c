@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM),  web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,37 +28,53 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 1852 $
- * $LastChangedDate:: 2020-03-10 16:35:19 +0100#$
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3640 $
+ * $LastChangedDate:: 2025-02-24 19:40:07 +0100#$
  */
 #include "Services.h"
 #include "TableStruct.h"
 #include "BlockServices.h"
 
+
 /**
- * @brief Adds common block services to service table.
- *
- * @param[IN] protocol Protocol
+ * This functions adds all COMMON block services.
+ * The following services are added:
+ * - #getRAMBlock required to upload Scope sample data
+ * - #getBlockData Block parameter upload (by address), Deprecated: Shall be replaced by Services#saveParameter
+ * - #putBlockData Block parameter donwload (by address), Deprecated: Shall be replaced by Services#loadParameter
+ * @param protocol Protocol
  */
 void addBlockServices(tProtocol* protocol)
 {
     tSERVICEFunction* pServiceTable = (tSERVICEFunction*) protocol->pServiceTable;
 
-    pServiceTable[SV_ID_SVGETRAMBLOCK] = getRAMBlock;
-    pServiceTable[SV_ID_GETBLOCKDATA] = getBlockData;
-    pServiceTable[SV_ID_PUTBLOCKDATA] = putBlockData;
+    pServiceTable[SV_ID_SVGETRAMBLOCK] = &getRAMBlock;
+    pServiceTable[SV_ID_GETBLOCKDATA] = &getBlockData;
+    pServiceTable[SV_ID_PUTBLOCKDATA] = &putBlockData;
 }
 
 /**
- * @brief Adds extended block services to service table.
- *
- * @param[IN] protocol Protocol
+ * This functions adds COMMON block services required for X2C Application operation.
+ * The following services are added:
+ * - #getRAMBlock required to upload Scope sample data
+ * @param protocol Protocol
+ */
+void addBlockApplicationServices(tProtocol* protocol)
+{
+    tSERVICEFunction* pServiceTable = (tSERVICEFunction*) protocol->pServiceTable;
+    pServiceTable[SV_ID_SVGETRAMBLOCK] = &getRAMBlock;
+}
+
+/**
+ * This function adds EXTENDED block services for X2C Application operation.
+ * The following services are added:
+ * - #putRAMBlock Download data to RAM address (Use with caution - may lead to unexpected target behaviour or reset when used incorrectly)
  */
 void addExtendedBlockServices(tProtocol* protocol)
 {
 	tSERVICEFunction* serviceTable = (tSERVICEFunction*) protocol->pServiceTable;
-	serviceTable[SV_ID_SVPUTRAMBLOCK] = putRAMBlock;
+	serviceTable[SV_ID_SVPUTRAMBLOCK] = &putRAMBlock;
 }
 
 /**
@@ -85,13 +101,10 @@ void putRAMBlock(tProtocol* protocol)
 #if defined(__ADDRESS_WIDTH_8BIT__)
 	addr = (void*)((uint8)protocol->ucFRAMEData[addrOffset]);
 #elif defined(__ADDRESS_WIDTH_16BIT__)
-	addr = (void*)((uint16)protocol->ucFRAMEData[addrOffset] + \
-			((uint16)protocol->ucFRAMEData[addrOffset + 1] << 8));
+	addr = (void*)((uint16)protocol->ucFRAMEData[addrOffset] + ((uint16)protocol->ucFRAMEData[addrOffset + 1] << 8));
 #elif defined(__ADDRESS_WIDTH_32BIT__)
-	addr = (void*)((uint32)protocol->ucFRAMEData[addrOffset] + \
-			((uint32)protocol->ucFRAMEData[addrOffset + 1] << 8) + \
-			((uint32)protocol->ucFRAMEData[addrOffset + 2] << 16) + \
-			((uint32)protocol->ucFRAMEData[addrOffset + 3] << 24));
+	addr = (void*)((uint32)protocol->ucFRAMEData[addrOffset] + ((uint32)protocol->ucFRAMEData[addrOffset + 1U] << 8) +
+			((uint32)protocol->ucFRAMEData[addrOffset + 2U] << 16) + ((uint32)protocol->ucFRAMEData[addrOffset + 3U] << 24));
 #else
 #error ADDRESS WIDTH NOT DEFINED
 #endif
@@ -99,7 +112,7 @@ void putRAMBlock(tProtocol* protocol)
 	size = protocol->ucFRAMESize - dataOffset;
 	type = protocol->ucFRAMEData[typeOffset];
 
-	if (size % type)
+	if ((size % type) != 0U)
 	{
 		sendError(protocol, ERRORFormat);
 		return;
@@ -110,47 +123,44 @@ void putRAMBlock(tProtocol* protocol)
 		case DATATYPE_8BIT:
 		{
 			uint8* addr8 = (uint8*)addr;
-			for (i=0;i<size;i++)
+			for (i=0; i<size; i++)
 			{
-				*addr8++ = (uint8)protocol->ucFRAMEData[dataOffset + i] & 0xFF;
+				*addr8 = protocol->ucFRAMEData[dataOffset + i] & 0xFFU;
+				addr8++;
 			}
 			break;
 		}
 		case DATATYPE_16BIT:
 		{
 			uint16* addr16 = (uint16*)addr;
-			for (i=0;i<size/2;i++)
+			for (i=0; i<(size/2U); i++)
 			{
-				*addr16++ = (uint16)protocol->ucFRAMEData[dataOffset + 2*i] + \
-						((uint16)protocol->ucFRAMEData[dataOffset + 2*i+1] << 8);
+				*addr16 = (uint16)protocol->ucFRAMEData[dataOffset + (2U*i)] + ((uint16)protocol->ucFRAMEData[dataOffset + (2U*i) + 1U] << 8);
+				addr16++;
 			}
 			break;
 		}
 		case DATATYPE_32BIT:
 		{
 			uint32* addr32 = (uint32*)addr;
-			for (i=0;i<size/4;i++)
+			for (i=0; i<(size/4U); i++)
 			{
-				*addr32++ = (uint32)protocol->ucFRAMEData[dataOffset + 4*i] + \
-						((uint32)protocol->ucFRAMEData[dataOffset + 4*i+1] << 8) + \
-						((uint32)protocol->ucFRAMEData[dataOffset + 4*i+2] << 16) + \
-						((uint32)protocol->ucFRAMEData[dataOffset + 4*i+3] << 24);
+				*addr32 = (uint32)protocol->ucFRAMEData[dataOffset + (4U*i)] + ((uint32)protocol->ucFRAMEData[dataOffset + (4U*i) + 1U] << 8) +
+						((uint32)protocol->ucFRAMEData[dataOffset + (4U*i) + 2U] << 16) + ((uint32)protocol->ucFRAMEData[dataOffset + (4U*i) + 3U] << 24);
+				addr32++;
 			}
 			break;
 		}
 		case DATATYPE_64BIT:
 		{
 			uint64* addr64 = (uint64*)addr;
-			for (i=0;i<size/8;i++)
+			for (i=0; i<(size/8U); i++)
 			{
-				*addr64++ = (uint64)protocol->ucFRAMEData[dataOffset + 8*i] + \
-						((uint64)protocol->ucFRAMEData[dataOffset + 8*i+1] << 8) + \
-						((uint64)protocol->ucFRAMEData[dataOffset + 8*i+2] << 16) + \
-						((uint64)protocol->ucFRAMEData[dataOffset + 8*i+3] << 24) + \
-						((uint64)protocol->ucFRAMEData[dataOffset + 8*i+4] << 32) + \
-						((uint64)protocol->ucFRAMEData[dataOffset + 8*i+5] << 40) + \
-						((uint64)protocol->ucFRAMEData[dataOffset + 8*i+6] << 48) + \
-						((uint64)protocol->ucFRAMEData[dataOffset + 8*i+7] << 56);
+				*addr64 = (uint64)protocol->ucFRAMEData[dataOffset + (8U*i)] + ((uint64)protocol->ucFRAMEData[dataOffset + (8U*i) + 1U] << 8) +
+						((uint64)protocol->ucFRAMEData[dataOffset + (8U*i) + 2U] << 16) + ((uint64)protocol->ucFRAMEData[dataOffset + (8U*i) + 3U] << 24) +
+						((uint64)protocol->ucFRAMEData[dataOffset + (8U*i) + 4U] << 32) + ((uint64)protocol->ucFRAMEData[dataOffset + (8U*i) + 5U] << 40) +
+						((uint64)protocol->ucFRAMEData[dataOffset + (8U*i) + 6U] << 48) + ((uint64)protocol->ucFRAMEData[dataOffset + (8U*i) + 7U] << 56);
+				addr64++;
 			}
 			break;
 		}
@@ -179,20 +189,20 @@ void getRAMBlock(tProtocol* protocol)
     uint8 type;
     uint8 errorID = ERRORSuccess;
 #if defined(__ADDRESS_WIDTH_8BIT__)
-    const uint8 addrOffset = (uint8)2;
+    const uint8 addrOffset = 2;
 #elif defined(__ADDRESS_WIDTH_16BIT__)
-    const uint8 addrOffset = (uint8)3;
+    const uint8 addrOffset = 3;
 #elif defined(__ADDRESS_WIDTH_32BIT__)
-    const uint8 addrOffset = (uint8)5;
+    const uint8 addrOffset = 5;
 #else
 #error ADDRESS WIDTH NOT DEFINED
 #endif
 
     size = protocol->ucFRAMEData[addrOffset];
-    size += (uint16)protocol->ucFRAMEData[addrOffset + 1] << 8;
-    type = protocol->ucFRAMEData[addrOffset + 2];
+    size += (uint16)protocol->ucFRAMEData[addrOffset + 1U] << 8;
+    type = protocol->ucFRAMEData[addrOffset + 2U];
 
-    if ((size + 2) > protocol->ucMaxCommSize)
+    if ((size + 2U) > protocol->ucMaxCommSize)
     {
         errorID = ERRORSizeTooLarge;
     }
@@ -201,13 +211,10 @@ void getRAMBlock(tProtocol* protocol)
 #if defined(__ADDRESS_WIDTH_8BIT__)
     	addr = (void*) ((uint8) protocol->ucFRAMEData[1];
 #elif defined(__ADDRESS_WIDTH_16BIT__)
-        addr = (void*) ((uint16) protocol->ucFRAMEData[1] + \
-                ((uint16) protocol->ucFRAMEData[2] << 8));
+        addr = (void*) ((uint16) protocol->ucFRAMEData[1] + ((uint16) protocol->ucFRAMEData[2] << 8));
 #elif defined(__ADDRESS_WIDTH_32BIT__)
-        addr = (void*) ((uint32) protocol->ucFRAMEData[1] + \
-                ((uint32) protocol->ucFRAMEData[2] << 8) + \
-                ((uint32) protocol->ucFRAMEData[3] << 16) + \
-                ((uint32) protocol->ucFRAMEData[4] << 24));
+        addr = (void*) ((uint32) protocol->ucFRAMEData[1] + ((uint32) protocol->ucFRAMEData[2] << 8) +
+                ((uint32) protocol->ucFRAMEData[3] << 16) + ((uint32) protocol->ucFRAMEData[4] << 24));
 #else
 #error ADDRESS WIDTH NOT DEFINED
 #endif
@@ -219,45 +226,49 @@ void getRAMBlock(tProtocol* protocol)
                 uint8* addr8 = (uint8*) addr;
                 for (i = 0; i < size; i++)
                 {
-                    protocol->ucFRAMEData[2 + i] = (uint8) *addr8++;
+                    protocol->ucFRAMEData[2U + i] = *addr8;
+                    addr8++;
                 }
                 break;
             }
             case DATATYPE_16BIT:
             {
                 uint16* addr16 = (uint16*) addr;
-                for (i = 0; i < size; i += 2)
+                for (i = 0; i < size; i += 2U)
                 {
-                    protocol->ucFRAMEData[2 + i] = (uint8) *addr16;
-                    protocol->ucFRAMEData[2 + i + 1] = (uint8) ((*addr16++) >> 8);
+                    protocol->ucFRAMEData[2U + i] = (uint8) *addr16;
+                    protocol->ucFRAMEData[2U + i + 1U] = (uint8) (*addr16 >> 8);
+                    addr16++;
                 }
                 break;
             }
             case DATATYPE_32BIT:
             {
                 uint32* addr32 = (uint32*) addr;
-                for (i = 0; i < size; i += 4)
+                for (i = 0; i < size; i += 4U)
                 {
-                    protocol->ucFRAMEData[2 + i] = (uint8) *addr32;
-                    protocol->ucFRAMEData[2 + i + 1] = (uint8) ((*addr32) >> 8);
-                    protocol->ucFRAMEData[2 + i + 2] = (uint8) ((*addr32) >> 16);
-                    protocol->ucFRAMEData[2 + i + 3] = (uint8) ((*addr32++) >> 24);
+                    protocol->ucFRAMEData[2U + i] = (uint8) *addr32;
+                    protocol->ucFRAMEData[2U + i + 1U] = (uint8) (*addr32 >> 8);
+                    protocol->ucFRAMEData[2U + i + 2U] = (uint8) (*addr32 >> 16);
+                    protocol->ucFRAMEData[2U + i + 3U] = (uint8) (*addr32 >> 24);
+                    addr32++;
                 }
                 break;
             }
             case DATATYPE_64BIT:
             {
             	uint64* addr64 = (uint64*)addr;
-            	for (i=0;i<size;i+=8)
+            	for (i = 0; i < size; i += 8U)
             	{
-                    protocol->ucFRAMEData[2 + i] = (uint8) *addr64;
-                    protocol->ucFRAMEData[2 + i + 1] = (uint8) ((*addr64) >> 8);
-                    protocol->ucFRAMEData[2 + i + 2] = (uint8) ((*addr64) >> 16);
-                    protocol->ucFRAMEData[2 + i + 3] = (uint8) ((*addr64) >> 24);
-                    protocol->ucFRAMEData[2 + i + 4] = (uint8) ((*addr64) >> 32);
-                    protocol->ucFRAMEData[2 + i + 5] = (uint8) ((*addr64) >> 40);
-                    protocol->ucFRAMEData[2 + i + 6] = (uint8) ((*addr64) >> 48);
-                    protocol->ucFRAMEData[2 + i + 7] = (uint8) ((*addr64++) >> 56);
+                    protocol->ucFRAMEData[2U + i] = (uint8) *addr64;
+                    protocol->ucFRAMEData[2U + i + 1U] = (uint8) (*addr64 >> 8);
+                    protocol->ucFRAMEData[2U + i + 2U] = (uint8) (*addr64 >> 16);
+                    protocol->ucFRAMEData[2U + i + 3U] = (uint8) (*addr64 >> 24);
+                    protocol->ucFRAMEData[2U + i + 4U] = (uint8) (*addr64 >> 32);
+                    protocol->ucFRAMEData[2U + i + 5U] = (uint8) (*addr64 >> 40);
+                    protocol->ucFRAMEData[2U + i + 6U] = (uint8) (*addr64 >> 48);
+                    protocol->ucFRAMEData[2U + i + 7U] = (uint8) (*addr64 >> 56);
+                    addr64++;
             	}
             	break;
             }
@@ -269,7 +280,7 @@ void getRAMBlock(tProtocol* protocol)
 
     if (errorID == ERRORSuccess)
     {
-        protocol->ucFRAMESize = size + 2;
+        protocol->ucFRAMESize = size + 2U;
         protocol->ucFRAMEData[1] = errorID;
         protocol->pSnd_Enable(protocol);
     }
@@ -294,35 +305,31 @@ void putBlockData(tProtocol* protocol)
     uint16* addr;
 
 #if defined(__ADDRESS_WIDTH_8BIT__)
-    const uint16 addrOffset = (uint8)2;
+    const uint16 addrOffset = 2;
     addr = (uint16*) ((uint8) protocol->ucFRAMEData[1];
 #elif defined(__ADDRESS_WIDTH_16BIT__)
-    const uint16 addrOffset = (uint8)3;
-    addr = (uint16*) ((uint16) protocol->ucFRAMEData[1] + \
-    		((uint16) protocol->ucFRAMEData[2] << 8));
+    const uint16 addrOffset = 3;
+    addr = (uint16*) ((uint16) protocol->ucFRAMEData[1] + ((uint16) protocol->ucFRAMEData[2] << 8));
 #elif defined(__ADDRESS_WIDTH_32BIT__)
-    const uint16 addrOffset = (uint8)5;
-    addr = (uint16*) ((uint32) protocol->ucFRAMEData[1] + \
-    		((uint32) protocol->ucFRAMEData[2] << 8) + \
-    		((uint32) protocol->ucFRAMEData[3] << 16) + \
-    		((uint32) protocol->ucFRAMEData[4] << 24));
+    const uint16 addrOffset = 5;
+    addr = (uint16*) ((uint32) protocol->ucFRAMEData[1] + ((uint32) protocol->ucFRAMEData[2] << 8) +
+    		((uint32) protocol->ucFRAMEData[3] << 16) + ((uint32) protocol->ucFRAMEData[4] << 24));
 #else
 #error ADDRESS WIDTH NOT DEFINED
 #endif
     id = *addr;
 
     i = 0;
-    while ((id != TableStruct->TFncTable[i].iBlockID) && (TableStruct->TFncTable[i].iBlockID != 0))
+    while ((id != TableStruct->TFncTable[i].iBlockID) && (TableStruct->TFncTable[i].iBlockID != 0U))
     {
         i++;
     }
-    if (TableStruct->TFncTable[i].iBlockID == 0)
+    if (TableStruct->TFncTable[i].iBlockID == 0U)
     {
         /* if correct block id was not found -> return wrong block id error */
         sendError(protocol, ERRORBlkID);
     } else {
-        if (TableStruct->TFncTable[i].pFSave(addr,
-        		protocol->ucFRAMEData + addrOffset, protocol->ucFRAMESize - addrOffset))
+        if (TableStruct->TFncTable[i].pFSave(addr, &protocol->ucFRAMEData[addrOffset], protocol->ucFRAMESize - addrOffset) != 0U)
         {
             sendError(protocol, ERRORFormat);
         }
@@ -347,7 +354,7 @@ void putBlockData(tProtocol* protocol)
 void getBlockData(tProtocol* protocol)
 {
     uint16 id, i;
-    uint16 *addr;
+    uint16* addr;
 
 #if defined(__ADDRESS_WIDTH_8BIT__)
     	addr = (uint16*) ((uint8) protocol->ucFRAMEData[1];
@@ -355,34 +362,32 @@ void getBlockData(tProtocol* protocol)
         addr = (uint16*) ((uint16) protocol->ucFRAMEData[1] + \
                 ((uint16) protocol->ucFRAMEData[2] << 8));
 #elif defined(__ADDRESS_WIDTH_32BIT__)
-        addr = (uint16*) ((uint32) protocol->ucFRAMEData[1] + \
-                ((uint32) protocol->ucFRAMEData[2] << 8) + \
-                ((uint32) protocol->ucFRAMEData[3] << 16) + \
-                ((uint32) protocol->ucFRAMEData[4] << 24));
+        addr = (uint16*) ((uint32) protocol->ucFRAMEData[1] + ((uint32) protocol->ucFRAMEData[2] << 8) + \
+                ((uint32) protocol->ucFRAMEData[3] << 16) + ((uint32) protocol->ucFRAMEData[4] << 24));
 #else
 #error ADDRESS WIDTH NOT DEFINED
 #endif
     id = *addr;
 
     i = 0;
-    while ((id != TableStruct->TFncTable[i].iBlockID) && (TableStruct->TFncTable[i].iBlockID != 0))
+    while ((id != TableStruct->TFncTable[i].iBlockID) && (TableStruct->TFncTable[i].iBlockID != 0U))
     {
         i++;
     }
-    if (TableStruct->TFncTable[i].iBlockID == 0)
+    if (TableStruct->TFncTable[i].iBlockID == 0U)
     {
         /* if correct block id was not found -> return wrong block id error */
         sendError(protocol, ERRORBlkID);
     }
     else
     {
-    	if (TableStruct->TFncTable[i].pFLoad(addr, protocol->ucFRAMEData + 2, &(protocol->ucFRAMESize), protocol->ucMaxCommSize - 2))
+    	if (TableStruct->TFncTable[i].pFLoad(addr, &protocol->ucFRAMEData[2], &protocol->ucFRAMESize, protocol->ucMaxCommSize - 2U) != 0U)
     	{
     		sendError(protocol, ERRORFormat);
     	}
     	else
     	{
-    		protocol->ucFRAMESize += 2; /* add overhead size */
+    		protocol->ucFRAMESize += 2U; /* add overhead size */
 			protocol->ucFRAMEData[1] = ERRORSuccess;
 			protocol->pSnd_Enable(protocol);
     	}

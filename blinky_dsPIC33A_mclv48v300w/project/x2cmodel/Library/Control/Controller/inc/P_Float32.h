@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,8 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2800 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /*     Description:    P Controller with
@@ -57,7 +58,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float32         *In;
     bool            *Enable;
     float32         Out;
@@ -65,7 +66,7 @@ typedef struct {
 } P_FLOAT32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT32_PTR     In;
     BOOL_PTR        Enable;
     float32         Out;
@@ -79,16 +80,16 @@ typedef struct {
     (void (*)(void*))P_Float32_Init, \
     (tLoadImplementationParameter)P_Float32_Load, \
     (tSaveImplementationParameter)P_Float32_Save, \
-    (void* (*)(const void*, uint16))P_Float32_GetAddress }
+    (void* (*)(void*, uint16))P_Float32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void P_Float32_Update(P_FLOAT32 *pTP_Float32);
-void P_Float32_Init(P_FLOAT32 *pTP_Float32);
-uint8 P_Float32_Load(const P_FLOAT32 *pTP_Float32, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 P_Float32_Save(P_FLOAT32 *pTP_Float32, const uint8 data[], uint16 dataLength);
-void* P_Float32_GetAddress(const P_FLOAT32 *block, uint16 elementId);
+void P_Float32_Update(P_FLOAT32 *block);
+void P_Float32_Init(P_FLOAT32 *block);
+uint8 P_Float32_Load(const P_FLOAT32 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 P_Float32_Save(P_FLOAT32 *block, const uint8 data[], uint16 dataLength);
+void* P_Float32_GetAddress(P_FLOAT32 *block, uint16 elementId);
 
 #endif
 

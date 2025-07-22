@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,12 +28,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/* Description:	  Conversion from floating point to fixed point.		      */
-/*																			  */
+/* Description:   Conversion from floating point to fixed point.              */
+/*                                                                            */
 /* USERCODE-END:Description                                                                                           */
 #ifndef REAL2INT_FLOAT64_FIP16_H
 #define REAL2INT_FLOAT64_FIP16_H
@@ -49,14 +50,14 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float64         *In;
     int16           Out;
     float64         scale;
 } REAL2INT_FLOAT64_FIP16;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT64_PTR     In;
     int16           Out;
     float64         scale;
@@ -69,16 +70,16 @@ typedef struct {
     (void (*)(void*))Real2Int_Float64_FiP16_Init, \
     (tLoadImplementationParameter)Real2Int_Float64_FiP16_Load, \
     (tSaveImplementationParameter)Real2Int_Float64_FiP16_Save, \
-    (void* (*)(const void*, uint16))Real2Int_Float64_FiP16_GetAddress }
+    (void* (*)(void*, uint16))Real2Int_Float64_FiP16_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Real2Int_Float64_FiP16_Update(REAL2INT_FLOAT64_FIP16 *pTReal2Int_Float64_FiP16);
-void Real2Int_Float64_FiP16_Init(REAL2INT_FLOAT64_FIP16 *pTReal2Int_Float64_FiP16);
-uint8 Real2Int_Float64_FiP16_Load(const REAL2INT_FLOAT64_FIP16 *pTReal2Int_Float64_FiP16, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 Real2Int_Float64_FiP16_Save(REAL2INT_FLOAT64_FIP16 *pTReal2Int_Float64_FiP16, const uint8 data[], uint16 dataLength);
-void* Real2Int_Float64_FiP16_GetAddress(const REAL2INT_FLOAT64_FIP16 *block, uint16 elementId);
+void Real2Int_Float64_FiP16_Update(REAL2INT_FLOAT64_FIP16 *block);
+void Real2Int_Float64_FiP16_Init(REAL2INT_FLOAT64_FIP16 *block);
+uint8 Real2Int_Float64_FiP16_Load(const REAL2INT_FLOAT64_FIP16 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 Real2Int_Float64_FiP16_Save(REAL2INT_FLOAT64_FIP16 *block, const uint8 data[], uint16 dataLength);
+void* Real2Int_Float64_FiP16_GetAddress(REAL2INT_FLOAT64_FIP16 *block, uint16 elementId);
 
 #endif
 

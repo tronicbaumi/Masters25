@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,22 +28,23 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2710 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/**     Description:	PI Controller with                                   **/
-/**							- Enable Input									 **/
-/**							- Anti Wind-up									 **/
-/**							- Initial Condition Input	 					 **/
-/**							- Output Limitation								 **/
-/**						Calculation ZOH:									 **/
-/**	       						                1          			 		 **/
-/** 						y = ( Kp + Ki*Ts* -----  ) * u					 **/
-/**          					              z - 1	   						 **/
-/**																			 **/
-/**						-> y(k) = b1.u(k) + b0.u(k-1) + y(k-1)				 **/
-/**																			 **/
+/**     Description:    PI Controller with                                   **/
+/**                         - Enable Input                                   **/
+/**                         - Anti Wind-up                                   **/
+/**                         - Initial Condition Input                        **/
+/**                         - Output Limitation                              **/
+/**                     Calculation ZOH:                                     **/
+/**                                             1                            **/
+/**                         y = ( Kp + Ki*Ts* -----  ) * u                   **/
+/**                                           z - 1                          **/
+/**                                                                          **/
+/**                     -> y(k) = b1.u(k) + b0.u(k-1) + y(k-1)               **/
+/**                                                                          **/
 /* USERCODE-END:Description                                                                                           */
 #ifndef PILIMIT_FIP32_H
 #define PILIMIT_FIP32_H
@@ -59,7 +60,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int32           *In;
     int32           *Init;
     int32           *max;
@@ -68,14 +69,14 @@ typedef struct {
     int32           Out;
     int32           b0;
     int32           b1;
-    int8            sfrb0;
-    int8            sfrb1;
+    uint8           sfrb0;
+    uint8           sfrb1;
     int64           i_old;
     bool            enable_old;
 } PILIMIT_FIP32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT32_PTR       In;
     INT32_PTR       Init;
     INT32_PTR       max;
@@ -84,8 +85,8 @@ typedef struct {
     int32           Out;
     int32           b0;
     int32           b1;
-    int8            sfrb0;
-    int8            sfrb1;
+    uint8           sfrb0;
+    uint8           sfrb1;
     int64           i_old;
     bool            enable_old;
 } PILIMIT_FIP32;
@@ -97,16 +98,16 @@ typedef struct {
     (void (*)(void*))PILimit_FiP32_Init, \
     (tLoadImplementationParameter)PILimit_FiP32_Load, \
     (tSaveImplementationParameter)PILimit_FiP32_Save, \
-    (void* (*)(const void*, uint16))PILimit_FiP32_GetAddress }
+    (void* (*)(void*, uint16))PILimit_FiP32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void PILimit_FiP32_Update(PILIMIT_FIP32 *pTPILimit_FiP32);
-void PILimit_FiP32_Init(PILIMIT_FIP32 *pTPILimit_FiP32);
-uint8 PILimit_FiP32_Load(const PILIMIT_FIP32 *pTPILimit_FiP32, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 PILimit_FiP32_Save(PILIMIT_FIP32 *pTPILimit_FiP32, const uint8 data[], uint16 dataLength);
-void* PILimit_FiP32_GetAddress(const PILIMIT_FIP32 *block, uint16 elementId);
+void PILimit_FiP32_Update(PILIMIT_FIP32 *block);
+void PILimit_FiP32_Init(PILIMIT_FIP32 *block);
+uint8 PILimit_FiP32_Load(const PILIMIT_FIP32 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 PILimit_FiP32_Save(PILIMIT_FIP32 *block, const uint8 data[], uint16 dataLength);
+void* PILimit_FiP32_GetAddress(PILIMIT_FIP32 *block, uint16 elementId);
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,19 +28,20 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/*      Description: With lookup table approximated arc tangent function	  */
+/*      Description: With lookup table approximated arc tangent function      */
 /*                      Calculation:                                          */
-/* 							theta = atan2(y,x)						 		  */
-/* 						Range:												  */
-/* 							y:		-1..1								 	  */
-/* 							x:		-1..1								 	  */
-/* 							theta:	-pi..pi 								  */
-/* 										--> with -pi..pi ~ -1..1		 	  */
-/* 																			  */
+/*                          theta = atan2(y,x)                                */
+/*                      Range:                                                */
+/*                          y:      -1..1                                     */
+/*                          x:      -1..1                                     */
+/*                          theta:  -pi..pi                                   */
+/*                                      --> with -pi..pi ~ -1..1              */
+/*                                                                            */
 /* USERCODE-END:Description                                                                                           */
 #ifndef ATAN2_FIP16_H
 #define ATAN2_FIP16_H
@@ -56,14 +57,14 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int16           *y;
     int16           *x;
     int16           Out;
 } ATAN2_FIP16;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT16_PTR       y;
     INT16_PTR       x;
     int16           Out;
@@ -76,14 +77,14 @@ typedef struct {
     (void (*)(void*))Atan2_FiP16_Init, \
     (tLoadImplementationParameter)Common_Load, \
     (tSaveImplementationParameter)Common_Save, \
-    (void* (*)(const void*, uint16))Atan2_FiP16_GetAddress }
+    (void* (*)(void*, uint16))Atan2_FiP16_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Atan2_FiP16_Update(ATAN2_FIP16 *pTAtan2_FiP16);
-void Atan2_FiP16_Init(ATAN2_FIP16 *pTAtan2_FiP16);
-void* Atan2_FiP16_GetAddress(const ATAN2_FIP16 *block, uint16 elementId);
+void Atan2_FiP16_Update(ATAN2_FIP16 *block);
+void Atan2_FiP16_Init(ATAN2_FIP16 *block);
+void* Atan2_FiP16_GetAddress(ATAN2_FIP16 *block, uint16 elementId);
 
 #endif
 

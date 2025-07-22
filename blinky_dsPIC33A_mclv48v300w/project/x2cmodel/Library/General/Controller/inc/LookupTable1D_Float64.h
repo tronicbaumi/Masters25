@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,8 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 3363 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description: One dimensional look-up table with selectable number of entries */
@@ -48,7 +49,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float64         *x;
     float64         Out;
 const float64       *Table;
@@ -58,7 +59,7 @@ const float64       *Table;
 } LOOKUPTABLE1D_FLOAT64;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT64_PTR     x;
     float64         Out;
 const FLOAT64_PTR   Table;
@@ -74,16 +75,16 @@ const FLOAT64_PTR   Table;
     (void (*)(void*))LookupTable1D_Float64_Init, \
     (tLoadImplementationParameter)LookupTable1D_Float64_Load, \
     (tSaveImplementationParameter)LookupTable1D_Float64_Save, \
-    (void* (*)(const void*, uint16))LookupTable1D_Float64_GetAddress }
+    (void* (*)(void*, uint16))LookupTable1D_Float64_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void LookupTable1D_Float64_Update(LOOKUPTABLE1D_FLOAT64 *pTLookupTable1D_Float64);
-void LookupTable1D_Float64_Init(LOOKUPTABLE1D_FLOAT64 *pTLookupTable1D_Float64);
-uint8 LookupTable1D_Float64_Load(const LOOKUPTABLE1D_FLOAT64 *pTLookupTable1D_Float64, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 LookupTable1D_Float64_Save(LOOKUPTABLE1D_FLOAT64 *pTLookupTable1D_Float64, const uint8 data[], uint16 dataLength);
-void* LookupTable1D_Float64_GetAddress(const LOOKUPTABLE1D_FLOAT64 *block, uint16 elementId);
+void LookupTable1D_Float64_Update(LOOKUPTABLE1D_FLOAT64 *block);
+void LookupTable1D_Float64_Init(LOOKUPTABLE1D_FLOAT64 *block);
+uint8 LookupTable1D_Float64_Load(const LOOKUPTABLE1D_FLOAT64 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 LookupTable1D_Float64_Save(LOOKUPTABLE1D_FLOAT64 *block, const uint8 data[], uint16 dataLength);
+void* LookupTable1D_Float64_GetAddress(LOOKUPTABLE1D_FLOAT64 *block, uint16 elementId);
 
 #endif
 

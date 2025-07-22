@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,75 +28,76 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2844 $
- * $LastChangedDate:: 2023-05-26 15:23:19 +0200#$
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3570 $
+ * $LastChangedDate:: 2025-01-08 17:15:41 +0100#$
  */
+#include <stddef.h>
 #include "CommonFcts.h"
 
 /** Pseudo Initialization */
-void Common_Init(void* common)
+void Common_Init(void* block)
 {
-	;
+    ;
 }
 
 /** Pseudo Update */
-void Common_Update(void* common)
+void Common_Update(void* block)
 {
-	;
+    ;
 }
 
 /** Pseudo Load block data */
-uint8 Common_Load(const void* common, uint8 data[], uint16* dataLength, uint16 maxSize)
+uint8 Common_Load(const void* block, uint8 data[], uint16* dataLength, uint16 maxSize)
 {
-	*dataLength = (uint16)0;
-    return ((uint8)0);
+    *dataLength = 0U;
+    return (0U);
 }
 
 /** Pseudo Save block data */
-uint8 Common_Save(void* common, const uint8 data[], uint16 dataLength)
+uint8 Common_Save(void* block, const uint8 data[], uint16 dataLength)
 {
-	uint8 retVal;
-    if (dataLength > 0)
+    uint8 retVal;
+    if (dataLength > 0U)
     {
-    	retVal = 1;
+        retVal = 1U;
     }
     else
     {
-    	retVal = 0;
+        retVal = 0U;
     }
     return (retVal);
 }
 
 /** Pseudo Get Address */
-void* Common_GetAddress(const void* common, uint16 elementId)
+void* Common_GetAddress(void* block, uint16 elementId)
 {
-	return ((void*)0);
+    return (NULL);
 }
 
 /** Pseudo Init Mask Parameter */
 uint8 Common_InitMP(void *block, const void *maskParam)
 {
-	return ((uint8)0);
+    return (0U);
 }
 
 /** Pseudo Save Mask Parameter */
 uint8 Common_SaveMP(void* block, void* maskParam, const uint8 data[], uint16 dataLength)
 {
-	return ((uint8)0);
+    return (0U);
 }
 
 /** Pseudo Load Mask Parameter */
 uint8 Common_LoadMP(const void* block, uint8 data[], uint16* dataLength, uint16 maxSize)
 {
-	*dataLength = (uint16)0;
-	return ((uint8)0);
+    *dataLength = 0U;
+    return (0U);
 }
 
 /** Pseudo Mask Parameter Conversion */
 uint8 Common_ConvertMP(void* block, void* maskParam)
 {
-    return ((uint8)0);
+    return (0U);
 }
 
 /** Pseudo Mask Parameter Backup */
@@ -109,100 +110,6 @@ void Common_BackupMP(void* maskParam)
 void Common_RestoreMP(void* maskParam)
 {
     ;
-}
-
-/* abs(x) functions */
-
-/** @brief Calculation of 8-bit absolute value.
- *
- * out = |in|
- * 
- * @param x 8-bit fixed point input value.
- * @return Absolute value of input.
- */
-int8 getAbsValI8(int8 x){
-	if (x == ((int8)0x80)){
-		x = (int8)0x7F;
-	}else if (x < 0){
-		x = -(x);
-	}
-	return (x);
-}
-
-/** @brief Calculation of 16-bit absolute value.
- *
- * out = |in|
- * 
- * @param x 16-bit fixed point input value.
- * @return Absolute value of input.
- */
-int16 getAbsValI16(int16 x){
-	if (x == ((int16)0x8000)){
-		x = (int16)0x7FFF;
-	}else if (x < 0){
-		x = -(x);
-	}
-	return (x);
-}
-
-/** @brief Calculation of 32-bit absolute value.
- *
- * out = |in|
- * 
- * @param x 32-bit fixed point input value.
- * @return Absolute value of input.
- */
-int32 getAbsValI32(int32 x){
-	if (x == ((int32)0x80000000)){
-		x = (int32)0x7FFFFFFF;
-	}else if (x < 0){
-		x = -(x);
-	}
-	return (x);
-}
-
-/** @brief Calculation of 64-bit absolute value.
- *
- * out = |in|
- * 
- * @param x 64-bit fixed point input value.
- * @return Absolute value of input.
- */
-int64 getAbsValI64(int64 x){
-	if (x == ((int64)0x8000000000000000)){
-		x = (int64)0x7FFFFFFFFFFFFFFF;
-	}else if (x < 0){
-		x = -(x);
-	}
-	return (x);
-}
-
-/** @brief Calculation of single precision absolute value.
- *
- * out = |in|
- * 
- * @param x 32-bit floating point input value.
- * @return Absolute value of input.
- */
-float32 getAbsValR32(float32 x){
-	if (x < 0){
-		x = -(x);
-	}
-	return (x);
-}
-
-/** @brief Calculation of double precision absolute value.
- *
- * out = |in|
- * 
- * @param x 64-bit floating point input value.
- * @return Absolute value of input.
- */
-float64 getAbsValR64(float64 x){
-	if (x < 0){
-		x = -(x);
-	}
-	return (x);
 }
 
 /**
@@ -219,7 +126,7 @@ uint8 getIoParamIndex(const tIoParamIdEntry ioParamTbl[], uint16 paramId, uint16
 	uint16 i;
 	uint8 error;
 
-	if (ioParamTbl == 0)
+	if (ioParamTbl == NULL)
 	{
 		*index = 0;
 		error = ERROR_TABLE_NOT_INIT;
@@ -227,11 +134,11 @@ uint8 getIoParamIndex(const tIoParamIdEntry ioParamTbl[], uint16 paramId, uint16
 	else
 	{
 		i = 0;
-		while ((paramId != ioParamTbl[i].id) && (ioParamTbl[i].id != 0))
+		while ((paramId != ioParamTbl[i].id) && (ioParamTbl[i].id != 0U))
 		{
 			i++;
 		}
-		if (ioParamTbl[i].id == 0)
+		if (ioParamTbl[i].id == 0U)
 		{
 			*index = 0;
 			error = ERROR_INVALID_ID;
@@ -260,7 +167,7 @@ uint8 getBlockParamIndex(const tParameterTable* paramTable, uint16 paramId, uint
 	uint8 error;
 
 	/* send parameter ID error if no parameter table has been initialized */
-	if (paramTable == 0)
+	if (paramTable == NULL)
 	{
 		*index = 0;
 		error = ERROR_TABLE_NOT_INIT;
@@ -268,12 +175,12 @@ uint8 getBlockParamIndex(const tParameterTable* paramTable, uint16 paramId, uint
 	else
 	{
 		i = 0;
-		while((paramId != paramTable[i].uiParID) && (paramTable[i].uiParID != 0))
+		while((paramId != paramTable[i].uiParID) && (paramTable[i].uiParID != 0U))
 		{
 			i++;
 		}
 		/* check if parameter is located in parameter table */
-		if (paramTable[i].uiParID == 0)
+		if (paramTable[i].uiParID == 0U)
 		{
 			*index = 0;
 			error = ERROR_INVALID_ID;
@@ -302,7 +209,7 @@ uint8 getMaskParamIndex(const tMaskParameterEntry* mpTable, uint16 paramId, uint
 	uint8 error;
 
 	/* send parameter ID error if no parameter table has been initialized */
-	if (mpTable == 0)
+	if (mpTable == NULL)
 	{
 		*index = 0;
 		error = ERROR_TABLE_NOT_INIT;
@@ -310,12 +217,12 @@ uint8 getMaskParamIndex(const tMaskParameterEntry* mpTable, uint16 paramId, uint
 	else
 	{
 		i = 0;
-		while((paramId != mpTable[i].id) && (mpTable[i].id != 0))
+		while((paramId != mpTable[i].id) && (mpTable[i].id != 0U))
 		{
 			i++;
 		}
 		/* check if parameter is located in parameter table */
-		if (mpTable[i].id == 0)
+		if (mpTable[i].id == 0U)
 		{
 			*index = 0;
 			error = ERROR_INVALID_ID;
@@ -335,7 +242,7 @@ uint8 getMaskParamExtIndex(const tMaskParamExtRecord* mpTable, uint16 paramId, u
     uint8 error;
 
     /* send parameter ID error if no parameter table has been initialized */
-    if (mpTable == 0)
+    if (mpTable == NULL)
     {
         *index = 0;
         error = ERROR_TABLE_NOT_INIT;
@@ -343,12 +250,12 @@ uint8 getMaskParamExtIndex(const tMaskParamExtRecord* mpTable, uint16 paramId, u
     else
     {
         i = 0;
-        while((paramId != mpTable[i].id) && (mpTable[i].id != 0))
+        while((paramId != mpTable[i].id) && (mpTable[i].id != 0U))
         {
             i++;
         }
         /* check if parameter is located in parameter table */
-        if (mpTable[i].id == 0)
+        if (mpTable[i].id == 0U)
         {
             *index = 0;
             error = ERROR_INVALID_ID;
@@ -376,7 +283,7 @@ uint8 getBlockFunctionIndex(const tBlockFunctions* fncTable, uint16 blockId, uin
 	uint16 i;
 	uint8 error;
 
-	if (fncTable == 0)
+	if (fncTable == NULL)
 	{
 		*index = 0;
 		error = ERROR_TABLE_NOT_INIT;
@@ -384,12 +291,12 @@ uint8 getBlockFunctionIndex(const tBlockFunctions* fncTable, uint16 blockId, uin
 	else
 	{
 		i = 0;
-		while ((blockId != fncTable[i].iBlockID) && (fncTable[i].iBlockID != 0))
+		while ((blockId != fncTable[i].iBlockID) && (fncTable[i].iBlockID != 0U))
 		{
 			i++;
 		}
 
-		if (fncTable[i].iBlockID == 0)
+		if (fncTable[i].iBlockID == 0U)
 		{
 			*index = 0;
 			error = ERROR_INVALID_ID;
@@ -407,17 +314,17 @@ uint8 getMaskParamDataTableIndex(const tMaskParamDataRecord* mpTable, uint16 blo
 {
     uint16 i = 0;
     /* returns error if table is not initialized */
-    if (mpTable == 0)
+    if (mpTable == NULL)
     {
         return 1;
     }
     /* Block Parameter ID and Mask Parameter ID must not be zero */
-    if ((blockParamId == 0) || (maskParamId == 0))
+    if ((blockParamId == 0U) || (maskParamId == 0U))
     {
         return 1;
     }
 
-    while (mpTable[i].blockParamId != 0)
+    while (mpTable[i].blockParamId != 0U)
     {
         if ((mpTable[i].blockParamId == blockParamId) && (mpTable[i].maskParamId == maskParamId))
         {
@@ -449,18 +356,22 @@ uint8 getQFormat(float_CoT decValue, uint8 maxBits)
     float_CoT realValue;
 
     /* check and limit input arguments if necessary */
-    if (maxBits > 32)
+    if (maxBits > 32U)
     {
         maxBits = 32;
     }
-    else if (maxBits < 8)
+    else if (maxBits < 8U)
     {
         maxBits = 8;
+    }
+    else
+    {
+        /* else: Max bits value within limits, no correction required */
     }
     LIMIT(decValue, (float_CoT)INT32_MAX);
 
     /* take absolute value of decValue to simplify calculation */
-    if (decValue < 0)
+    if (decValue < (float_CoT)0)
     {
         decValue = -decValue;
     }
@@ -468,13 +379,11 @@ uint8 getQFormat(float_CoT decValue, uint8 maxBits)
     /* calculate qFormat */
     /* Note: float64 has to be used rather than float_CoT, because float32 causes losses in accuracy for FiP32 CoT implementations, which lets CUnit tests fail */
     qFormat = maxBits;
-    maxValue = (((uint32)1) << (maxBits-1)) - 1;
+    maxValue = (((uint32)1) << (maxBits-1U)) - 1U;
     do {
         qFormat--;
-
-        realValue = (float_CoT)(decValue * (float64)(((uint32)1) << qFormat));
-
-    } while ((qFormat > 0) && (realValue > (float64)maxValue));
+        realValue = (float_CoT)(decValue * (float64)((uint32)1 << qFormat));
+    } while ((qFormat > 0U) && (realValue > (float64)maxValue));
 
     return (qFormat);
 }
@@ -492,7 +401,7 @@ int8 getQx8Value(float_CoT decValue, uint8 qFormat)
 {
     int16 intValue;
 
-    intValue = (int16)(decValue * (float_CoT)(((uint8)1) << qFormat));
+    intValue = (int16)(decValue * (float_CoT)((uint8)1 << qFormat));
     LIMIT(intValue, INT8_MAX);
 
     return (int8)intValue;
@@ -510,7 +419,7 @@ int16 getQx16Value(float_CoT decValue, uint8 qFormat)
 {
     int32 intValue;
 
-    intValue = (int32)(decValue * (float_CoT)(((uint16)1) << qFormat));
+    intValue = (int32)(decValue * (float_CoT)((uint16)1 << qFormat));
     LIMIT(intValue, INT16_MAX);
 
     return (int16)intValue;
@@ -528,7 +437,7 @@ int32 getQx32Value(float_CoT decValue, uint8 qFormat)
 {
     int64 intValue;
 
-    intValue = (int64)(decValue * (float_CoT)(((uint32)1) << qFormat));
+    intValue = (int64)(decValue * (float_CoT)((uint32)1 << qFormat));
     LIMIT(intValue, INT32_MAX);
 
     return (int32)intValue;
@@ -546,7 +455,7 @@ int8 getAQx8Value(float_CoT decValue, uint8 qFormat)
 {
     int16 intValue;
 
-    intValue = (int16)(decValue * (float_CoT)(((uint8)1) << qFormat));
+    intValue = (int16)(decValue * (float_CoT)((uint8)1 << qFormat));
     if (intValue > INT8_MAX)
     {
         intValue = INT8_MAX;
@@ -571,7 +480,7 @@ int16 getAQx16Value(float_CoT decValue, uint8 qFormat)
 {
     int32 intValue;
 
-    intValue = (int32)(decValue * (float_CoT)(((uint16)1) << qFormat));
+    intValue = (int32)(decValue * (float_CoT)((uint16)1 << qFormat));
     if (intValue > INT16_MAX)
     {
         intValue = INT16_MAX;
@@ -596,7 +505,7 @@ int32 getAQx32Value(float_CoT decValue, uint8 qFormat)
 {
     int64 intValue;
 
-    intValue = (int64)(decValue * (float_CoT)(((uint32)1) << qFormat));
+    intValue = (int64)(decValue * (float_CoT)((uint32)1 << qFormat));
     if (intValue > INT32_MAX)
     {
         intValue = INT32_MAX;

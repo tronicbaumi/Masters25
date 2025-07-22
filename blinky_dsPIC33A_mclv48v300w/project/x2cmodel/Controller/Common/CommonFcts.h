@@ -3,7 +3,7 @@
  * @brief Common functions and defines.
  */
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -32,9 +32,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2854 $
- * $LastChangedDate:: 2023-06-02 13:54:09 +0200#$
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3651 $
+ * $LastChangedDate:: 2025-02-26 18:24:39 +0100#$
  */
 #ifndef COMMONFCTS_H
 #define COMMONFCTS_H
@@ -45,10 +45,19 @@ extern "C" {
 
 #include "Target.h"
 
+#if defined(_MSC_VER) && (_MSC_VER < 1900) && !defined(__cplusplus)
+#define X2C_INLINE  __inline
+#else
+#define X2C_INLINE  inline
+#endif
+
+/** Deprecated - Use getLowByte instead */
 #define X2C_GET_LOW_BYTE(data)  ((data) & 0xFF)
+/** Deprecated - Use getHighByte instead */
 #define X2C_GET_HIGH_BYTE(data) (((uint16)(data)) >> 8)
 
 /* Limitation */
+/** Deprecated - Use limit code directly for fastest MISRA compliant code */
 #define LIMIT(data, limit) 								\
 					do{									\
 						if((data) > (limit)){         	\
@@ -61,12 +70,14 @@ extern "C" {
                     }while(0)
                         
 /* Lookup table 8 bit (256+1 values) */
+/** Deprecated - Use function lookupTableInt8 */
 #define LOOKUP8(Table, Index, RetVal)						\
 					do{										\
 						(RetVal) = Table[(uint8)(Index)];	\
 					}while(0)
 
 /* Lookup table with 16 bit interpolation (256+1 values) */
+/** Deprecated - Use function lookupTableInt16 */
 #ifdef __XC16__
                     #define LOOKUP16(Table, Index, RetVal)								\
 					do{																	\
@@ -90,6 +101,7 @@ extern "C" {
 #endif
 
 /* Lookup table with 32 bit interpolation (256+1 values) */
+/** Deprecated - Use function lookupTableInt32 */
 #define LOOKUP32(Table, Index, RetVal)														\
 					do{																		\
 						int32 tbl;															\
@@ -111,21 +123,21 @@ extern "C" {
 #define ABS_R32		getAbsValR32
 #define ABS_R64		getAbsValR64
 
-#define MAX_SCOPE_CHANNELS ((uint8)8)
-#define MAX_PROTOCOLS    ((uint8)2)
+#define MAX_SCOPE_CHANNELS (8u)
+#define MAX_PROTOCOLS      (2u)
 
-#define ERROR_SUCCESS (0)
-#define ERROR_TABLE_NOT_INIT (1)
-#define ERROR_INVALID_ID (2)
+#define ERROR_SUCCESS        (0u)
+#define ERROR_TABLE_NOT_INIT (1u)
+#define ERROR_INVALID_ID     (2u)
 
 
 /****************/
 /* DATA TYPES   */
 /****************/
 /** Implementation Parameter Save function pointer type */
-typedef uint8 (*tSaveImplementationParameter) (void*, const uint8[], uint16);
+typedef uint8 (*tSaveImplementationParameter) (void* block, const uint8 data[], uint16 dataLength);
 /** Implementation Parameter Load function pointer type */
-typedef uint8 (*tLoadImplementationParameter) (const void*, uint8[], uint16*, uint16);
+typedef uint8 (*tLoadImplementationParameter) (const void* block, uint8 data[], uint16* dataLength, uint16 maxSize);
 
 /** Block functions contain block identifier and functions pointers for update, init, load & save function */
 typedef struct {
@@ -134,17 +146,17 @@ typedef struct {
     void  (*pFInit)(void *block);
     tLoadImplementationParameter pFLoad;
     tSaveImplementationParameter pFSave;
-    void* (*pFGetAddress)(const void* block, uint16 blockMember);
+    void* (*pFGetAddress)(void* block, uint16 blockMember);
 } tBlockFunctions;
 
 /** Mask Parameter Save function pointer type */
-typedef uint8 (*tSaveMaskParameter) (void*, void*, const uint8[], uint16);
+typedef uint8 (*tSaveMaskParameter) (void* block, void* maskParam, const uint8 data[], uint16 dataLength);
 /** Mask Parameter Load function pointer type */
-typedef uint8 (*tLoadMaskParameter) (const void*, uint8[], uint16*, uint16);
+typedef uint8 (*tLoadMaskParameter) (const void* block, uint8 data[], uint16* dataLength, uint16 maxSize);
 
-typedef void (*tBackupMaskParameter) (void*);
-typedef void (*tRestoreMaskParameter) (void*);
-typedef uint8 (*tConvertMaskParameter) (void*, void*);
+typedef void (*tBackupMaskParameter) (void* maskParam);
+typedef void (*tRestoreMaskParameter) (void* maskParam);
+typedef uint8 (*tConvertMaskParameter) (void* block, void* maskParam);
 
 /**
  * Mask Parameter record.
@@ -254,8 +266,8 @@ struct tProtocol {
 
 /** Scope states */
 typedef enum {
-	SCOPE_IDLE=0, SCOPE_WAITTRG_OFFLINE=1, SCOPE_SAMPLE_OFFLINE=2, SCOPE_SAMPLE_ONLINE=4, \
-	SCOPE_WAITTRGPOS_ONLINE=5, SCOPE_WAITTRGNEG_ONLINE=6, SCOPE_TRG_SAMPLE_OFFLINE=7, \
+	SCOPE_IDLE=0, SCOPE_WAITTRG_OFFLINE=1, SCOPE_SAMPLE_OFFLINE=2, SCOPE_SAMPLE_ONLINE=4,
+	SCOPE_WAITTRGPOS_ONLINE=5, SCOPE_WAITTRGNEG_ONLINE=6, SCOPE_TRG_SAMPLE_OFFLINE=7,
 	SCOPE_WAIT_TRG_NEG_DELAY=8
 } tScopeState;
 
@@ -353,25 +365,235 @@ struct tTableStruct {
 };
 
 
-/* public prototypes */
-void Common_Init(void* common);
-void Common_Update(void* common);
-uint8 Common_Load(const void* common, uint8 data[], uint16* dataLength, uint16 maxSize);
-uint8 Common_Save(void* common, const uint8 data[], uint16 dataLength);
-void* Common_GetAddress(const void* common, uint16 elementId);
+/**
+ * This function returns the low byte of an unsigned 16-bit value.
+ * @param data 16-bit value
+ * @return Low byte
+ */
+static X2C_INLINE uint8 getLowByte(const uint16 data)
+{
+    return ((uint8)(data & 0xFFu));
+}
+
+/**
+ * This function returns the high byte of an unsigned 16-bit value.
+ * @param data 16-bit value
+ * @return High byte
+ */
+static X2C_INLINE uint8 getHighByte(const uint16 data)
+{
+    return ((uint8)(data >> 8));
+}
+
+/**
+ * This function returns a value from a lookup table (256+1 values).
+ * @param table Lookup table with 256+1 values
+ * @param index Table index
+ * @return Lookup table value
+ */
+static X2C_INLINE int8 lookupTableInt8(const int8 table[], const int8 index)
+{
+    return (table[index]);
+}
+
+/**
+ * This function returns a value from a lookup table (256+1 values) with 16 bit interpolation.
+ * @param table Lookup table with 256+1 values
+ * @param index Table index in FiP16 format
+ * @return Lookup table value
+ */
+static X2C_INLINE int16 lookupTableInt16(const int16 table[], const int16 index)
+{
+    int16 value;
+    int16 tbl;
+    int32 tmp;
+    value = table[(uint8)((uint16)index >> 8)];
+    tbl = table[(uint8)((uint16)index >> 8) + 1u];
+#ifdef __XC16__
+    tmp = __builtin_mulss(tbl - value, (int32)(int16)(uint16)((uint16)index & 0x00FFu));
+#else
+    tmp = (int32)(int16)(tbl - value) * (int32)(int16)(uint16)((uint16)index & 0x00FFu);
+#endif
+    /* RULECHECKER_comment(1:0, 1:0, check_inappropriate_int, "see X2C MISRA Deviations, DEV0002", true_no_defect) */
+    value += (int16)(tmp >> 8);
+    return (value);
+}
+
+/**
+ * This function returns a value from a lookup table (256+1 values) with 32 bit interpolation.
+ * @param table Lookup table with 256+1 values
+ * @param index Table index in FiP32 format
+ * @return Lookup table value
+ */
+static X2C_INLINE int32 lookupTableInt32(const int32 table[], const int32 index)
+{
+    int32 value;
+    int32 tbl;
+    int64 tmp;
+    value = table[(uint8)((uint32)index >> 24)];
+    tbl = table[(uint8)((uint32)index >> 24) + 1u];
+    tmp = (int64)(int32)(tbl - value) * (int64)(int32)(uint32)((uint32)index & 0x00FFFFFFu);
+    /* RULECHECKER_comment(1:0, 1:0, check_inappropriate_int, "see X2C MISRA Deviations, DEV0002", true_no_defect) */
+    value += (int32)(tmp >> 24);
+    return (value);
+}
+
+
+/** @brief Calculation of 8-bit integer absolute value.
+ *
+ * out = |in|
+ *
+ * @param x 8-bit fixed point input value
+ * @return Absolute value of input
+ */
+static X2C_INLINE int8 getAbsValI8(int8 x)
+{
+    int8 absValue;
+    if (x == ((int8)0x80))
+    {
+        absValue = (int8)0x7F;
+    }
+    else if (x < 0)
+    {
+        absValue = -(x);
+    }
+    else
+    {
+        absValue = x;
+    }
+    return (absValue);
+}
+
+/** @brief Calculation of 16-bit integer absolute value.
+ *
+ * out = |in|
+ *
+ * @param x 16-bit fixed point input value.
+ * @return Absolute value of input.
+ */
+static X2C_INLINE int16 getAbsValI16(int16 x)
+{
+    int16 absValue;
+    if (x == ((int16)0x8000))
+    {
+        absValue = (int16)0x7FFF;
+    }
+    else if (x < 0)
+    {
+        absValue = -(x);
+    }
+    else
+    {
+        absValue = x;
+    }
+    return (absValue);
+}
+
+/** @brief Calculation of 32-bit integer absolute value.
+ *
+ * out = |in|
+ *
+ * @param x 32-bit fixed point input value
+ * @return Absolute value of input
+ */
+static X2C_INLINE int32 getAbsValI32(int32 x)
+{
+    int32 absValue;
+    if (x == ((int32)0x80000000))
+    {
+        absValue = (int32)0x7FFFFFFF;
+    }
+    else if (x < 0)
+    {
+        absValue = -(x);
+    }
+    else
+    {
+        absValue = x;
+    }
+    return (absValue);
+}
+
+/** @brief Calculation of 64-bit integer absolute value.
+ *
+ * out = |in|
+ *
+ * @param x 64-bit fixed point input value
+ * @return Absolute value of input
+ */
+static X2C_INLINE int64 getAbsValI64(int64 x)
+{
+    int64 absValue;
+    if (x == ((int64)0x8000000000000000))
+    {
+        absValue = (int64)0x7FFFFFFFFFFFFFFF;
+    }
+    else if (x < 0)
+    {
+        absValue = -(x);
+    }
+    else
+    {
+        absValue = x;
+    }
+    return (absValue);
+}
+
+/** @brief Calculation of single precision floating point absolute value.
+ *
+ * out = |in|
+ *
+ * @param x 32-bit floating point input value
+ * @return Absolute value of input
+ */
+static X2C_INLINE float32 getAbsValR32(float32 x)
+{
+    float32 absValue;
+    if (x < 0.0f)
+    {
+        absValue = -(x);
+    }
+    else
+    {
+        absValue = x;
+    }
+    return (absValue);
+}
+
+/** @brief Calculation of double precision floating point absolute value.
+ *
+ * out = |in|
+ *
+ * @param x 64-bit floating point input value.
+ * @return Absolute value of input.
+ */
+static X2C_INLINE float64 getAbsValR64(float64 x)
+{
+    float64 absValue;
+    if (x < 0.0)
+    {
+        absValue = -(x);
+    }
+    else
+    {
+        absValue = x;
+    }
+    return (absValue);
+}
+
+
+/* Public prototypes */
+void Common_Init(void* block);
+void Common_Update(void* block);
+uint8 Common_Load(const void* block, uint8 data[], uint16* dataLength, uint16 maxSize);
+uint8 Common_Save(void* block, const uint8 data[], uint16 dataLength);
+void* Common_GetAddress(void* block, uint16 elementId);
 uint8 Common_InitMP(void *block, const void *maskParam);
 uint8 Common_SaveMP(void* block, void* maskParam, const uint8 data[], uint16 dataLength);
 uint8 Common_LoadMP(const void* block, uint8 data[], uint16* dataLength, uint16 maxSize);
 uint8 Common_ConvertMP(void* block, void* maskParam);
 void Common_BackupMP(void* maskParam);
 void Common_RestoreMP(void* maskParam);
-
-int8 getAbsValI8(int8 x);
-int16 getAbsValI16(int16 x);
-int32 getAbsValI32(int32 x);
-int64 getAbsValI64(int64 x);
-float32 getAbsValR32(float32 x);
-float64 getAbsValR64(float64 x);
 
 uint8 getIoParamIndex(const tIoParamIdEntry ioParamTbl[], uint16 paramId, uint16* index);
 uint8 getBlockParamIndex(const tParameterTable* paramTable, uint16 paramId, uint16* index);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2018, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,9 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 3344 $
- * $LastChangedDate:: 2024-07-04 13:08:58 +0200#$
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description: */
@@ -49,7 +49,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float64         *In;
     float64         *phi;
     float64         max;
@@ -60,7 +60,7 @@ typedef struct {
 } MINMAXPERIODIC_FLOAT64;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT64_PTR     In;
     FLOAT64_PTR     phi;
     float64         max;
@@ -77,14 +77,14 @@ typedef struct {
     (void (*)(void*))MinMaxPeriodic_Float64_Init, \
     (tLoadImplementationParameter)Common_Load, \
     (tSaveImplementationParameter)Common_Save, \
-    (void* (*)(const void*, uint16))MinMaxPeriodic_Float64_GetAddress }
+    (void* (*)(void*, uint16))MinMaxPeriodic_Float64_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void MinMaxPeriodic_Float64_Update(MINMAXPERIODIC_FLOAT64 *pTMinMaxPeriodic_Float64);
-void MinMaxPeriodic_Float64_Init(MINMAXPERIODIC_FLOAT64 *pTMinMaxPeriodic_Float64);
-void* MinMaxPeriodic_Float64_GetAddress(const MINMAXPERIODIC_FLOAT64 *block, uint16 elementId);
+void MinMaxPeriodic_Float64_Update(MINMAXPERIODIC_FLOAT64 *block);
+void MinMaxPeriodic_Float64_Init(MINMAXPERIODIC_FLOAT64 *block);
+void* MinMaxPeriodic_Float64_GetAddress(MINMAXPERIODIC_FLOAT64 *block, uint16 elementId);
 
 #endif
 

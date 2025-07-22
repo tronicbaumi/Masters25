@@ -36,8 +36,8 @@
  */
 /*
  * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 3315 $
- * $LastChangedDate:: 2024-06-14 15:36:02 +0200#$
+ * $LastChangedRevision: 3725 $
+ * $LastChangedDate:: 2025-05-02 15:48:46 +0200#$
  */
 /*
  * This file incorporates work covered by the following copyright and permission notice:
@@ -73,6 +73,10 @@
  */
 #ifndef RINGBUFSHAREDMEM_H
 #define RINGBUFSHAREDMEM_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #include "Target.h"
 
@@ -119,12 +123,16 @@ typedef struct {
     volatile RingBufCtr *tail; /*!< pointer to the offset of where next el. will be removed */
 } RingBuf;
 
-/* Public prototypes */
+/* Public functions */
 void initRingBuffer(RingBuf * const me, volatile RingBufElement buffer[], RingBufCtr bufferSize, volatile RingBufCtr * const head,
                   volatile RingBufCtr * const tail);
 bool putRingBufferElement(RingBuf * const me, RingBufElement const element);
 bool getRingBufferElement(RingBuf * const me, RingBufElement *element);
 RingBufCtr getNumFreeRingBufferElements(RingBuf * const me);
 RingBufCtr getNumUsedRingBufferElements(RingBuf * const me);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* RINGBUFSHAREDMEM_H */

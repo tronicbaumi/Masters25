@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,12 +28,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/* Description: 	Makes the incoming signal accessible for reading with parameter numbers.						  */
-/*																													  */
+/* Description:     Makes the incoming signal accessible for reading with parameter numbers.                          */
+/*                                                                                                                    */
 /* USERCODE-END:Description                                                                                           */
 #ifndef USAVESIGNAL_FLOAT64_H
 #define USAVESIGNAL_FLOAT64_H
@@ -49,12 +50,12 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float64         *In;
 } USAVESIGNAL_FLOAT64;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT64_PTR     In;
 } USAVESIGNAL_FLOAT64;
 #endif
@@ -65,14 +66,14 @@ typedef struct {
     (void (*)(void*))uSaveSignal_Float64_Init, \
     (tLoadImplementationParameter)uSaveSignal_Float64_Load, \
     (tSaveImplementationParameter)Common_Save, \
-    (void* (*)(const void*, uint16))uSaveSignal_Float64_GetAddress }
+    (void* (*)(void*, uint16))uSaveSignal_Float64_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void uSaveSignal_Float64_Init(USAVESIGNAL_FLOAT64 *pTuSaveSignal_Float64);
-uint8 uSaveSignal_Float64_Load(const USAVESIGNAL_FLOAT64 *pTuSaveSignal_Float64, uint8 data[], uint16 *dataLength, uint16 maxSize);
-void* uSaveSignal_Float64_GetAddress(const USAVESIGNAL_FLOAT64 *block, uint16 elementId);
+void uSaveSignal_Float64_Init(USAVESIGNAL_FLOAT64 *block);
+uint8 uSaveSignal_Float64_Load(const USAVESIGNAL_FLOAT64 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+void* uSaveSignal_Float64_GetAddress(USAVESIGNAL_FLOAT64 *block, uint16 elementId);
 
 #endif
 

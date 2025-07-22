@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,19 +28,20 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/**     Description:	Output change rate limitation                        **/
-/**						Calculation:										 **/
-/**							u > y:											 **/
-/**								y(k)     = y(k-1) + RateUp					 **/
-/**								RateUp   = 1/Tr * Ts						 **/
-/**							u < y:											 **/
-/**								y(k)     = y(k-1) - RateDown				 **/
-/**								RateDown = 1/Tf * Ts						 **/
-/**                                                                          **/ 
+/**     Description:    Output change rate limitation                        **/
+/**                     Calculation:                                         **/
+/**                         u > y:                                           **/
+/**                             y(k)     = y(k-1) + RateUp                   **/
+/**                             RateUp   = 1/Tr * Ts                         **/
+/**                         u < y:                                           **/
+/**                             y(k)     = y(k-1) - RateDown                 **/
+/**                             RateDown = 1/Tf * Ts                         **/
+/**                                                                          **/
 /* USERCODE-END:Description                                                                                           */
 #ifndef RATELIMITER_FIP16_H
 #define RATELIMITER_FIP16_H
@@ -56,7 +57,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int16           *In;
     int16           *Init;
     bool            *Enable;
@@ -68,7 +69,7 @@ typedef struct {
 } RATELIMITER_FIP16;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT16_PTR       In;
     INT16_PTR       Init;
     BOOL_PTR        Enable;
@@ -86,16 +87,16 @@ typedef struct {
     (void (*)(void*))RateLimiter_FiP16_Init, \
     (tLoadImplementationParameter)RateLimiter_FiP16_Load, \
     (tSaveImplementationParameter)RateLimiter_FiP16_Save, \
-    (void* (*)(const void*, uint16))RateLimiter_FiP16_GetAddress }
+    (void* (*)(void*, uint16))RateLimiter_FiP16_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void RateLimiter_FiP16_Update(RATELIMITER_FIP16 *pTRateLimiter_FiP16);
-void RateLimiter_FiP16_Init(RATELIMITER_FIP16 *pTRateLimiter_FiP16);
-uint8 RateLimiter_FiP16_Load(const RATELIMITER_FIP16 *pTRateLimiter_FiP16, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 RateLimiter_FiP16_Save(RATELIMITER_FIP16 *pTRateLimiter_FiP16, const uint8 data[], uint16 dataLength);
-void* RateLimiter_FiP16_GetAddress(const RATELIMITER_FIP16 *block, uint16 elementId);
+void RateLimiter_FiP16_Update(RATELIMITER_FIP16 *block);
+void RateLimiter_FiP16_Init(RATELIMITER_FIP16 *block);
+uint8 RateLimiter_FiP16_Load(const RATELIMITER_FIP16 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 RateLimiter_FiP16_Save(RATELIMITER_FIP16 *block, const uint8 data[], uint16 dataLength);
+void* RateLimiter_FiP16_GetAddress(RATELIMITER_FIP16 *block, uint16 elementId);
 
 #endif
 

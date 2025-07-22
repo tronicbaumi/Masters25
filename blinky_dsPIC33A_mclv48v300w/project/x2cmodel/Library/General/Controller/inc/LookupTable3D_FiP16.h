@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,8 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description: Three dimensional look-up table with selectable number of entries and trilinear interpolation */
@@ -48,15 +49,15 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int16           *x;
     int16           *y;
     int16           *z;
     int16           Out;
-const  int16        *Table;
-    int8            sfrX;
-    int8            sfrY;
-    int8            sfrZ;
+const int16         *Table;
+    uint8           sfrX;
+    uint8           sfrY;
+    uint8           sfrZ;
     uint16          maskX;
     uint16          maskY;
     uint16          maskZ;
@@ -69,9 +70,9 @@ const  int16        *Table;
     int16           gainX;
     int16           gainY;
     int16           gainZ;
-    int8            gainXsfr;
-    int8            gainYsfr;
-    int8            gainZsfr;
+    uint8           gainXsfr;
+    uint8           gainYsfr;
+    uint8           gainZsfr;
     int16           offsetX;
     int16           offsetY;
     int16           offsetZ;
@@ -84,15 +85,15 @@ const  int16        *Table;
 } LOOKUPTABLE3D_FIP16;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT16_PTR       x;
     INT16_PTR       y;
     INT16_PTR       z;
     int16           Out;
-const  INT16_PTR    Table;
-    int8            sfrX;
-    int8            sfrY;
-    int8            sfrZ;
+const INT16_PTR     Table;
+    uint8           sfrX;
+    uint8           sfrY;
+    uint8           sfrZ;
     uint16          maskX;
     uint16          maskY;
     uint16          maskZ;
@@ -105,9 +106,9 @@ const  INT16_PTR    Table;
     int16           gainX;
     int16           gainY;
     int16           gainZ;
-    int8            gainXsfr;
-    int8            gainYsfr;
-    int8            gainZsfr;
+    uint8           gainXsfr;
+    uint8           gainYsfr;
+    uint8           gainZsfr;
     int16           offsetX;
     int16           offsetY;
     int16           offsetZ;
@@ -126,16 +127,16 @@ const  INT16_PTR    Table;
     (void (*)(void*))LookupTable3D_FiP16_Init, \
     (tLoadImplementationParameter)LookupTable3D_FiP16_Load, \
     (tSaveImplementationParameter)LookupTable3D_FiP16_Save, \
-    (void* (*)(const void*, uint16))LookupTable3D_FiP16_GetAddress }
+    (void* (*)(void*, uint16))LookupTable3D_FiP16_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void LookupTable3D_FiP16_Update(LOOKUPTABLE3D_FIP16 *pTLookupTable3D_FiP16);
-void LookupTable3D_FiP16_Init(LOOKUPTABLE3D_FIP16 *pTLookupTable3D_FiP16);
-uint8 LookupTable3D_FiP16_Load(const LOOKUPTABLE3D_FIP16 *pTLookupTable3D_FiP16, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 LookupTable3D_FiP16_Save(LOOKUPTABLE3D_FIP16 *pTLookupTable3D_FiP16, const uint8 data[], uint16 dataLength);
-void* LookupTable3D_FiP16_GetAddress(const LOOKUPTABLE3D_FIP16 *block, uint16 elementId);
+void LookupTable3D_FiP16_Update(LOOKUPTABLE3D_FIP16 *block);
+void LookupTable3D_FiP16_Init(LOOKUPTABLE3D_FIP16 *block);
+uint8 LookupTable3D_FiP16_Load(const LOOKUPTABLE3D_FIP16 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 LookupTable3D_FiP16_Save(LOOKUPTABLE3D_FIP16 *block, const uint8 data[], uint16 dataLength);
+void* LookupTable3D_FiP16_GetAddress(LOOKUPTABLE3D_FIP16 *block, uint16 elementId);
 
 #endif
 

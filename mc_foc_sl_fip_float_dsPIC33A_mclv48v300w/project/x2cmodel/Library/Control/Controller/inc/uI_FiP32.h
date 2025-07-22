@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,18 +28,19 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/**     Description:	Integrator for angle signals                         **/
-/**						Calculation ZOH:									 **/
-/**	       						           1          				 		 **/
-/** 						y = ( Ki*Ts* -----  ) * u						 **/
-/**          					         z - 1	   							 **/
-/**																			 **/
-/**						-> y(k) = b1.u(k) + b0.u(k-1) + y(k-1)				 **/
-/**																			 **/
+/**     Description:    Integrator for angle signals                         **/
+/**                     Calculation ZOH:                                     **/
+/**                                        1                                 **/
+/**                         y = ( Ki*Ts* -----  ) * u                        **/
+/**                                      z - 1                               **/
+/**                                                                          **/
+/**                     -> y(k) = b1.u(k) + b0.u(k-1) + y(k-1)               **/
+/**                                                                          **/
 /* USERCODE-END:Description                                                                                           */
 #ifndef UI_FIP32_H
 #define UI_FIP32_H
@@ -55,25 +56,25 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int32           *In;
     int32           *Init;
     bool            *Enable;
     int32           Out;
     int32           b0;
-    int8            sfr;
+    uint8           sfr;
     int64           i_old;
     bool            enable_old;
 } UI_FIP32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT32_PTR       In;
     INT32_PTR       Init;
     BOOL_PTR        Enable;
     int32           Out;
     int32           b0;
-    int8            sfr;
+    uint8           sfr;
     int64           i_old;
     bool            enable_old;
 } UI_FIP32;
@@ -85,16 +86,16 @@ typedef struct {
     (void (*)(void*))uI_FiP32_Init, \
     (tLoadImplementationParameter)uI_FiP32_Load, \
     (tSaveImplementationParameter)uI_FiP32_Save, \
-    (void* (*)(const void*, uint16))uI_FiP32_GetAddress }
+    (void* (*)(void*, uint16))uI_FiP32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void uI_FiP32_Update(UI_FIP32 *pTuI_FiP32);
-void uI_FiP32_Init(UI_FIP32 *pTuI_FiP32);
-uint8 uI_FiP32_Load(const UI_FIP32 *pTuI_FiP32, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 uI_FiP32_Save(UI_FIP32 *pTuI_FiP32, const uint8 data[], uint16 dataLength);
-void* uI_FiP32_GetAddress(const UI_FIP32 *block, uint16 elementId);
+void uI_FiP32_Update(UI_FIP32 *block);
+void uI_FiP32_Init(UI_FIP32 *block);
+uint8 uI_FiP32_Load(const UI_FIP32 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 uI_FiP32_Save(UI_FIP32 *block, const uint8 data[], uint16 dataLength);
+void* uI_FiP32_GetAddress(UI_FIP32 *block, uint16 elementId);
 
 #endif
 

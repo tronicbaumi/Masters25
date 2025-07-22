@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,20 +28,21 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /**     Description:    First order proportional element                     **/
-/**						Calculation:										 **/
-/**	       						 b1.z + b0							   		 **/
-/** 						y = ----------- u						   		 **/
-/**          					   z + a0									 **/
-/**							-> y(k) = u(k).b1 + u(k-1).b0 - y(k-1).a0        **/
-/**																			 **/
-/**						Note:												 **/
-/**							TF1 source code is used!						 **/
-/**																			 **/
+/**                     Calculation:                                         **/
+/**                              b1.z + b0                                   **/
+/**                         y = ----------- u                                **/
+/**                                z + a0                                    **/
+/**                         -> y(k) = u(k).b1 + u(k-1).b0 - y(k-1).a0        **/
+/**                                                                          **/
+/**                     Note:                                                **/
+/**                         TF1 source code is used!                         **/
+/**                                                                          **/
 /* USERCODE-END:Description                                                                                           */
 #ifndef PT1_FIP8_H
 #define PT1_FIP8_H
@@ -57,26 +58,26 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int8            *In;
     int8            Out;
     int8            b0;
     int8            b1;
     int8            a0;
-    int8            sfrb;
-    int8            sfra;
+    uint8           sfrb;
+    uint8           sfra;
     int8            in_old;
 } PT1_FIP8;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT8_PTR        In;
     int8            Out;
     int8            b0;
     int8            b1;
     int8            a0;
-    int8            sfrb;
-    int8            sfra;
+    uint8           sfrb;
+    uint8           sfra;
     int8            in_old;
 } PT1_FIP8;
 #endif
@@ -87,16 +88,16 @@ typedef struct {
     (void (*)(void*))PT1_FiP8_Init, \
     (tLoadImplementationParameter)PT1_FiP8_Load, \
     (tSaveImplementationParameter)PT1_FiP8_Save, \
-    (void* (*)(const void*, uint16))PT1_FiP8_GetAddress }
+    (void* (*)(void*, uint16))PT1_FiP8_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void PT1_FiP8_Update(PT1_FIP8 *pTPT1_FiP8);
-void PT1_FiP8_Init(PT1_FIP8 *pTPT1_FiP8);
-uint8 PT1_FiP8_Load(const PT1_FIP8 *pTPT1_FiP8, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 PT1_FiP8_Save(PT1_FIP8 *pTPT1_FiP8, const uint8 data[], uint16 dataLength);
-void* PT1_FiP8_GetAddress(const PT1_FIP8 *block, uint16 elementId);
+void PT1_FiP8_Update(PT1_FIP8 *block);
+void PT1_FiP8_Init(PT1_FIP8 *block);
+uint8 PT1_FiP8_Load(const PT1_FIP8 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 PT1_FiP8_Save(PT1_FIP8 *block, const uint8 data[], uint16 dataLength);
+void* PT1_FiP8_GetAddress(PT1_FIP8 *block, uint16 elementId);
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,11 +28,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/**     Description:	Calculation of moving average value over n numbers.  **/
+/**     Description:    Calculation of moving average value over n numbers.  **/
 /**                                                                          **/
 /* USERCODE-END:Description                                                                                           */
 #ifndef AVERAGE_FLOAT32_H
@@ -49,7 +50,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float32         *In;
     float32         Out;
     uint16          n;
@@ -59,7 +60,7 @@ typedef struct {
 } AVERAGE_FLOAT32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT32_PTR     In;
     float32         Out;
     uint16          n;
@@ -75,16 +76,16 @@ typedef struct {
     (void (*)(void*))Average_Float32_Init, \
     (tLoadImplementationParameter)Average_Float32_Load, \
     (tSaveImplementationParameter)Average_Float32_Save, \
-    (void* (*)(const void*, uint16))Average_Float32_GetAddress }
+    (void* (*)(void*, uint16))Average_Float32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Average_Float32_Update(AVERAGE_FLOAT32 *pTAverage_Float32);
-void Average_Float32_Init(AVERAGE_FLOAT32 *pTAverage_Float32);
-uint8 Average_Float32_Load(const AVERAGE_FLOAT32 *pTAverage_Float32, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 Average_Float32_Save(AVERAGE_FLOAT32 *pTAverage_Float32, const uint8 data[], uint16 dataLength);
-void* Average_Float32_GetAddress(const AVERAGE_FLOAT32 *block, uint16 elementId);
+void Average_Float32_Update(AVERAGE_FLOAT32 *block);
+void Average_Float32_Init(AVERAGE_FLOAT32 *block);
+uint8 Average_Float32_Load(const AVERAGE_FLOAT32 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 Average_Float32_Save(AVERAGE_FLOAT32 *block, const uint8 data[], uint16 dataLength);
+void* Average_Float32_GetAddress(AVERAGE_FLOAT32 *block, uint16 elementId);
 
 #endif
 

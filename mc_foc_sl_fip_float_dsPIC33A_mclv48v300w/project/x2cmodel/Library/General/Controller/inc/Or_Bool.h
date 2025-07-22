@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,8 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description: */
@@ -48,14 +49,14 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     bool            *In1;
     bool            *In2;
     bool            Out;
 } OR_BOOL;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     BOOL_PTR        In1;
     BOOL_PTR        In2;
     bool            Out;
@@ -68,14 +69,14 @@ typedef struct {
     (void (*)(void*))Or_Bool_Init, \
     (tLoadImplementationParameter)Common_Load, \
     (tSaveImplementationParameter)Common_Save, \
-    (void* (*)(const void*, uint16))Or_Bool_GetAddress }
+    (void* (*)(void*, uint16))Or_Bool_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Or_Bool_Update(OR_BOOL *pTOr_Bool);
-void Or_Bool_Init(OR_BOOL *pTOr_Bool);
-void* Or_Bool_GetAddress(const OR_BOOL *block, uint16 elementId);
+void Or_Bool_Update(OR_BOOL *block);
+void Or_Bool_Init(OR_BOOL *block);
+void* Or_Bool_GetAddress(OR_BOOL *block, uint16 elementId);
 
 #endif
 

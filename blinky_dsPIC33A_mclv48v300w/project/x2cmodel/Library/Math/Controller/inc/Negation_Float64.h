@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,14 +28,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/* Description: 	Negation of input signal.								  */
-/*					Calculation:											  */
-/*									Out = -In								  */
-/*																			  */
+/* Description:     Negation of input signal.                                 */
+/*                  Calculation:                                              */
+/*                                  Out = -In                                 */
+/*                                                                            */
 /* USERCODE-END:Description                                                                                           */
 #ifndef NEGATION_FLOAT64_H
 #define NEGATION_FLOAT64_H
@@ -51,13 +52,13 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float64         *In;
     float64         Out;
 } NEGATION_FLOAT64;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT64_PTR     In;
     float64         Out;
 } NEGATION_FLOAT64;
@@ -69,14 +70,14 @@ typedef struct {
     (void (*)(void*))Negation_Float64_Init, \
     (tLoadImplementationParameter)Common_Load, \
     (tSaveImplementationParameter)Common_Save, \
-    (void* (*)(const void*, uint16))Negation_Float64_GetAddress }
+    (void* (*)(void*, uint16))Negation_Float64_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Negation_Float64_Update(NEGATION_FLOAT64 *pTNegation_Float64);
-void Negation_Float64_Init(NEGATION_FLOAT64 *pTNegation_Float64);
-void* Negation_Float64_GetAddress(const NEGATION_FLOAT64 *block, uint16 elementId);
+void Negation_Float64_Update(NEGATION_FLOAT64 *block);
+void Negation_Float64_Init(NEGATION_FLOAT64 *block);
+void* Negation_Float64_GetAddress(NEGATION_FLOAT64 *block, uint16 elementId);
 
 #endif
 

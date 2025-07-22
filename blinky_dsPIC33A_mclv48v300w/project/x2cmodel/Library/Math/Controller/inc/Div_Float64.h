@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,14 +28,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/**     Description: Division of input Num by input Den																 **/
-/**                     Calculation:                                     										     **/
-/**							out = Num / Den								 											 **/
-/**																													 **/
+/**     Description: Division of input Num by input Den                                                              **/
+/**                     Calculation:                                                                                 **/
+/**                         out = Num / Den                                                                          **/
+/**                                                                                                                  **/
 /* USERCODE-END:Description                                                                                           */
 #ifndef DIV_FLOAT64_H
 #define DIV_FLOAT64_H
@@ -51,14 +52,14 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float64         *Num;
     float64         *Den;
     float64         Out;
 } DIV_FLOAT64;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT64_PTR     Num;
     FLOAT64_PTR     Den;
     float64         Out;
@@ -71,14 +72,14 @@ typedef struct {
     (void (*)(void*))Div_Float64_Init, \
     (tLoadImplementationParameter)Common_Load, \
     (tSaveImplementationParameter)Common_Save, \
-    (void* (*)(const void*, uint16))Div_Float64_GetAddress }
+    (void* (*)(void*, uint16))Div_Float64_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Div_Float64_Update(DIV_FLOAT64 *pTDiv_Float64);
-void Div_Float64_Init(DIV_FLOAT64 *pTDiv_Float64);
-void* Div_Float64_GetAddress(const DIV_FLOAT64 *block, uint16 elementId);
+void Div_Float64_Update(DIV_FLOAT64 *block);
+void Div_Float64_Init(DIV_FLOAT64 *block);
+void* Div_Float64_GetAddress(DIV_FLOAT64 *block, uint16 elementId);
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,12 +28,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/* 		Description:	Minimum of two values                                 */
-/*																			  */
+/*      Description:    Minimum of two values                                 */
+/*                                                                            */
 /* USERCODE-END:Description                                                                                           */
 #ifndef MINIMUM_FLOAT32_H
 #define MINIMUM_FLOAT32_H
@@ -49,14 +50,14 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float32         *In1;
     float32         *In2;
     float32         Out;
 } MINIMUM_FLOAT32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT32_PTR     In1;
     FLOAT32_PTR     In2;
     float32         Out;
@@ -69,14 +70,14 @@ typedef struct {
     (void (*)(void*))Minimum_Float32_Init, \
     (tLoadImplementationParameter)Common_Load, \
     (tSaveImplementationParameter)Common_Save, \
-    (void* (*)(const void*, uint16))Minimum_Float32_GetAddress }
+    (void* (*)(void*, uint16))Minimum_Float32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Minimum_Float32_Update(MINIMUM_FLOAT32 *pTMinimum_Float32);
-void Minimum_Float32_Init(MINIMUM_FLOAT32 *pTMinimum_Float32);
-void* Minimum_Float32_GetAddress(const MINIMUM_FLOAT32 *block, uint16 elementId);
+void Minimum_Float32_Update(MINIMUM_FLOAT32 *block);
+void Minimum_Float32_Init(MINIMUM_FLOAT32 *block);
+void* Minimum_Float32_GetAddress(MINIMUM_FLOAT32 *block, uint16 elementId);
 
 #endif
 

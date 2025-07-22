@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2017, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,9 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
- * $LastChangedDate:: 2022-05-03 15:06:23 +0200#$
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description: */
@@ -49,13 +49,13 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     bool            Out;
     bool            K;
 } CONSTANT_BOOL;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     bool            Out;
     bool            K;
 } CONSTANT_BOOL;
@@ -67,15 +67,15 @@ typedef struct {
     (void (*)(void*))Constant_Bool_Init, \
     (tLoadImplementationParameter)Constant_Bool_Load, \
     (tSaveImplementationParameter)Constant_Bool_Save, \
-    (void* (*)(const void*, uint16))Constant_Bool_GetAddress }
+    (void* (*)(void*, uint16))Constant_Bool_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Constant_Bool_Init(CONSTANT_BOOL *pTConstant_Bool);
-uint8 Constant_Bool_Load(const CONSTANT_BOOL *pTConstant_Bool, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 Constant_Bool_Save(CONSTANT_BOOL *pTConstant_Bool, const uint8 data[], uint16 dataLength);
-void* Constant_Bool_GetAddress(const CONSTANT_BOOL *block, uint16 elementId);
+void Constant_Bool_Init(CONSTANT_BOOL *block);
+uint8 Constant_Bool_Load(const CONSTANT_BOOL *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 Constant_Bool_Save(CONSTANT_BOOL *block, const uint8 data[], uint16 dataLength);
+void* Constant_Bool_GetAddress(CONSTANT_BOOL *block, uint16 elementId);
 
 #endif
 

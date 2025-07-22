@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,8 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description: Three dimensional look-up table with selectable number of entries and trilinear interpolation */
@@ -48,12 +49,12 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float64         *x;
     float64         *y;
     float64         *z;
     float64         Out;
-const  float64      *Table;
+const float64       *Table;
     uint16          dimX;
     uint16          dimY;
     uint16          dimZ;
@@ -75,12 +76,12 @@ const  float64      *Table;
 } LOOKUPTABLE3D_FLOAT64;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT64_PTR     x;
     FLOAT64_PTR     y;
     FLOAT64_PTR     z;
     float64         Out;
-const  FLOAT64_PTR  Table;
+const FLOAT64_PTR   Table;
     uint16          dimX;
     uint16          dimY;
     uint16          dimZ;
@@ -108,16 +109,16 @@ const  FLOAT64_PTR  Table;
     (void (*)(void*))LookupTable3D_Float64_Init, \
     (tLoadImplementationParameter)LookupTable3D_Float64_Load, \
     (tSaveImplementationParameter)LookupTable3D_Float64_Save, \
-    (void* (*)(const void*, uint16))LookupTable3D_Float64_GetAddress }
+    (void* (*)(void*, uint16))LookupTable3D_Float64_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void LookupTable3D_Float64_Update(LOOKUPTABLE3D_FLOAT64 *pTLookupTable3D_Float64);
-void LookupTable3D_Float64_Init(LOOKUPTABLE3D_FLOAT64 *pTLookupTable3D_Float64);
-uint8 LookupTable3D_Float64_Load(const LOOKUPTABLE3D_FLOAT64 *pTLookupTable3D_Float64, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 LookupTable3D_Float64_Save(LOOKUPTABLE3D_FLOAT64 *pTLookupTable3D_Float64, const uint8 data[], uint16 dataLength);
-void* LookupTable3D_Float64_GetAddress(const LOOKUPTABLE3D_FLOAT64 *block, uint16 elementId);
+void LookupTable3D_Float64_Update(LOOKUPTABLE3D_FLOAT64 *block);
+void LookupTable3D_Float64_Init(LOOKUPTABLE3D_FLOAT64 *block);
+uint8 LookupTable3D_Float64_Load(const LOOKUPTABLE3D_FLOAT64 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 LookupTable3D_Float64_Save(LOOKUPTABLE3D_FLOAT64 *block, const uint8 data[], uint16 dataLength);
+void* LookupTable3D_Float64_GetAddress(LOOKUPTABLE3D_FLOAT64 *block, uint16 elementId);
 
 #endif
 

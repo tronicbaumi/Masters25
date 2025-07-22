@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,12 +28,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/* Description: 	Makes the incoming signal accessible for reading with parameter numbers.						  */
-/*																													  */
+/* Description:     Makes the incoming signal accessible for reading with parameter numbers.                          */
+/*                                                                                                                    */
 /* USERCODE-END:Description                                                                                           */
 #ifndef USAVESIGNAL_FIP32_H
 #define USAVESIGNAL_FIP32_H
@@ -49,12 +50,12 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int32           *In;
 } USAVESIGNAL_FIP32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT32_PTR       In;
 } USAVESIGNAL_FIP32;
 #endif
@@ -65,14 +66,14 @@ typedef struct {
     (void (*)(void*))uSaveSignal_FiP32_Init, \
     (tLoadImplementationParameter)uSaveSignal_FiP32_Load, \
     (tSaveImplementationParameter)Common_Save, \
-    (void* (*)(const void*, uint16))uSaveSignal_FiP32_GetAddress }
+    (void* (*)(void*, uint16))uSaveSignal_FiP32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void uSaveSignal_FiP32_Init(USAVESIGNAL_FIP32 *pTuSaveSignal_FiP32);
-uint8 uSaveSignal_FiP32_Load(const USAVESIGNAL_FIP32 *pTuSaveSignal_FiP32, uint8 data[], uint16 *dataLength, uint16 maxSize);
-void* uSaveSignal_FiP32_GetAddress(const USAVESIGNAL_FIP32 *block, uint16 elementId);
+void uSaveSignal_FiP32_Init(USAVESIGNAL_FIP32 *block);
+uint8 uSaveSignal_FiP32_Load(const USAVESIGNAL_FIP32 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+void* uSaveSignal_FiP32_GetAddress(USAVESIGNAL_FIP32 *block, uint16 elementId);
 
 #endif
 

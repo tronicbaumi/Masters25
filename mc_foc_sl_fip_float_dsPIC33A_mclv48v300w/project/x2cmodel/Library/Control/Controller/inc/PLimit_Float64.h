@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,8 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2800 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /*     Description:    P Controller with
@@ -56,7 +57,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float64         *In;
     float64         *max;
     float64         *min;
@@ -66,7 +67,7 @@ typedef struct {
 } PLIMIT_FLOAT64;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT64_PTR     In;
     FLOAT64_PTR     max;
     FLOAT64_PTR     min;
@@ -82,16 +83,16 @@ typedef struct {
     (void (*)(void*))PLimit_Float64_Init, \
     (tLoadImplementationParameter)PLimit_Float64_Load, \
     (tSaveImplementationParameter)PLimit_Float64_Save, \
-    (void* (*)(const void*, uint16))PLimit_Float64_GetAddress }
+    (void* (*)(void*, uint16))PLimit_Float64_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void PLimit_Float64_Update(PLIMIT_FLOAT64 *pTPLimit_Float64);
-void PLimit_Float64_Init(PLIMIT_FLOAT64 *pTPLimit_Float64);
-uint8 PLimit_Float64_Load(const PLIMIT_FLOAT64 *pTPLimit_Float64, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 PLimit_Float64_Save(PLIMIT_FLOAT64 *pTPLimit_Float64, const uint8 data[], uint16 dataLength);
-void* PLimit_Float64_GetAddress(const PLIMIT_FLOAT64 *block, uint16 elementId);
+void PLimit_Float64_Update(PLIMIT_FLOAT64 *block);
+void PLimit_Float64_Init(PLIMIT_FLOAT64 *block);
+uint8 PLimit_Float64_Load(const PLIMIT_FLOAT64 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 PLimit_Float64_Save(PLIMIT_FLOAT64 *block, const uint8 data[], uint16 dataLength);
+void* PLimit_Float64_GetAddress(PLIMIT_FLOAT64 *block, uint16 elementId);
 
 #endif
 

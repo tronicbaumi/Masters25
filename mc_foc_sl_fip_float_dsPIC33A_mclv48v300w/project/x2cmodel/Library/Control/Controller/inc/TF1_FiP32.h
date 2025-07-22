@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,17 +28,18 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/**     Description:	First order transfer function                        **/
-/**						Calculation:										 **/
-/**	       						 b1.z + b0							   		 **/
-/** 						y = ----------- u						   		 **/
-/**          					   z + a0									 **/
-/**							-> y(k) = u(k).b1 + u(k-1).b0 - y(k-1).a0		 **/
-/**																			 **/
+/**     Description:    First order transfer function                        **/
+/**                     Calculation:                                         **/
+/**                              b1.z + b0                                   **/
+/**                         y = ----------- u                                **/
+/**                                z + a0                                    **/
+/**                         -> y(k) = u(k).b1 + u(k-1).b0 - y(k-1).a0        **/
+/**                                                                          **/
 /* USERCODE-END:Description                                                                                           */
 #ifndef TF1_FIP32_H
 #define TF1_FIP32_H
@@ -54,26 +55,26 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int32           *In;
     int32           Out;
     int32           b0;
     int32           b1;
     int32           a0;
-    int8            sfrb;
-    int8            sfra;
+    uint8           sfrb;
+    uint8           sfra;
     int32           in_old;
 } TF1_FIP32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT32_PTR       In;
     int32           Out;
     int32           b0;
     int32           b1;
     int32           a0;
-    int8            sfrb;
-    int8            sfra;
+    uint8           sfrb;
+    uint8           sfra;
     int32           in_old;
 } TF1_FIP32;
 #endif
@@ -84,16 +85,16 @@ typedef struct {
     (void (*)(void*))TF1_FiP32_Init, \
     (tLoadImplementationParameter)TF1_FiP32_Load, \
     (tSaveImplementationParameter)TF1_FiP32_Save, \
-    (void* (*)(const void*, uint16))TF1_FiP32_GetAddress }
+    (void* (*)(void*, uint16))TF1_FiP32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void TF1_FiP32_Update(TF1_FIP32 *pTTF1_FiP32);
-void TF1_FiP32_Init(TF1_FIP32 *pTTF1_FiP32);
-uint8 TF1_FiP32_Load(const TF1_FIP32 *pTTF1_FiP32, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 TF1_FiP32_Save(TF1_FIP32 *pTTF1_FiP32, const uint8 data[], uint16 dataLength);
-void* TF1_FiP32_GetAddress(const TF1_FIP32 *block, uint16 elementId);
+void TF1_FiP32_Update(TF1_FIP32 *block);
+void TF1_FiP32_Init(TF1_FIP32 *block);
+uint8 TF1_FiP32_Load(const TF1_FIP32 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 TF1_FiP32_Save(TF1_FIP32 *block, const uint8 data[], uint16 dataLength);
+void* TF1_FiP32_GetAddress(TF1_FIP32 *block, uint16 elementId);
 
 #endif
 

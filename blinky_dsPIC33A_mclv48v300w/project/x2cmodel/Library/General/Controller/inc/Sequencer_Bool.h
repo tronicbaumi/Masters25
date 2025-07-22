@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2014, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,8 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 3207 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description: Generation of time delayed (enable) sequence. */
@@ -48,7 +49,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     bool            *Start;
     bool            Out1;
     bool            Out2;
@@ -63,7 +64,7 @@ typedef struct {
 } SEQUENCER_BOOL;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     BOOL_PTR        Start;
     bool            Out1;
     bool            Out2;
@@ -84,16 +85,16 @@ typedef struct {
     (void (*)(void*))Sequencer_Bool_Init, \
     (tLoadImplementationParameter)Sequencer_Bool_Load, \
     (tSaveImplementationParameter)Sequencer_Bool_Save, \
-    (void* (*)(const void*, uint16))Sequencer_Bool_GetAddress }
+    (void* (*)(void*, uint16))Sequencer_Bool_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Sequencer_Bool_Update(SEQUENCER_BOOL *pTSequencer_Bool);
-void Sequencer_Bool_Init(SEQUENCER_BOOL *pTSequencer_Bool);
-uint8 Sequencer_Bool_Load(const SEQUENCER_BOOL *pTSequencer_Bool, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 Sequencer_Bool_Save(SEQUENCER_BOOL *pTSequencer_Bool, const uint8 data[], uint16 dataLength);
-void* Sequencer_Bool_GetAddress(const SEQUENCER_BOOL *block, uint16 elementId);
+void Sequencer_Bool_Update(SEQUENCER_BOOL *block);
+void Sequencer_Bool_Init(SEQUENCER_BOOL *block);
+uint8 Sequencer_Bool_Load(const SEQUENCER_BOOL *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 Sequencer_Bool_Save(SEQUENCER_BOOL *block, const uint8 data[], uint16 dataLength);
+void* Sequencer_Bool_GetAddress(SEQUENCER_BOOL *block, uint16 elementId);
 
 #endif
 

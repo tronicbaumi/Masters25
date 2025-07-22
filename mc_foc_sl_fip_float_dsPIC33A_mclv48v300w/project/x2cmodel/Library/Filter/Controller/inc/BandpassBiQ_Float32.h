@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2018, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,9 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 3344 $
- * $LastChangedDate:: 2024-07-04 13:08:58 +0200#$
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description: */
@@ -49,7 +49,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float32         *In;
     float32         Out;
     float32         b0;
@@ -64,7 +64,7 @@ typedef struct {
 } BANDPASSBIQ_FLOAT32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT32_PTR     In;
     float32         Out;
     float32         b0;
@@ -85,16 +85,16 @@ typedef struct {
     (void (*)(void*))BandpassBiQ_Float32_Init, \
     (tLoadImplementationParameter)BandpassBiQ_Float32_Load, \
     (tSaveImplementationParameter)BandpassBiQ_Float32_Save, \
-    (void* (*)(const void*, uint16))BandpassBiQ_Float32_GetAddress }
+    (void* (*)(void*, uint16))BandpassBiQ_Float32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void BandpassBiQ_Float32_Update(BANDPASSBIQ_FLOAT32 *pTBandpassBiQ_Float32);
-void BandpassBiQ_Float32_Init(BANDPASSBIQ_FLOAT32 *pTBandpassBiQ_Float32);
-uint8 BandpassBiQ_Float32_Load(const BANDPASSBIQ_FLOAT32 *pTBandpassBiQ_Float32, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 BandpassBiQ_Float32_Save(BANDPASSBIQ_FLOAT32 *pTBandpassBiQ_Float32, const uint8 data[], uint16 dataLength);
-void* BandpassBiQ_Float32_GetAddress(const BANDPASSBIQ_FLOAT32 *block, uint16 elementId);
+void BandpassBiQ_Float32_Update(BANDPASSBIQ_FLOAT32 *block);
+void BandpassBiQ_Float32_Init(BANDPASSBIQ_FLOAT32 *block);
+uint8 BandpassBiQ_Float32_Load(const BANDPASSBIQ_FLOAT32 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 BandpassBiQ_Float32_Save(BANDPASSBIQ_FLOAT32 *block, const uint8 data[], uint16 dataLength);
+void* BandpassBiQ_Float32_GetAddress(BANDPASSBIQ_FLOAT32 *block, uint16 elementId);
 
 #endif
 

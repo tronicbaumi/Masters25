@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,8 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /*     Description: Signum function
@@ -54,13 +55,13 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int16           *In;
     int16           Out;
 } SIGN_FIP16;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT16_PTR       In;
     int16           Out;
 } SIGN_FIP16;
@@ -72,14 +73,14 @@ typedef struct {
     (void (*)(void*))Sign_FiP16_Init, \
     (tLoadImplementationParameter)Common_Load, \
     (tSaveImplementationParameter)Common_Save, \
-    (void* (*)(const void*, uint16))Sign_FiP16_GetAddress }
+    (void* (*)(void*, uint16))Sign_FiP16_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Sign_FiP16_Update(SIGN_FIP16 *pTSign_FiP16);
-void Sign_FiP16_Init(SIGN_FIP16 *pTSign_FiP16);
-void* Sign_FiP16_GetAddress(const SIGN_FIP16 *block, uint16 elementId);
+void Sign_FiP16_Update(SIGN_FIP16 *block);
+void Sign_FiP16_Init(SIGN_FIP16 *block);
+void* Sign_FiP16_GetAddress(SIGN_FIP16 *block, uint16 elementId);
 
 #endif
 

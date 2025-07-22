@@ -2,17 +2,17 @@
  * @file
  * @brief Generated model file.
  * 
- * Date:  2025-06-30 15:54
+ * Date:  2025-07-22 11:20
  * 
- * X2C-Version: 6.5.3765
+ * X2C-Version: 6.5.3797
  * X2C-Edition: Free
  */
 /* This file is part of X2C. http://x2c.lcm.at/                                                                       */
 
 /* Model: mc_foc_sl_fip_dspic33ck_mclv48v300w                                                                         */
-/* Date:  2025-06-30 15:54                                                                                            */
+/* Date:  2025-07-22 11:20                                                                                            */
 
-/* X2C-Version: 6.5.3765                                                                                              */
+/* X2C-Version: 6.5.3797                                                                                              */
 /* X2C-Edition: Free                                                                                                  */
 
 #ifndef X2C_H
@@ -134,31 +134,31 @@ extern "C" {
     { 38u, &x2cModel.blocks.bPosSignalPath } , \
     { 39u, &x2cModel.blocks.bQEI_OFFSET1 } , \
     { 40u, &x2cModel.blocks.bReal2Int } , \
-    { 41u, &x2cModel.blocks.sSpeed_PI.bManualSwitch } , \
-    { 42u, &x2cModel.blocks.sSpeed_PI.bPI_speed } , \
-    { 43u, &x2cModel.blocks.sSpeed_PI.bRateLimiter } , \
-    { 44u, &x2cModel.blocks.sSpeed_PI.bSpeed_error } , \
-    { 45u, &x2cModel.blocks.sSpeed_PI.bSpeetPerturbation } , \
-    { 46u, &x2cModel.blocks.sSpeed_PI.sSuperBlock.bAdd } , \
-    { 47u, &x2cModel.blocks.sSpeed_PI.sSuperBlock.bAutoSwitch } , \
-    { 48u, &x2cModel.blocks.sSpeed_PI.sSuperBlock.bConstant } , \
-    { 49u, &x2cModel.blocks.sSpeed_PI.sSuperBlock.bConstant1 } , \
-    { 50u, &x2cModel.blocks.sSpeed_PI.sSuperBlock.bConstant2 } , \
-    { 51u, &x2cModel.blocks.sSpeed_PI.sSuperBlock.bConstant3 } , \
-    { 52u, &x2cModel.blocks.sSpeed_PI.sSuperBlock.bGain } , \
-    { 53u, &x2cModel.blocks.sSpeed_PI.sSuperBlock.bRateLimiter } , \
-    { 54u, &x2cModel.blocks.sSpeed_PI.sSuperBlock.bSinGen } , \
-    { 55u, &x2cModel.blocks.sSpeed_PI.sSuperBlock1.bAdd } , \
-    { 56u, &x2cModel.blocks.sSpeed_PI.sSuperBlock1.bAutoSwitch } , \
-    { 57u, &x2cModel.blocks.sSpeed_PI.sSuperBlock1.bConstant } , \
-    { 58u, &x2cModel.blocks.sSpeed_PI.sSuperBlock1.bConstant1 } , \
-    { 59u, &x2cModel.blocks.sSpeed_PI.sSuperBlock1.bConstant2 } , \
-    { 60u, &x2cModel.blocks.sSpeed_PI.sSuperBlock1.bConstant3 } , \
-    { 61u, &x2cModel.blocks.sSpeed_PI.sSuperBlock1.bGain } , \
-    { 62u, &x2cModel.blocks.sSpeed_PI.sSuperBlock1.bRateLimiter } , \
-    { 63u, &x2cModel.blocks.sSpeed_PI.sSuperBlock1.bSinGen } , \
-    { 64u, &x2cModel.blocks.sSpeed_PI.bTorquePerturbation } , \
-    { 65u, &x2cModel.blocks.sSpeed_PI.btorqueSetpoint } , \
+    { 41u, &x2cModel.blocks.sSpeedPI.bManualSwitch } , \
+    { 42u, &x2cModel.blocks.sSpeedPI.bPI_speed } , \
+    { 43u, &x2cModel.blocks.sSpeedPI.bRateLimiter } , \
+    { 44u, &x2cModel.blocks.sSpeedPI.bSpeed_error } , \
+    { 45u, &x2cModel.blocks.sSpeedPI.bSpeetPerturbation } , \
+    { 46u, &x2cModel.blocks.sSpeedPI.sSuperBlock.bAdd } , \
+    { 47u, &x2cModel.blocks.sSpeedPI.sSuperBlock.bAutoSwitch } , \
+    { 48u, &x2cModel.blocks.sSpeedPI.sSuperBlock.bConstant } , \
+    { 49u, &x2cModel.blocks.sSpeedPI.sSuperBlock.bConstant1 } , \
+    { 50u, &x2cModel.blocks.sSpeedPI.sSuperBlock.bConstant2 } , \
+    { 51u, &x2cModel.blocks.sSpeedPI.sSuperBlock.bConstant3 } , \
+    { 52u, &x2cModel.blocks.sSpeedPI.sSuperBlock.bGain } , \
+    { 53u, &x2cModel.blocks.sSpeedPI.sSuperBlock.bRateLimiter } , \
+    { 54u, &x2cModel.blocks.sSpeedPI.sSuperBlock.bSinGen } , \
+    { 55u, &x2cModel.blocks.sSpeedPI.sSuperBlock1.bAdd } , \
+    { 56u, &x2cModel.blocks.sSpeedPI.sSuperBlock1.bAutoSwitch } , \
+    { 57u, &x2cModel.blocks.sSpeedPI.sSuperBlock1.bConstant } , \
+    { 58u, &x2cModel.blocks.sSpeedPI.sSuperBlock1.bConstant1 } , \
+    { 59u, &x2cModel.blocks.sSpeedPI.sSuperBlock1.bConstant2 } , \
+    { 60u, &x2cModel.blocks.sSpeedPI.sSuperBlock1.bConstant3 } , \
+    { 61u, &x2cModel.blocks.sSpeedPI.sSuperBlock1.bGain } , \
+    { 62u, &x2cModel.blocks.sSpeedPI.sSuperBlock1.bRateLimiter } , \
+    { 63u, &x2cModel.blocks.sSpeedPI.sSuperBlock1.bSinGen } , \
+    { 64u, &x2cModel.blocks.sSpeedPI.bTorquePerturbation } , \
+    { 65u, &x2cModel.blocks.sSpeedPI.btorqueSetpoint } , \
     { 66u, &x2cModel.blocks.bVelSignalPatth } , \
     { 67u, &x2cModel.blocks.sstartup.bConstant } , \
     { 68u, &x2cModel.blocks.sstartup.bConstant1 } , \
@@ -262,7 +262,7 @@ struct x2cModel {
             MANUALSWITCH_FIP16 bVqOverride;
             CONSTANT_FIP16 bVqOverrideVal;
         } sFOCmain;
-/*      Sub-system Speed_PI                                                                                           */
+/*      Sub-system SpeedPI                                                                                            */
         struct {
 /*          Sub-system SuperBlock                                                                                     */
             struct {
@@ -295,7 +295,7 @@ struct x2cModel {
             CONSTANT_FIP16 bSpeetPerturbation;
             CONSTANT_FIP16 bTorquePerturbation;
             CONSTANT_FIP16 btorqueSetpoint;
-        } sSpeed_PI;
+        } sSpeedPI;
 /*      Sub-system startup                                                                                            */
         struct {
 /*          Sub-system SuperBlock                                                                                     */

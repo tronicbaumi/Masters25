@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,8 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2800 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /*     Description:    P Controller with
@@ -56,25 +57,25 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int16           *In;
     int16           *max;
     int16           *min;
     bool            *Enable;
     int16           Out;
     int16           b1;
-    int8            sfrb1;
+    uint8           sfrb1;
 } PLIMIT_FIP16;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT16_PTR       In;
     INT16_PTR       max;
     INT16_PTR       min;
     BOOL_PTR        Enable;
     int16           Out;
     int16           b1;
-    int8            sfrb1;
+    uint8           sfrb1;
 } PLIMIT_FIP16;
 #endif
 
@@ -84,16 +85,16 @@ typedef struct {
     (void (*)(void*))PLimit_FiP16_Init, \
     (tLoadImplementationParameter)PLimit_FiP16_Load, \
     (tSaveImplementationParameter)PLimit_FiP16_Save, \
-    (void* (*)(const void*, uint16))PLimit_FiP16_GetAddress }
+    (void* (*)(void*, uint16))PLimit_FiP16_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void PLimit_FiP16_Update(PLIMIT_FIP16 *pTPLimit_FiP16);
-void PLimit_FiP16_Init(PLIMIT_FIP16 *pTPLimit_FiP16);
-uint8 PLimit_FiP16_Load(const PLIMIT_FIP16 *pTPLimit_FiP16, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 PLimit_FiP16_Save(PLIMIT_FIP16 *pTPLimit_FiP16, const uint8 data[], uint16 dataLength);
-void* PLimit_FiP16_GetAddress(const PLIMIT_FIP16 *block, uint16 elementId);
+void PLimit_FiP16_Update(PLIMIT_FIP16 *block);
+void PLimit_FiP16_Init(PLIMIT_FIP16 *block);
+uint8 PLimit_FiP16_Load(const PLIMIT_FIP16 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 PLimit_FiP16_Save(PLIMIT_FIP16 *block, const uint8 data[], uint16 dataLength);
+void* PLimit_FiP16_GetAddress(PLIMIT_FIP16 *block, uint16 elementId);
 
 #endif
 

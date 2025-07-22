@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,11 +28,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/**     Description:	Look-up Table with 256+1 entries                     **/
+/**     Description:    Look-up Table with 256+1 entries                     **/
 /**                                                                          **/
 /* USERCODE-END:Description                                                                                           */
 #ifndef LOOKUPTABLE_FIP32_H
@@ -49,17 +50,17 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int32           *In;
     int32           Out;
-const  int32        *Table;
+const int32         *Table;
 } LOOKUPTABLE_FIP32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT32_PTR       In;
     int32           Out;
-const  INT32_PTR    Table;
+const INT32_PTR     Table;
 } LOOKUPTABLE_FIP32;
 #endif
 
@@ -69,14 +70,14 @@ const  INT32_PTR    Table;
     (void (*)(void*))LookupTable_FiP32_Init, \
     (tLoadImplementationParameter)Common_Load, \
     (tSaveImplementationParameter)Common_Save, \
-    (void* (*)(const void*, uint16))LookupTable_FiP32_GetAddress }
+    (void* (*)(void*, uint16))LookupTable_FiP32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void LookupTable_FiP32_Update(LOOKUPTABLE_FIP32 *pTLookupTable_FiP32);
-void LookupTable_FiP32_Init(LOOKUPTABLE_FIP32 *pTLookupTable_FiP32);
-void* LookupTable_FiP32_GetAddress(const LOOKUPTABLE_FIP32 *block, uint16 elementId);
+void LookupTable_FiP32_Update(LOOKUPTABLE_FIP32 *block);
+void LookupTable_FiP32_Init(LOOKUPTABLE_FIP32 *block);
+void* LookupTable_FiP32_GetAddress(LOOKUPTABLE_FIP32 *block, uint16 elementId);
 
 #endif
 

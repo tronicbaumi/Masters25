@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,8 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 3363 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description: One dimensional look-up table with selectable number of entries */
@@ -48,30 +49,30 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int32           *x;
     int32           Out;
 const int32         *Table;
-    int8            sfrX;
+    uint8           sfrX;
     uint32          maskX;
     uint16          idxOffsetX;
     int32           gainX;
-    int8            gainXsfr;
+    uint8           gainXsfr;
     int32           offsetX;
     int32           minX;
     int32           maxX;
 } LOOKUPTABLE1D_FIP32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT32_PTR       x;
     int32           Out;
 const INT32_PTR     Table;
-    int8            sfrX;
+    uint8           sfrX;
     uint32          maskX;
     uint16          idxOffsetX;
     int32           gainX;
-    int8            gainXsfr;
+    uint8           gainXsfr;
     int32           offsetX;
     int32           minX;
     int32           maxX;
@@ -84,16 +85,16 @@ const INT32_PTR     Table;
     (void (*)(void*))LookupTable1D_FiP32_Init, \
     (tLoadImplementationParameter)LookupTable1D_FiP32_Load, \
     (tSaveImplementationParameter)LookupTable1D_FiP32_Save, \
-    (void* (*)(const void*, uint16))LookupTable1D_FiP32_GetAddress }
+    (void* (*)(void*, uint16))LookupTable1D_FiP32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void LookupTable1D_FiP32_Update(LOOKUPTABLE1D_FIP32 *pTLookupTable1D_FiP32);
-void LookupTable1D_FiP32_Init(LOOKUPTABLE1D_FIP32 *pTLookupTable1D_FiP32);
-uint8 LookupTable1D_FiP32_Load(const LOOKUPTABLE1D_FIP32 *pTLookupTable1D_FiP32, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 LookupTable1D_FiP32_Save(LOOKUPTABLE1D_FIP32 *pTLookupTable1D_FiP32, const uint8 data[], uint16 dataLength);
-void* LookupTable1D_FiP32_GetAddress(const LOOKUPTABLE1D_FIP32 *block, uint16 elementId);
+void LookupTable1D_FiP32_Update(LOOKUPTABLE1D_FIP32 *block);
+void LookupTable1D_FiP32_Init(LOOKUPTABLE1D_FIP32 *block);
+uint8 LookupTable1D_FiP32_Load(const LOOKUPTABLE1D_FIP32 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 LookupTable1D_FiP32_Save(LOOKUPTABLE1D_FIP32 *block, const uint8 data[], uint16 dataLength);
+void* LookupTable1D_FiP32_GetAddress(LOOKUPTABLE1D_FIP32 *block, uint16 elementId);
 
 #endif
 

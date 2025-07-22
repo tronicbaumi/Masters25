@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2018, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,9 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 3344 $
- * $LastChangedDate:: 2024-07-04 13:08:58 +0200#$
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description: */
@@ -49,7 +49,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int16           *In;
     int16           Out;
     int16           b0;
@@ -57,11 +57,11 @@ typedef struct {
     int16           b2;
     int16           a1;
     int16           a2;
-    int8            sfrb0;
-    int8            sfrb1;
-    int8            sfrb2;
-    int8            sfra1;
-    int8            sfra2;
+    uint8           sfrb0;
+    uint8           sfrb1;
+    uint8           sfrb2;
+    uint8           sfra1;
+    uint8           sfra2;
     int16           in_old;
     int16           in_veryold;
     int16           out_old;
@@ -69,7 +69,7 @@ typedef struct {
 } BIQUAD_FIP16;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT16_PTR       In;
     int16           Out;
     int16           b0;
@@ -77,11 +77,11 @@ typedef struct {
     int16           b2;
     int16           a1;
     int16           a2;
-    int8            sfrb0;
-    int8            sfrb1;
-    int8            sfrb2;
-    int8            sfra1;
-    int8            sfra2;
+    uint8           sfrb0;
+    uint8           sfrb1;
+    uint8           sfrb2;
+    uint8           sfra1;
+    uint8           sfra2;
     int16           in_old;
     int16           in_veryold;
     int16           out_old;
@@ -95,16 +95,16 @@ typedef struct {
     (void (*)(void*))Biquad_FiP16_Init, \
     (tLoadImplementationParameter)Biquad_FiP16_Load, \
     (tSaveImplementationParameter)Biquad_FiP16_Save, \
-    (void* (*)(const void*, uint16))Biquad_FiP16_GetAddress }
+    (void* (*)(void*, uint16))Biquad_FiP16_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Biquad_FiP16_Update(BIQUAD_FIP16 *pTBiquad_FiP16);
-void Biquad_FiP16_Init(BIQUAD_FIP16 *pTBiquad_FiP16);
-uint8 Biquad_FiP16_Load(const BIQUAD_FIP16 *pTBiquad_FiP16, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 Biquad_FiP16_Save(BIQUAD_FIP16 *pTBiquad_FiP16, const uint8 data[], uint16 dataLength);
-void* Biquad_FiP16_GetAddress(const BIQUAD_FIP16 *block, uint16 elementId);
+void Biquad_FiP16_Update(BIQUAD_FIP16 *block);
+void Biquad_FiP16_Init(BIQUAD_FIP16 *block);
+uint8 Biquad_FiP16_Load(const BIQUAD_FIP16 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 Biquad_FiP16_Save(BIQUAD_FIP16 *block, const uint8 data[], uint16 dataLength);
+void* Biquad_FiP16_GetAddress(BIQUAD_FIP16 *block, uint16 elementId);
 
 #endif
 

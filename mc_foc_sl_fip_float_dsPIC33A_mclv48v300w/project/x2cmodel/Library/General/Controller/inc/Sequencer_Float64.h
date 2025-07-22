@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2014, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,8 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description: Generation of time delayed (enable) sequence.                 */
@@ -48,7 +49,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float64         *Start;
     float64         Out1;
     float64         Out2;
@@ -63,7 +64,7 @@ typedef struct {
 } SEQUENCER_FLOAT64;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT64_PTR     Start;
     float64         Out1;
     float64         Out2;
@@ -84,16 +85,16 @@ typedef struct {
     (void (*)(void*))Sequencer_Float64_Init, \
     (tLoadImplementationParameter)Sequencer_Float64_Load, \
     (tSaveImplementationParameter)Sequencer_Float64_Save, \
-    (void* (*)(const void*, uint16))Sequencer_Float64_GetAddress }
+    (void* (*)(void*, uint16))Sequencer_Float64_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Sequencer_Float64_Update(SEQUENCER_FLOAT64 *pTSequencer_Float64);
-void Sequencer_Float64_Init(SEQUENCER_FLOAT64 *pTSequencer_Float64);
-uint8 Sequencer_Float64_Load(const SEQUENCER_FLOAT64 *pTSequencer_Float64, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 Sequencer_Float64_Save(SEQUENCER_FLOAT64 *pTSequencer_Float64, const uint8 data[], uint16 dataLength);
-void* Sequencer_Float64_GetAddress(const SEQUENCER_FLOAT64 *block, uint16 elementId);
+void Sequencer_Float64_Update(SEQUENCER_FLOAT64 *block);
+void Sequencer_Float64_Init(SEQUENCER_FLOAT64 *block);
+uint8 Sequencer_Float64_Load(const SEQUENCER_FLOAT64 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 Sequencer_Float64_Save(SEQUENCER_FLOAT64 *block, const uint8 data[], uint16 dataLength);
+void* Sequencer_Float64_GetAddress(SEQUENCER_FLOAT64 *block, uint16 elementId);
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,15 +28,16 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/**     Description: 2nd Order Time Discrete System with 2 in- and outputs. 										 **/
-/**					 Calculation:																					 **/
-/**						x(k+1) = A*x(k) + B*u(k)																	 **/
-/**						y(k)   =   x(k)																				 **/
-/**																													 **/
+/**     Description: 2nd Order Time Discrete System with 2 in- and outputs.                                          **/
+/**                  Calculation:                                                                                    **/
+/**                     x(k+1) = A*x(k) + B*u(k)                                                                     **/
+/**                     y(k)   =   x(k)                                                                              **/
+/**                                                                                                                  **/
 /* USERCODE-END:Description                                                                                           */
 #ifndef TDSYSTEMO2_FIP16_H
 #define TDSYSTEMO2_FIP16_H
@@ -52,7 +53,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int16           *In1;
     int16           *In2;
     int16           Out1;
@@ -78,7 +79,7 @@ typedef struct {
 } TDSYSTEMO2_FIP16;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT16_PTR       In1;
     INT16_PTR       In2;
     int16           Out1;
@@ -110,16 +111,16 @@ typedef struct {
     (void (*)(void*))TDSystemO2_FiP16_Init, \
     (tLoadImplementationParameter)TDSystemO2_FiP16_Load, \
     (tSaveImplementationParameter)TDSystemO2_FiP16_Save, \
-    (void* (*)(const void*, uint16))TDSystemO2_FiP16_GetAddress }
+    (void* (*)(void*, uint16))TDSystemO2_FiP16_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void TDSystemO2_FiP16_Update(TDSYSTEMO2_FIP16 *pTTDSystemO2_FiP16);
-void TDSystemO2_FiP16_Init(TDSYSTEMO2_FIP16 *pTTDSystemO2_FiP16);
-uint8 TDSystemO2_FiP16_Load(const TDSYSTEMO2_FIP16 *pTTDSystemO2_FiP16, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 TDSystemO2_FiP16_Save(TDSYSTEMO2_FIP16 *pTTDSystemO2_FiP16, const uint8 data[], uint16 dataLength);
-void* TDSystemO2_FiP16_GetAddress(const TDSYSTEMO2_FIP16 *block, uint16 elementId);
+void TDSystemO2_FiP16_Update(TDSYSTEMO2_FIP16 *block);
+void TDSystemO2_FiP16_Init(TDSYSTEMO2_FIP16 *block);
+uint8 TDSystemO2_FiP16_Load(const TDSYSTEMO2_FIP16 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 TDSystemO2_FiP16_Save(TDSYSTEMO2_FIP16 *block, const uint8 data[], uint16 dataLength);
+void* TDSystemO2_FiP16_GetAddress(TDSYSTEMO2_FIP16 *block, uint16 elementId);
 
 #endif
 

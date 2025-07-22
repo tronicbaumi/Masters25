@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,14 +28,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/*      Description:	Subtraction of Input Minus from Input Plus with output wrapping.							  */
-/* 						Calculation:																				  */
-/* 							Out = Plus - Minus																		  */
-/* 																													  */
+/*      Description:    Subtraction of Input Minus from Input Plus with output wrapping.                              */
+/*                      Calculation:                                                                                  */
+/*                          Out = Plus - Minus                                                                        */
+/*                                                                                                                    */
 /* USERCODE-END:Description                                                                                           */
 #ifndef USUB_FLOAT32_H
 #define USUB_FLOAT32_H
@@ -51,14 +52,14 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float32         *Plus;
     float32         *Minus;
     float32         Out;
 } USUB_FLOAT32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT32_PTR     Plus;
     FLOAT32_PTR     Minus;
     float32         Out;
@@ -71,14 +72,14 @@ typedef struct {
     (void (*)(void*))uSub_Float32_Init, \
     (tLoadImplementationParameter)Common_Load, \
     (tSaveImplementationParameter)Common_Save, \
-    (void* (*)(const void*, uint16))uSub_Float32_GetAddress }
+    (void* (*)(void*, uint16))uSub_Float32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void uSub_Float32_Update(USUB_FLOAT32 *pTuSub_Float32);
-void uSub_Float32_Init(USUB_FLOAT32 *pTuSub_Float32);
-void* uSub_Float32_GetAddress(const USUB_FLOAT32 *block, uint16 elementId);
+void uSub_Float32_Update(USUB_FLOAT32 *block);
+void uSub_Float32_Init(USUB_FLOAT32 *block);
+void* uSub_Float32_GetAddress(USUB_FLOAT32 *block, uint16 elementId);
 
 #endif
 

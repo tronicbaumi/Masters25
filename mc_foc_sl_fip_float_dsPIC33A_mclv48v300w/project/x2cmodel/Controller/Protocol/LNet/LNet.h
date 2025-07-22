@@ -3,7 +3,7 @@
  * @brief LNet protocol
  */
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -32,9 +32,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 1852 $
- * $LastChangedDate:: 2020-03-10 16:35:19 +0100#$
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3524 $
+ * $LastChangedDate:: 2024-11-29 19:50:53 +0100#$
  */
 #ifndef LNET_H
 #define LNET_H
@@ -51,50 +51,52 @@ extern "C" {
 #define LNET_FILL    ((uint8)0x00)
 
 /* state machine states */
-typedef enum {LNET_STATE_SYN, LNET_STATE_NODE, LNET_STATE_SIZE_LSB, LNET_STATE_SIZE_MSB, \
-			  LNET_STATE_DATA, LNET_STATE_FILL, LNET_STATE_CRC} tLNetFrameState;
+typedef enum {
+    LNET_STATE_SYN, LNET_STATE_NODE, LNET_STATE_SIZE_LSB, LNET_STATE_SIZE_MSB, LNET_STATE_DATA, LNET_STATE_FILL, LNET_STATE_CRC,
+    LNET_STATE_SIZE_TOO_LARGE
+} tLNetFrameState;
 
 typedef struct tLNet tLNet;
 struct tLNet {
-	void (*communicate)(tProtocol*);
-	void (*enableSend)(tProtocol*);
-	
-	uint16 frameSize;
-	uint16 maxCommSize;
-	uint8* frameData;
-	
-	void* serviceTable;
+    void (*communicate)(tProtocol* protocol);
+    void (*enableSend)(tProtocol* protocol);
 
-	tInterface* hwInterface;
+    uint16 frameSize;
+    uint16 maxCommSize;
+    uint8* frameData;
 
-	void (*setupRxTimeout)(tLNet*, uint16);
-	void (*updateRxTimeout)(tLNet*, uint16);
-	void (*resetRxTimeout)(tLNet*);
+    void* serviceTable;
 
-	/* receive timeout */
-	uint16 rxTimeout;
-	/* receive timeout counter (from .rcvTimeout towards zero) */
-	uint16 rxTimeoutCnt;
+    tInterface* hwInterface;
 
-	/* slave node id */
-	uint8 node;
-	
-	/* receive- & send state */
-	tLNetFrameState rxState;
-	tLNetFrameState txState;
-	/* communication state (rx or tx) */
-	tCommState commState;
-	uint8 crc;
-	/* framebuffer ptr to actual frame byte */
-	uint16 frameBufferPtr;
+    void (*setupRxTimeout)(tLNet* protocol, uint16 timeout);
+    void (*updateRxTimeout)(tLNet* protocol, uint16 time);
+    void (*resetRxTimeout)(tLNet* protocol);
 
-	/* next state being cached in case of fill byte */
-	tLNetFrameState nextState;
-	/* last SYN type cached in case of fill byte */
-	uint8 lastSyn;
+    /* receive timeout */
+    uint16 rxTimeout;
+    /* receive timeout counter (from .rcvTimeout towards zero) */
+    uint16 rxTimeoutCnt;
+
+    /* slave node id */
+    uint8 node;
+
+    /* receive- & send state */
+    tLNetFrameState rxState;
+    tLNetFrameState txState;
+    /* communication state (rx or tx) */
+    tCommState commState;
+    uint8 crc;
+    /* framebuffer ptr to actual frame byte */
+    uint16 frameBufferPtr;
+
+    /* next state being cached in case of fill byte */
+    tLNetFrameState nextState;
+    /* last SYN type cached in case of fill byte */
+    uint8 lastSyn;
 };
 
-/* public prototypes */
+/* Public functions */
 void initLNet(tLNet* protocol, uint8* dataBuffer, uint16 dataBufferSize, uint8 node);
 
 #ifdef __cplusplus

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2018, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,9 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 3344 $
- * $LastChangedDate:: 2024-07-04 13:08:58 +0200#$
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description: */
@@ -49,13 +49,13 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int32           *In;
     int32           Out;
     int32           *coeffB;
     int32           *coeffA;
-    int8            sfrB;
-    int8            sfrA;
+    uint8           sfrB;
+    uint8           sfrA;
     int32           *inputBuffer;
     int32           *outputBuffer;
     int8            indexIn;
@@ -65,13 +65,13 @@ typedef struct {
 } IIR_FIP32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT32_PTR       In;
     int32           Out;
     INT32_PTR       coeffB;
     INT32_PTR       coeffA;
-    int8            sfrB;
-    int8            sfrA;
+    uint8           sfrB;
+    uint8           sfrA;
     INT32_PTR       inputBuffer;
     INT32_PTR       outputBuffer;
     int8            indexIn;
@@ -87,16 +87,16 @@ typedef struct {
     (void (*)(void*))IIR_FiP32_Init, \
     (tLoadImplementationParameter)IIR_FiP32_Load, \
     (tSaveImplementationParameter)IIR_FiP32_Save, \
-    (void* (*)(const void*, uint16))IIR_FiP32_GetAddress }
+    (void* (*)(void*, uint16))IIR_FiP32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void IIR_FiP32_Update(IIR_FIP32 *pTIIR_FiP32);
-void IIR_FiP32_Init(IIR_FIP32 *pTIIR_FiP32);
-uint8 IIR_FiP32_Load(const IIR_FIP32 *pTIIR_FiP32, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 IIR_FiP32_Save(IIR_FIP32 *pTIIR_FiP32, const uint8 data[], uint16 dataLength);
-void* IIR_FiP32_GetAddress(const IIR_FIP32 *block, uint16 elementId);
+void IIR_FiP32_Update(IIR_FIP32 *block);
+void IIR_FiP32_Init(IIR_FIP32 *block);
+uint8 IIR_FiP32_Load(const IIR_FIP32 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 IIR_FiP32_Save(IIR_FIP32 *block, const uint8 data[], uint16 dataLength);
+void* IIR_FiP32_GetAddress(IIR_FIP32 *block, uint16 elementId);
 
 #endif
 

@@ -3,7 +3,7 @@
  * @brief Common services.
  */
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -32,9 +32,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 3337 $
- * $LastChangedDate:: 2024-06-27 13:12:54 +0200#$
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3640 $
+ * $LastChangedDate:: 2025-02-24 19:40:07 +0100#$
  */
 #ifndef SERVICES_H
 #define SERVICES_H
@@ -114,6 +114,8 @@ void sendSvNotAvailable(tProtocol* protocol);
 void sendError(tProtocol* protocol, uint8 errorId);
 void initServiceTable(tProtocol* protocol);
 void addCoreServices(tProtocol* protocol);
+void addCoreBootloaderServices(tProtocol* protocol);
+void addCoreApplicationServices(tProtocol* protocol);
 
 #ifdef __cplusplus
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,8 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2710 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description: */
@@ -48,7 +49,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float64         *In;
     float64         *Init;
     bool            *Enable;
@@ -65,7 +66,7 @@ typedef struct {
 } PID_FLOAT64;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT64_PTR     In;
     FLOAT64_PTR     Init;
     BOOL_PTR        Enable;
@@ -88,16 +89,16 @@ typedef struct {
     (void (*)(void*))PID_Float64_Init, \
     (tLoadImplementationParameter)PID_Float64_Load, \
     (tSaveImplementationParameter)PID_Float64_Save, \
-    (void* (*)(const void*, uint16))PID_Float64_GetAddress }
+    (void* (*)(void*, uint16))PID_Float64_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void PID_Float64_Update(PID_FLOAT64 *pTPID_Float64);
-void PID_Float64_Init(PID_FLOAT64 *pTPID_Float64);
-uint8 PID_Float64_Load(const PID_FLOAT64 *pTPID_Float64, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 PID_Float64_Save(PID_FLOAT64 *pTPID_Float64, const uint8 data[], uint16 dataLength);
-void* PID_Float64_GetAddress(const PID_FLOAT64 *block, uint16 elementId);
+void PID_Float64_Update(PID_FLOAT64 *block);
+void PID_Float64_Init(PID_FLOAT64 *block);
+uint8 PID_Float64_Load(const PID_FLOAT64 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 PID_Float64_Save(PID_FLOAT64 *block, const uint8 data[], uint16 dataLength);
+void* PID_Float64_GetAddress(PID_FLOAT64 *block, uint16 elementId);
 
 #endif
 

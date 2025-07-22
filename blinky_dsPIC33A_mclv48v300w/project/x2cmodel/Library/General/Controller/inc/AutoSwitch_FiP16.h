@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,14 +28,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /*     Description:  Switch between In1 and In3 dependent on Switch signal:   */
-/*    			Switch signal rising:  Switch > Threshold up --> Out = In1	  */
-/*    			Switch signal falling: Switch < Threshold down --> Out = In3  */
-/*																			  */
+/*              Switch signal rising:  Switch > Threshold up --> Out = In1    */
+/*              Switch signal falling: Switch < Threshold down --> Out = In3  */
+/*                                                                            */
 /* USERCODE-END:Description                                                                                           */
 #ifndef AUTOSWITCH_FIP16_H
 #define AUTOSWITCH_FIP16_H
@@ -51,7 +52,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int16           *In1;
     int16           *Switch;
     int16           *In3;
@@ -62,7 +63,7 @@ typedef struct {
 } AUTOSWITCH_FIP16;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT16_PTR       In1;
     INT16_PTR       Switch;
     INT16_PTR       In3;
@@ -79,16 +80,16 @@ typedef struct {
     (void (*)(void*))AutoSwitch_FiP16_Init, \
     (tLoadImplementationParameter)AutoSwitch_FiP16_Load, \
     (tSaveImplementationParameter)AutoSwitch_FiP16_Save, \
-    (void* (*)(const void*, uint16))AutoSwitch_FiP16_GetAddress }
+    (void* (*)(void*, uint16))AutoSwitch_FiP16_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void AutoSwitch_FiP16_Update(AUTOSWITCH_FIP16 *pTAutoSwitch_FiP16);
-void AutoSwitch_FiP16_Init(AUTOSWITCH_FIP16 *pTAutoSwitch_FiP16);
-uint8 AutoSwitch_FiP16_Load(const AUTOSWITCH_FIP16 *pTAutoSwitch_FiP16, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 AutoSwitch_FiP16_Save(AUTOSWITCH_FIP16 *pTAutoSwitch_FiP16, const uint8 data[], uint16 dataLength);
-void* AutoSwitch_FiP16_GetAddress(const AUTOSWITCH_FIP16 *block, uint16 elementId);
+void AutoSwitch_FiP16_Update(AUTOSWITCH_FIP16 *block);
+void AutoSwitch_FiP16_Init(AUTOSWITCH_FIP16 *block);
+uint8 AutoSwitch_FiP16_Load(const AUTOSWITCH_FIP16 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 AutoSwitch_FiP16_Save(AUTOSWITCH_FIP16 *block, const uint8 data[], uint16 dataLength);
+void* AutoSwitch_FiP16_GetAddress(AUTOSWITCH_FIP16 *block, uint16 elementId);
 
 #endif
 

@@ -36,7 +36,7 @@
  */
 /*
  * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 1852 $
+ * $LastChangedRevision: 3482 $
  * $LastChangedDate:: 2016-02-18 12:04:02 +0100#$
  */
 #ifndef TYPECAST_H
@@ -46,32 +46,118 @@
 extern "C" {
 #endif
 
-#if defined(__DATA_WIDTH_32BIT__)
-	#define UINT8_TO_INT8(data)   ((int8)(((int16)(data) << 24) >> 24))
-	#define UINT16_TO_INT16(data) ((int16)(((int32)(data) << 16) >> 16))
-	#define UINT32_TO_INT32(data) ((int32)(data))
-	#define UINT64_TO_INT64(data) ((int64)(data))
-
-#elif defined(__DATA_WIDTH_16BIT__)
-	#define UINT8_TO_INT8(data)   ((int8)(((int16)(data) << 8) >> 8))
-	#define UINT16_TO_INT16(data) ((int16)(data))
-	#define UINT32_TO_INT32(data) ((int32)(data))
-	#define UINT64_TO_INT64(data) ((int64)(data))
-
-#elif defined(__DATA_WIDTH_8BIT__)
-	#define UINT8_TO_INT8(data)   ((int8)(data))
-	#define UINT16_TO_INT16(data) ((int16)(data))
-	#define UINT32_TO_INT32(data) ((int32)(data))
-	#define UINT64_TO_INT64(data) ((int64)(data))
-
-#elif defined(__MATLAB__) || defined(__SCILAB__)
-	#define UINT8_TO_INT8(data)   ((int8)(data))
-	#define UINT16_TO_INT16(data) ((int16)(data))
-	#define UINT32_TO_INT32(data) ((int32)(data))
-	#define UINT64_TO_INT64(data) ((int64)(data))
-
+#if defined(_MSC_VER) && (_MSC_VER < 1900) && !defined(__cplusplus)
+static __inline int8 castUint8ToInt8(uint8 value)
 #else
-	#error DATA WIDTH NOT DEFINED
+static inline int8 castUint8ToInt8(uint8 value)
+#endif
+{
+    int8 castedValue;
+#if defined(__DATA_WIDTH_16BIT__)
+    if ((value & 0x80U) != 0U)
+    {
+        castedValue = (int8)(uint16)((uint16)0xFF00U | value);
+    }
+    else
+    {
+        castedValue = (int8)value;
+    }
+#elif defined(__DATA_WIDTH_8BIT__)
+    castedValue = (int8)value;
+#elif defined(__MATLAB__) || defined(__SCILAB__)
+    castedValue = (int8)value;
+#else
+#error DATA WIDTH NOT DEFINED
+#endif
+    return (castedValue);
+}
+
+#if defined(_MSC_VER) && (_MSC_VER < 1900) && !defined(__cplusplus)
+static __inline int16 castUint16ToInt16(uint16 value)
+#else
+static inline int16 castUint16ToInt16(uint16 value)
+#endif
+{
+    int16 castedValue;
+#if defined(__DATA_WIDTH_16BIT__)
+    castedValue = (int16)value;
+#elif defined(__DATA_WIDTH_8BIT__)
+    castedValue = (int16)value;
+#elif defined(__MATLAB__) || defined(__SCILAB__)
+    castedValue = (int16)value;
+#else
+#error DATA WIDTH NOT DEFINED
+#endif
+    return (castedValue);
+}
+
+#if defined(_MSC_VER) && (_MSC_VER < 1900) && !defined(__cplusplus)
+static __inline int32 castUint32ToInt32(uint32 value)
+#else
+static inline int32 castUint32ToInt32(uint32 value)
+#endif
+{
+    int32 castedValue;
+#if defined(__DATA_WIDTH_16BIT__)
+    castedValue = (int32)value;
+#elif defined(__DATA_WIDTH_8BIT__)
+    castedValue = (int32)value;
+#elif defined(__MATLAB__) || defined(__SCILAB__)
+    castedValue = (int32)value;
+#else
+#error DATA WIDTH NOT DEFINED
+#endif
+    return (castedValue);
+}
+
+#if defined(_MSC_VER) && (_MSC_VER < 1900) && !defined(__cplusplus)
+static __inline int64 castUint64ToInt64(uint64 value)
+#else
+static inline int64 castUint64ToInt64(uint64 value)
+#endif
+{
+    int64 castedValue;
+#if defined(__DATA_WIDTH_16BIT__)
+    castedValue = (int64)value;
+#elif defined(__DATA_WIDTH_8BIT__)
+    castedValue = (int64)value;
+#elif defined(__MATLAB__) || defined(__SCILAB__)
+    castedValue = (int64)value;
+#else
+#error DATA WIDTH NOT DEFINED
+#endif
+    return (castedValue);
+}
+
+#if defined(__DATA_WIDTH_16BIT__)
+/** Deprecated - Use castUint8ToInt8 instead */
+#define UINT8_TO_INT8(data)   ((int8)(((int16)(data) << 8) >> 8))
+/** Deprecated - Use castUint16ToInt16 instead */
+#define UINT16_TO_INT16(data) ((int16)(data))
+/** Deprecated - Use castUint32ToInt32 instead */
+#define UINT32_TO_INT32(data) ((int32)(data))
+/** Deprecated - Use castUint64ToInt64 instead */
+#define UINT64_TO_INT64(data) ((int64)(data))
+#elif defined(__DATA_WIDTH_8BIT__)
+/** Deprecated - Use castUint8ToInt8 instead */
+#define UINT8_TO_INT8(data)   ((int8)(data))
+/** Deprecated - Use castUint16ToInt16 instead */
+#define UINT16_TO_INT16(data) ((int16)(data))
+/** Deprecated - Use castUint32ToInt32 instead */
+#define UINT32_TO_INT32(data) ((int32)(data))
+/** Deprecated - Use castUint64ToInt64 instead */
+#define UINT64_TO_INT64(data) ((int64)(data))
+#elif defined(__MATLAB__) || defined(__SCILAB__)
+/** Deprecated - Use castUint8ToInt8 instead */
+#define UINT8_TO_INT8(data)   ((int8)(data))
+/** Deprecated - Use castUint16ToInt16 instead */
+#define UINT16_TO_INT16(data) ((int16)(data))
+/** Deprecated - Use castUint32ToInt32 instead */
+#define UINT32_TO_INT32(data) ((int32)(data))
+/** Deprecated - Use castUint64ToInt64 instead */
+#define UINT64_TO_INT64(data) ((int64)(data))
+#else
+#error DATA WIDTH NOT DEFINED
 #endif
 
 #ifdef __cplusplus

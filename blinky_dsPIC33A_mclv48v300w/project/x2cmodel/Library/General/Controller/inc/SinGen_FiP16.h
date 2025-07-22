@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,8 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description: */
@@ -48,7 +49,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int16           *A;
     int16           *f;
     int16           u;
@@ -59,7 +60,7 @@ typedef struct {
 } SINGEN_FIP16;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT16_PTR       A;
     INT16_PTR       f;
     int16           u;
@@ -76,16 +77,16 @@ typedef struct {
     (void (*)(void*))SinGen_FiP16_Init, \
     (tLoadImplementationParameter)SinGen_FiP16_Load, \
     (tSaveImplementationParameter)SinGen_FiP16_Save, \
-    (void* (*)(const void*, uint16))SinGen_FiP16_GetAddress }
+    (void* (*)(void*, uint16))SinGen_FiP16_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void SinGen_FiP16_Update(SINGEN_FIP16 *pTSinGen_FiP16);
-void SinGen_FiP16_Init(SINGEN_FIP16 *pTSinGen_FiP16);
-uint8 SinGen_FiP16_Load(const SINGEN_FIP16 *pTSinGen_FiP16, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 SinGen_FiP16_Save(SINGEN_FIP16 *pTSinGen_FiP16, const uint8 data[], uint16 dataLength);
-void* SinGen_FiP16_GetAddress(const SINGEN_FIP16 *block, uint16 elementId);
+void SinGen_FiP16_Update(SINGEN_FIP16 *block);
+void SinGen_FiP16_Init(SINGEN_FIP16 *block);
+uint8 SinGen_FiP16_Load(const SINGEN_FIP16 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 SinGen_FiP16_Save(SINGEN_FIP16 *block, const uint8 data[], uint16 dataLength);
+void* SinGen_FiP16_GetAddress(SINGEN_FIP16 *block, uint16 elementId);
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,8 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description: */
@@ -48,7 +49,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float64         *A;
     float64         *f;
     float64         u;
@@ -59,7 +60,7 @@ typedef struct {
 } SINGEN_FLOAT64;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT64_PTR     A;
     FLOAT64_PTR     f;
     float64         u;
@@ -76,16 +77,16 @@ typedef struct {
     (void (*)(void*))SinGen_Float64_Init, \
     (tLoadImplementationParameter)SinGen_Float64_Load, \
     (tSaveImplementationParameter)SinGen_Float64_Save, \
-    (void* (*)(const void*, uint16))SinGen_Float64_GetAddress }
+    (void* (*)(void*, uint16))SinGen_Float64_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void SinGen_Float64_Update(SINGEN_FLOAT64 *pTSinGen_Float64);
-void SinGen_Float64_Init(SINGEN_FLOAT64 *pTSinGen_Float64);
-uint8 SinGen_Float64_Load(const SINGEN_FLOAT64 *pTSinGen_Float64, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 SinGen_Float64_Save(SINGEN_FLOAT64 *pTSinGen_Float64, const uint8 data[], uint16 dataLength);
-void* SinGen_Float64_GetAddress(const SINGEN_FLOAT64 *block, uint16 elementId);
+void SinGen_Float64_Update(SINGEN_FLOAT64 *block);
+void SinGen_Float64_Init(SINGEN_FLOAT64 *block);
+uint8 SinGen_Float64_Load(const SINGEN_FLOAT64 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 SinGen_Float64_Save(SINGEN_FLOAT64 *block, const uint8 data[], uint16 dataLength);
+void* SinGen_Float64_GetAddress(SINGEN_FLOAT64 *block, uint16 elementId);
 
 #endif
 

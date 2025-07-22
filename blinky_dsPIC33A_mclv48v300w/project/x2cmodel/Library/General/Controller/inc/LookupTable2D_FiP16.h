@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,8 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description: Two dimensional look-up table with selectable number of entries */
@@ -48,50 +49,50 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int16           *x;
     int16           *y;
     int16           Out;
-const  int16        *Table;
-    int8            sfrX;
+const int16         *Table;
+    uint8           sfrX;
     uint16          maskX;
     uint16          idxOffsetX;
     uint16          sizeX;
     int16           gainX;
-    int8            gainXsfr;
+    uint8           gainXsfr;
     int16           offsetX;
     int16           minX;
     int16           maxX;
-    int8            sfrY;
+    uint8           sfrY;
     uint16          maskY;
     uint16          idxOffsetY;
     int16           gainY;
-    int8            gainYsfr;
+    uint8           gainYsfr;
     int16           offsetY;
     int16           minY;
     int16           maxY;
 } LOOKUPTABLE2D_FIP16;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT16_PTR       x;
     INT16_PTR       y;
     int16           Out;
-const  INT16_PTR    Table;
-    int8            sfrX;
+const INT16_PTR     Table;
+    uint8           sfrX;
     uint16          maskX;
     uint16          idxOffsetX;
     uint16          sizeX;
     int16           gainX;
-    int8            gainXsfr;
+    uint8           gainXsfr;
     int16           offsetX;
     int16           minX;
     int16           maxX;
-    int8            sfrY;
+    uint8           sfrY;
     uint16          maskY;
     uint16          idxOffsetY;
     int16           gainY;
-    int8            gainYsfr;
+    uint8           gainYsfr;
     int16           offsetY;
     int16           minY;
     int16           maxY;
@@ -104,16 +105,16 @@ const  INT16_PTR    Table;
     (void (*)(void*))LookupTable2D_FiP16_Init, \
     (tLoadImplementationParameter)LookupTable2D_FiP16_Load, \
     (tSaveImplementationParameter)LookupTable2D_FiP16_Save, \
-    (void* (*)(const void*, uint16))LookupTable2D_FiP16_GetAddress }
+    (void* (*)(void*, uint16))LookupTable2D_FiP16_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void LookupTable2D_FiP16_Update(LOOKUPTABLE2D_FIP16 *pTLookupTable2D_FiP16);
-void LookupTable2D_FiP16_Init(LOOKUPTABLE2D_FIP16 *pTLookupTable2D_FiP16);
-uint8 LookupTable2D_FiP16_Load(const LOOKUPTABLE2D_FIP16 *pTLookupTable2D_FiP16, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 LookupTable2D_FiP16_Save(LOOKUPTABLE2D_FIP16 *pTLookupTable2D_FiP16, const uint8 data[], uint16 dataLength);
-void* LookupTable2D_FiP16_GetAddress(const LOOKUPTABLE2D_FIP16 *block, uint16 elementId);
+void LookupTable2D_FiP16_Update(LOOKUPTABLE2D_FIP16 *block);
+void LookupTable2D_FiP16_Init(LOOKUPTABLE2D_FIP16 *block);
+uint8 LookupTable2D_FiP16_Load(const LOOKUPTABLE2D_FIP16 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 LookupTable2D_FiP16_Save(LOOKUPTABLE2D_FIP16 *block, const uint8 data[], uint16 dataLength);
+void* LookupTable2D_FiP16_GetAddress(LOOKUPTABLE2D_FIP16 *block, uint16 elementId);
 
 #endif
 

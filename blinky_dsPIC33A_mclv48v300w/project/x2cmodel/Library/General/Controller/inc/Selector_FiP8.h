@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,17 +28,18 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/* Description: 															  */
-/*		Passing through of input signal selected by the select inport:		  */
-/*		  Select = 0 (DSP): Out = In0										  */
-/*		  Select = 1 (DSP): Out = In1										  */
-/*  	  ...																  */
-/*  	  Select = 7 (DSP): Out = In7										  */
-/*																			  */
+/* Description:                                                               */
+/*      Passing through of input signal selected by the select inport:        */
+/*        Select = 0 (DSP): Out = In0                                         */
+/*        Select = 1 (DSP): Out = In1                                         */
+/*        ...                                                                 */
+/*        Select = 7 (DSP): Out = In7                                         */
+/*                                                                            */
 /* USERCODE-END:Description                                                                                           */
 #ifndef SELECTOR_FIP8_H
 #define SELECTOR_FIP8_H
@@ -54,7 +55,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int8            *In0;
     int8            *In1;
     int8            *In2;
@@ -68,7 +69,7 @@ typedef struct {
 } SELECTOR_FIP8;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT8_PTR        In0;
     INT8_PTR        In1;
     INT8_PTR        In2;
@@ -88,14 +89,14 @@ typedef struct {
     (void (*)(void*))Selector_FiP8_Init, \
     (tLoadImplementationParameter)Common_Load, \
     (tSaveImplementationParameter)Common_Save, \
-    (void* (*)(const void*, uint16))Selector_FiP8_GetAddress }
+    (void* (*)(void*, uint16))Selector_FiP8_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Selector_FiP8_Update(SELECTOR_FIP8 *pTSelector_FiP8);
-void Selector_FiP8_Init(SELECTOR_FIP8 *pTSelector_FiP8);
-void* Selector_FiP8_GetAddress(const SELECTOR_FIP8 *block, uint16 elementId);
+void Selector_FiP8_Update(SELECTOR_FIP8 *block);
+void Selector_FiP8_Init(SELECTOR_FIP8 *block);
+void* Selector_FiP8_GetAddress(SELECTOR_FIP8 *block, uint16 elementId);
 
 #endif
 

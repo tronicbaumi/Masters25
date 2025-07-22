@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,14 +28,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/**     Description: 	Addition of input 1 and input 2.					 **/	
+/**     Description:    Addition of input 1 and input 2.                     **/
 /**                     Calculation:                                         **/
-/**							Out = In1 + In2							 		 **/
-/**																			 **/
+/**                         Out = In1 + In2                                  **/
+/**                                                                          **/
 /* USERCODE-END:Description                                                                                           */
 #ifndef ADD_FIP32_H
 #define ADD_FIP32_H
@@ -51,14 +52,14 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int32           *In1;
     int32           *In2;
     int32           Out;
 } ADD_FIP32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT32_PTR       In1;
     INT32_PTR       In2;
     int32           Out;
@@ -71,14 +72,14 @@ typedef struct {
     (void (*)(void*))Add_FiP32_Init, \
     (tLoadImplementationParameter)Common_Load, \
     (tSaveImplementationParameter)Common_Save, \
-    (void* (*)(const void*, uint16))Add_FiP32_GetAddress }
+    (void* (*)(void*, uint16))Add_FiP32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Add_FiP32_Update(ADD_FIP32 *pTAdd_FiP32);
-void Add_FiP32_Init(ADD_FIP32 *pTAdd_FiP32);
-void* Add_FiP32_GetAddress(const ADD_FIP32 *block, uint16 elementId);
+void Add_FiP32_Update(ADD_FIP32 *block);
+void Add_FiP32_Init(ADD_FIP32 *block);
+void* Add_FiP32_GetAddress(ADD_FIP32 *block, uint16 elementId);
 
 #endif
 

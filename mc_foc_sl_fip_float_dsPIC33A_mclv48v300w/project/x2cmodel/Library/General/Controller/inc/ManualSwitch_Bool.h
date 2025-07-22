@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2017, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,9 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
- * $LastChangedDate:: 2022-05-03 15:06:23 +0200#$
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /**
@@ -52,7 +52,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     bool            *In1;
     bool            *In2;
     bool            Out;
@@ -60,7 +60,7 @@ typedef struct {
 } MANUALSWITCH_BOOL;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     BOOL_PTR        In1;
     BOOL_PTR        In2;
     bool            Out;
@@ -74,16 +74,16 @@ typedef struct {
     (void (*)(void*))ManualSwitch_Bool_Init, \
     (tLoadImplementationParameter)ManualSwitch_Bool_Load, \
     (tSaveImplementationParameter)ManualSwitch_Bool_Save, \
-    (void* (*)(const void*, uint16))ManualSwitch_Bool_GetAddress }
+    (void* (*)(void*, uint16))ManualSwitch_Bool_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void ManualSwitch_Bool_Update(MANUALSWITCH_BOOL *pTManualSwitch_Bool);
-void ManualSwitch_Bool_Init(MANUALSWITCH_BOOL *pTManualSwitch_Bool);
-uint8 ManualSwitch_Bool_Load(const MANUALSWITCH_BOOL *pTManualSwitch_Bool, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 ManualSwitch_Bool_Save(MANUALSWITCH_BOOL *pTManualSwitch_Bool, const uint8 data[], uint16 dataLength);
-void* ManualSwitch_Bool_GetAddress(const MANUALSWITCH_BOOL *block, uint16 elementId);
+void ManualSwitch_Bool_Update(MANUALSWITCH_BOOL *block);
+void ManualSwitch_Bool_Init(MANUALSWITCH_BOOL *block);
+uint8 ManualSwitch_Bool_Load(const MANUALSWITCH_BOOL *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 ManualSwitch_Bool_Save(MANUALSWITCH_BOOL *block, const uint8 data[], uint16 dataLength);
+void* ManualSwitch_Bool_GetAddress(MANUALSWITCH_BOOL *block, uint16 elementId);
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,8 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description: */
@@ -48,19 +49,19 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int16           *In;
     int16           Out;
     int16           V;
-    int8            sfr;
+    uint8           sfr;
 } UGAIN_FIP16;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT16_PTR       In;
     int16           Out;
     int16           V;
-    int8            sfr;
+    uint8           sfr;
 } UGAIN_FIP16;
 #endif
 
@@ -70,16 +71,16 @@ typedef struct {
     (void (*)(void*))uGain_FiP16_Init, \
     (tLoadImplementationParameter)uGain_FiP16_Load, \
     (tSaveImplementationParameter)uGain_FiP16_Save, \
-    (void* (*)(const void*, uint16))uGain_FiP16_GetAddress }
+    (void* (*)(void*, uint16))uGain_FiP16_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void uGain_FiP16_Update(UGAIN_FIP16 *pTuGain_FiP16);
-void uGain_FiP16_Init(UGAIN_FIP16 *pTuGain_FiP16);
-uint8 uGain_FiP16_Load(const UGAIN_FIP16 *pTuGain_FiP16, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 uGain_FiP16_Save(UGAIN_FIP16 *pTuGain_FiP16, const uint8 data[], uint16 dataLength);
-void* uGain_FiP16_GetAddress(const UGAIN_FIP16 *block, uint16 elementId);
+void uGain_FiP16_Update(UGAIN_FIP16 *block);
+void uGain_FiP16_Init(UGAIN_FIP16 *block);
+uint8 uGain_FiP16_Load(const UGAIN_FIP16 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 uGain_FiP16_Save(UGAIN_FIP16 *block, const uint8 data[], uint16 dataLength);
+void* uGain_FiP16_GetAddress(UGAIN_FIP16 *block, uint16 elementId);
 
 #endif
 

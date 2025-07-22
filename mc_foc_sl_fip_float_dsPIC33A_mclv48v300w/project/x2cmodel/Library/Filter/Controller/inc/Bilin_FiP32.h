@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2018, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,9 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 3344 $
- * $LastChangedDate:: 2024-07-04 13:08:58 +0200#$
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description: */
@@ -49,28 +49,28 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int32           *In;
     int32           Out;
     int32           b0;
     int32           b1;
     int32           a1;
-    int8            sfrb0;
-    int8            sfrb1;
-    int8            sfra1;
+    uint8           sfrb0;
+    uint8           sfrb1;
+    uint8           sfra1;
     int32           in_old;
 } BILIN_FIP32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT32_PTR       In;
     int32           Out;
     int32           b0;
     int32           b1;
     int32           a1;
-    int8            sfrb0;
-    int8            sfrb1;
-    int8            sfra1;
+    uint8           sfrb0;
+    uint8           sfrb1;
+    uint8           sfra1;
     int32           in_old;
 } BILIN_FIP32;
 #endif
@@ -81,16 +81,16 @@ typedef struct {
     (void (*)(void*))Bilin_FiP32_Init, \
     (tLoadImplementationParameter)Bilin_FiP32_Load, \
     (tSaveImplementationParameter)Bilin_FiP32_Save, \
-    (void* (*)(const void*, uint16))Bilin_FiP32_GetAddress }
+    (void* (*)(void*, uint16))Bilin_FiP32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Bilin_FiP32_Update(BILIN_FIP32 *pTBilin_FiP32);
-void Bilin_FiP32_Init(BILIN_FIP32 *pTBilin_FiP32);
-uint8 Bilin_FiP32_Load(const BILIN_FIP32 *pTBilin_FiP32, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 Bilin_FiP32_Save(BILIN_FIP32 *pTBilin_FiP32, const uint8 data[], uint16 dataLength);
-void* Bilin_FiP32_GetAddress(const BILIN_FIP32 *block, uint16 elementId);
+void Bilin_FiP32_Update(BILIN_FIP32 *block);
+void Bilin_FiP32_Init(BILIN_FIP32 *block);
+uint8 Bilin_FiP32_Load(const BILIN_FIP32 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 Bilin_FiP32_Save(BILIN_FIP32 *block, const uint8 data[], uint16 dataLength);
+void* Bilin_FiP32_GetAddress(BILIN_FIP32 *block, uint16 elementId);
 
 #endif
 

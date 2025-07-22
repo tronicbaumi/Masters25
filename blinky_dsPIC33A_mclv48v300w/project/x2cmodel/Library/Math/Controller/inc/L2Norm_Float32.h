@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,8 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description:
@@ -50,14 +51,14 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float32         *u1;
     float32         *u2;
     float32         Out;
 } L2NORM_FLOAT32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT32_PTR     u1;
     FLOAT32_PTR     u2;
     float32         Out;
@@ -70,14 +71,14 @@ typedef struct {
     (void (*)(void*))L2Norm_Float32_Init, \
     (tLoadImplementationParameter)Common_Load, \
     (tSaveImplementationParameter)Common_Save, \
-    (void* (*)(const void*, uint16))L2Norm_Float32_GetAddress }
+    (void* (*)(void*, uint16))L2Norm_Float32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void L2Norm_Float32_Update(L2NORM_FLOAT32 *pTL2Norm_Float32);
-void L2Norm_Float32_Init(L2NORM_FLOAT32 *pTL2Norm_Float32);
-void* L2Norm_Float32_GetAddress(const L2NORM_FLOAT32 *block, uint16 elementId);
+void L2Norm_Float32_Update(L2NORM_FLOAT32 *block);
+void L2Norm_Float32_Init(L2NORM_FLOAT32 *block);
+void* L2Norm_Float32_GetAddress(L2NORM_FLOAT32 *block, uint16 elementId);
 
 #endif
 

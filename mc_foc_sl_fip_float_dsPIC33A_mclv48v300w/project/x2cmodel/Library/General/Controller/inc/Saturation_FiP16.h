@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,21 +28,22 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/**     Description:	Saturation of output to adjustable upper and lower	 **/
-/**						limit.												 **/	
+/**     Description:    Saturation of output to adjustable upper and lower   **/
+/**                     limit.                                               **/
 /**                     Calculation:                                         **/
-/**							Out = In										 **/
-/**								--> with Out = [min..max]			 		 **/
-/**						Range:												 **/
-/**							In:		-1..1								 	 **/
-/**							Out:	min..max							 	 **/
-/**							min:	-1..max									 **/
-/**							max:	min..1	 								 **/
-/**																			 **/
+/**                         Out = In                                         **/
+/**                             --> with Out = [min..max]                    **/
+/**                     Range:                                               **/
+/**                         In:     -1..1                                    **/
+/**                         Out:    min..max                                 **/
+/**                         min:    -1..max                                  **/
+/**                         max:    min..1                                   **/
+/**                                                                          **/
 /* USERCODE-END:Description                                                                                           */
 #ifndef SATURATION_FIP16_H
 #define SATURATION_FIP16_H
@@ -58,7 +59,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int16           *In;
     int16           Out;
     int16           max;
@@ -66,7 +67,7 @@ typedef struct {
 } SATURATION_FIP16;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT16_PTR       In;
     int16           Out;
     int16           max;
@@ -80,16 +81,16 @@ typedef struct {
     (void (*)(void*))Saturation_FiP16_Init, \
     (tLoadImplementationParameter)Saturation_FiP16_Load, \
     (tSaveImplementationParameter)Saturation_FiP16_Save, \
-    (void* (*)(const void*, uint16))Saturation_FiP16_GetAddress }
+    (void* (*)(void*, uint16))Saturation_FiP16_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Saturation_FiP16_Update(SATURATION_FIP16 *pTSaturation_FiP16);
-void Saturation_FiP16_Init(SATURATION_FIP16 *pTSaturation_FiP16);
-uint8 Saturation_FiP16_Load(const SATURATION_FIP16 *pTSaturation_FiP16, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 Saturation_FiP16_Save(SATURATION_FIP16 *pTSaturation_FiP16, const uint8 data[], uint16 dataLength);
-void* Saturation_FiP16_GetAddress(const SATURATION_FIP16 *block, uint16 elementId);
+void Saturation_FiP16_Update(SATURATION_FIP16 *block);
+void Saturation_FiP16_Init(SATURATION_FIP16 *block);
+uint8 Saturation_FiP16_Load(const SATURATION_FIP16 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 Saturation_FiP16_Save(SATURATION_FIP16 *block, const uint8 data[], uint16 dataLength);
+void* Saturation_FiP16_GetAddress(SATURATION_FIP16 *block, uint16 elementId);
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,14 +28,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/**     Description: 	Multiplication of input 1 with input 2.				 **/
+/**     Description:    Multiplication of input 1 with input 2.              **/
 /**                     Calculation:                                         **/
-/**							Out = In1 * In2							 		 **/
-/**																			 **/
+/**                         Out = In1 * In2                                  **/
+/**                                                                          **/
 /* USERCODE-END:Description                                                                                           */
 #ifndef MULT_FLOAT32_H
 #define MULT_FLOAT32_H
@@ -51,14 +52,14 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float32         *In1;
     float32         *In2;
     float32         Out;
 } MULT_FLOAT32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT32_PTR     In1;
     FLOAT32_PTR     In2;
     float32         Out;
@@ -71,14 +72,14 @@ typedef struct {
     (void (*)(void*))Mult_Float32_Init, \
     (tLoadImplementationParameter)Common_Load, \
     (tSaveImplementationParameter)Common_Save, \
-    (void* (*)(const void*, uint16))Mult_Float32_GetAddress }
+    (void* (*)(void*, uint16))Mult_Float32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Mult_Float32_Update(MULT_FLOAT32 *pTMult_Float32);
-void Mult_Float32_Init(MULT_FLOAT32 *pTMult_Float32);
-void* Mult_Float32_GetAddress(const MULT_FLOAT32 *block, uint16 elementId);
+void Mult_Float32_Update(MULT_FLOAT32 *block);
+void Mult_Float32_Init(MULT_FLOAT32 *block);
+void* Mult_Float32_GetAddress(MULT_FLOAT32 *block, uint16 elementId);
 
 #endif
 

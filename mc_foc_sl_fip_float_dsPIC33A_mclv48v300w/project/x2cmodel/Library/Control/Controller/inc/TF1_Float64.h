@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,17 +28,18 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/**     Description:	First order transfer function                        **/
-/**						Calculation:										 **/
-/**	       						 b1.z + b0							   		 **/
-/** 						y = ----------- u						   		 **/
-/**          					  z + a0									 **/
-/**							-> y(k) = u(k).b1 + u(k-1).b0 - y(k-1).a0		 **/
-/**																			 **/
+/**     Description:    First order transfer function                        **/
+/**                     Calculation:                                         **/
+/**                              b1.z + b0                                   **/
+/**                         y = ----------- u                                **/
+/**                               z + a0                                     **/
+/**                         -> y(k) = u(k).b1 + u(k-1).b0 - y(k-1).a0        **/
+/**                                                                          **/
 /* USERCODE-END:Description                                                                                           */
 #ifndef TF1_FLOAT64_H
 #define TF1_FLOAT64_H
@@ -54,7 +55,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float64         *In;
     float64         Out;
     float64         b0;
@@ -64,7 +65,7 @@ typedef struct {
 } TF1_FLOAT64;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT64_PTR     In;
     float64         Out;
     float64         b0;
@@ -80,16 +81,16 @@ typedef struct {
     (void (*)(void*))TF1_Float64_Init, \
     (tLoadImplementationParameter)TF1_Float64_Load, \
     (tSaveImplementationParameter)TF1_Float64_Save, \
-    (void* (*)(const void*, uint16))TF1_Float64_GetAddress }
+    (void* (*)(void*, uint16))TF1_Float64_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void TF1_Float64_Update(TF1_FLOAT64 *pTTF1_Float64);
-void TF1_Float64_Init(TF1_FLOAT64 *pTTF1_Float64);
-uint8 TF1_Float64_Load(const TF1_FLOAT64 *pTTF1_Float64, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 TF1_Float64_Save(TF1_FLOAT64 *pTTF1_Float64, const uint8 data[], uint16 dataLength);
-void* TF1_Float64_GetAddress(const TF1_FLOAT64 *block, uint16 elementId);
+void TF1_Float64_Update(TF1_FLOAT64 *block);
+void TF1_Float64_Init(TF1_FLOAT64 *block);
+uint8 TF1_Float64_Load(const TF1_FLOAT64 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 TF1_Float64_Save(TF1_FLOAT64 *block, const uint8 data[], uint16 dataLength);
+void* TF1_Float64_GetAddress(TF1_FLOAT64 *block, uint16 elementId);
 
 #endif
 

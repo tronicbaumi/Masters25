@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2017, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,13 +28,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
- * $LastChangedDate:: 2022-05-03 15:06:23 +0200#$
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/**     Description:	Toggling between the 2 inputs                        **/
-/**																			 **/
+/**     Description:    Toggling between the 2 inputs                        **/
+/**                                                                          **/
 /* USERCODE-END:Description                                                                                           */
 #ifndef MANUALSWITCH_FIP8_H
 #define MANUALSWITCH_FIP8_H
@@ -50,7 +50,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int8            *In1;
     int8            *In2;
     int8            Out;
@@ -58,7 +58,7 @@ typedef struct {
 } MANUALSWITCH_FIP8;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT8_PTR        In1;
     INT8_PTR        In2;
     int8            Out;
@@ -72,16 +72,16 @@ typedef struct {
     (void (*)(void*))ManualSwitch_FiP8_Init, \
     (tLoadImplementationParameter)ManualSwitch_FiP8_Load, \
     (tSaveImplementationParameter)ManualSwitch_FiP8_Save, \
-    (void* (*)(const void*, uint16))ManualSwitch_FiP8_GetAddress }
+    (void* (*)(void*, uint16))ManualSwitch_FiP8_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void ManualSwitch_FiP8_Update(MANUALSWITCH_FIP8 *pTManualSwitch_FiP8);
-void ManualSwitch_FiP8_Init(MANUALSWITCH_FIP8 *pTManualSwitch_FiP8);
-uint8 ManualSwitch_FiP8_Load(const MANUALSWITCH_FIP8 *pTManualSwitch_FiP8, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 ManualSwitch_FiP8_Save(MANUALSWITCH_FIP8 *pTManualSwitch_FiP8, const uint8 data[], uint16 dataLength);
-void* ManualSwitch_FiP8_GetAddress(const MANUALSWITCH_FIP8 *block, uint16 elementId);
+void ManualSwitch_FiP8_Update(MANUALSWITCH_FIP8 *block);
+void ManualSwitch_FiP8_Init(MANUALSWITCH_FIP8 *block);
+uint8 ManualSwitch_FiP8_Load(const MANUALSWITCH_FIP8 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 ManualSwitch_FiP8_Save(MANUALSWITCH_FIP8 *block, const uint8 data[], uint16 dataLength);
+void* ManualSwitch_FiP8_GetAddress(MANUALSWITCH_FIP8 *block, uint16 elementId);
 
 #endif
 

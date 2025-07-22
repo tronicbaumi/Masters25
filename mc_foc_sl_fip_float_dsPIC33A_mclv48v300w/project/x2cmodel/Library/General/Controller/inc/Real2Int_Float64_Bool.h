@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,8 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /**
@@ -51,14 +52,14 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float64         *In;
     bool            Out;
     float64         scale;
 } REAL2INT_FLOAT64_BOOL;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT64_PTR     In;
     bool            Out;
     float64         scale;
@@ -71,16 +72,16 @@ typedef struct {
     (void (*)(void*))Real2Int_Float64_Bool_Init, \
     (tLoadImplementationParameter)Real2Int_Float64_Bool_Load, \
     (tSaveImplementationParameter)Real2Int_Float64_Bool_Save, \
-    (void* (*)(const void*, uint16))Real2Int_Float64_Bool_GetAddress }
+    (void* (*)(void*, uint16))Real2Int_Float64_Bool_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Real2Int_Float64_Bool_Update(REAL2INT_FLOAT64_BOOL *pTReal2Int_Float64_Bool);
-void Real2Int_Float64_Bool_Init(REAL2INT_FLOAT64_BOOL *pTReal2Int_Float64_Bool);
-uint8 Real2Int_Float64_Bool_Load(const REAL2INT_FLOAT64_BOOL *pTReal2Int_Float64_Bool, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 Real2Int_Float64_Bool_Save(REAL2INT_FLOAT64_BOOL *pTReal2Int_Float64_Bool, const uint8 data[], uint16 dataLength);
-void* Real2Int_Float64_Bool_GetAddress(const REAL2INT_FLOAT64_BOOL *block, uint16 elementId);
+void Real2Int_Float64_Bool_Update(REAL2INT_FLOAT64_BOOL *block);
+void Real2Int_Float64_Bool_Init(REAL2INT_FLOAT64_BOOL *block);
+uint8 Real2Int_Float64_Bool_Load(const REAL2INT_FLOAT64_BOOL *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 Real2Int_Float64_Bool_Save(REAL2INT_FLOAT64_BOOL *block, const uint8 data[], uint16 dataLength);
+void* Real2Int_Float64_Bool_GetAddress(REAL2INT_FLOAT64_BOOL *block, uint16 elementId);
 
 #endif
 

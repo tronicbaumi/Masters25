@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,14 +28,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /*     Description:  Switch between In1 and In3 dependent on Switch signal:   */
-/*    			Switch signal rising:  Switch > Threshold up --> Out = In1	  */
-/*    			Switch signal falling: Switch < Threshold down --> Out = In3  */
-/*																			  */
+/*              Switch signal rising:  Switch > Threshold up --> Out = In1    */
+/*              Switch signal falling: Switch < Threshold down --> Out = In3  */
+/*                                                                            */
 /* USERCODE-END:Description                                                                                           */
 #ifndef AUTOSWITCH_FLOAT64_H
 #define AUTOSWITCH_FLOAT64_H
@@ -51,7 +52,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float64         *In1;
     float64         *Switch;
     float64         *In3;
@@ -62,7 +63,7 @@ typedef struct {
 } AUTOSWITCH_FLOAT64;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT64_PTR     In1;
     FLOAT64_PTR     Switch;
     FLOAT64_PTR     In3;
@@ -79,16 +80,16 @@ typedef struct {
     (void (*)(void*))AutoSwitch_Float64_Init, \
     (tLoadImplementationParameter)AutoSwitch_Float64_Load, \
     (tSaveImplementationParameter)AutoSwitch_Float64_Save, \
-    (void* (*)(const void*, uint16))AutoSwitch_Float64_GetAddress }
+    (void* (*)(void*, uint16))AutoSwitch_Float64_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void AutoSwitch_Float64_Update(AUTOSWITCH_FLOAT64 *pTAutoSwitch_Float64);
-void AutoSwitch_Float64_Init(AUTOSWITCH_FLOAT64 *pTAutoSwitch_Float64);
-uint8 AutoSwitch_Float64_Load(const AUTOSWITCH_FLOAT64 *pTAutoSwitch_Float64, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 AutoSwitch_Float64_Save(AUTOSWITCH_FLOAT64 *pTAutoSwitch_Float64, const uint8 data[], uint16 dataLength);
-void* AutoSwitch_Float64_GetAddress(const AUTOSWITCH_FLOAT64 *block, uint16 elementId);
+void AutoSwitch_Float64_Update(AUTOSWITCH_FLOAT64 *block);
+void AutoSwitch_Float64_Init(AUTOSWITCH_FLOAT64 *block);
+uint8 AutoSwitch_Float64_Load(const AUTOSWITCH_FLOAT64 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 AutoSwitch_Float64_Save(AUTOSWITCH_FLOAT64 *block, const uint8 data[], uint16 dataLength);
+void* AutoSwitch_Float64_GetAddress(AUTOSWITCH_FLOAT64 *block, uint16 elementId);
 
 #endif
 

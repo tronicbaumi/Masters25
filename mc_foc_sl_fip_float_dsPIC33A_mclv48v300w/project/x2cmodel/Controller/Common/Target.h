@@ -3,7 +3,7 @@
  * @brief Common includes, macros and type definitions.
  */
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -32,10 +32,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 3417 $
- * $LastChangedDate:: 2024-08-29 21:03:43 +0200#$
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3777 $
+ * $LastChangedDate:: 2025-07-02 11:35:40 +0200#$
  */
+/* RULECHECKER_comment("Target.h", check_include_position, "see X2C MISRA Deviations, DEV0005", true_no_defect) */
+/* RULECHECKER_comment("Target.h", check_reserved_identifier, "see X2C MISRA Deviations, DEV0006", true_no_defect) */
 #ifndef TARGET_H
 #define TARGET_H
 
@@ -111,7 +113,7 @@ typedef long double float64;
 #define __TMS320F281X__
 #elif defined(__TM4C123GH6__) || defined(__TM4C123BE6__) || defined(__TM4C1294NC__)
 #define __SERIES_TM4C__
-#elif defined(X2C_TMS320F28379D) || defined(X2C_TMS320F28379D_NVM_RM)
+#elif defined(X2C_TMS320F28379D) || defined(X2C_TMS320F28379D_NVM_RM) || defined(X2C_TMS320F28377S)
 #define X2C_SERIES_TMS32F2837X
 #elif defined(X2C_TMS320F280039) || defined(X2C_TMS320F280037)
 #define X2C_SERIES_TMS320F28003X
@@ -121,6 +123,10 @@ typedef long double float64;
 #define X2C_SERIES_TMS320F280013X
 #elif defined(X2C_TMS320F28388D) || defined(X2C_TMS320F28386D)
 #define X2C_SERIES_TMS320F2838X
+#elif defined(X2C_TMS320F28P550SJ9) || defined(X2C_TMS320F28P559SJ9)
+#define X2C_SERIES_TMS320F28P55X
+#elif defined(X2C_MSPM0G3507) || defined(X2C_MSPM0G1107)
+#define X2C_SERIES_MSPM0G
 
 /* ST processors */
 #elif defined(__STM32F103ZC__) || defined(__STM32F103T6__) || defined(__STM32F103VB__) || defined(__STM32F103V8__) || \
@@ -198,12 +204,12 @@ defined(__DSPIC33EP128GM604__) || defined(X2C_DSPIC33EP512GM604)
 /* TI processor family */
 #if defined(__TMS320F2806X__) || defined(__TMS320F2803X__) || defined(__TMS320F2833X__) || defined(__TMS320F280X__) || \
 	defined(__TMS320F281X__) || defined(__TMS320F2802X__) || defined(X2C_SERIES_TMS32F2837X) || defined(X2C_SERIES_TMS320F28004X) || \
-	defined(X2C_SERIES_TMS320F2838X) || defined(X2C_SERIES_TMS320F28003X) || defined(X2C_SERIES_TMS320F280013X)
+	defined(X2C_SERIES_TMS320F2838X) || defined(X2C_SERIES_TMS320F28003X) || defined(X2C_SERIES_TMS320F280013X) || defined(X2C_SERIES_TMS320F28P55X)
 #define __C2000__
 #define __ADDRESS_WIDTH_32BIT__
 #define __DATA_WIDTH_16BIT__
 
-#elif defined(__SERIES_TM4C__)
+#elif defined(__SERIES_TM4C__) || defined(X2C_SERIES_MSPM0G)
 #define __ADDRESS_WIDTH_32BIT__
 #define __DATA_WIDTH_8BIT__
 
@@ -257,12 +263,13 @@ defined(__DSPIC33EP128GM604__) || defined(X2C_DSPIC33EP512GM604)
 
 #elif defined(__MATLAB__) || defined(__SCILAB__)
 /* do nothing, just prevent compiler errors in Matlab/Scilab */
+#include <string.h>		/* support for memcpy (amongst other things) */
 #else
 #error PROCESSOR TYPE NOT DEFINED
 #endif
 
 /* compiler information */
-#if defined(__C2000__) || defined(__SERIES_TM4C__)
+#if defined(__C2000__) || defined(__SERIES_TM4C__) || defined(X2C_SERIES_MSPM0G)
 #define __COMPILER_TI__
 
 #elif defined(__VENDOR_ST__)
@@ -516,53 +523,11 @@ defined(__DSPIC33EP128GM604__) || defined(X2C_DSPIC33EP512GM604)
 		WATCHDOG_Service(); \
 } while(0)
 #elif defined(X2C_SERIES_TMS32F2837X)
-#include <stdint.h>
-#include <stdbool.h>
-
-#include "F2837xD_device.h"
-
-#include "inc/hw_memmap.h"
-
-#include "adc.h"
-#include "asysctl.h"
-#include "can.h"
-#include "cla.h"
-#include "clb.h"
-#include "cmpss.h"
-#include "cpu.h"
-#include "cputimer.h"
-#include "dac.h"
-#include "dcsm.h"
-#include "debug.h"
-#include "dma.h"
-#include "ecap.h"
-#include "emif.h"
-#include "epwm.h"
-#include "eqep.h"
-#include "flash.h"
-#include "gpio.h"
-#include "hrpwm.h"
-#include "i2c.h"
-#include "interrupt.h"
-#include "mcbsp.h"
-#include "memcfg.h"
-#include "pin_map.h"
-#include "sci.h"
-#include "sdfm.h"
-#include "spi.h"
-#include "sysctl.h"
-#include "upp.h"
-#include "version.h"
-#include "xbar.h"
-
-/*
- * Attention: All watchdog functions issue an EALLOW and EDIS before and after the command itself.
- * Calling these functions within an EALLOW-EDIS section requires the user to add an EALLOW after each of these macros.
- */
-#define KICK_DOG SysCtl_serviceWatchdog()
-#define disableWatchdog SysCtl_disableWatchdog
-#define enableWatchdog SysCtl_enableWatchdog
-#define disableInterrupts Interrupt_disableGlobal
+#include <sysctl.h>
+#define KICK_DOG \
+    do { \
+        SysCtl_serviceWatchdog(); \
+    } while (0)
 
 #elif defined(X2C_SERIES_TMS320F28004X)
 #include "f28004x_device.h"
@@ -608,51 +573,11 @@ defined(__DSPIC33EP128GM604__) || defined(X2C_DSPIC33EP512GM604)
 #define disableInterrupts Interrupt_disableMaster
 
 #elif defined(X2C_SERIES_TMS320F2838X)
-
-#include "inc/hw_memmap.h"
-
-#include "adc.h"
-#include "asysctl.h"
-#include "bgcrc.h"
-#include "can.h"
-#include "cla.h"
-#include "clb.h"
-#include "cmpss.h"
-#include "cpu.h"
-#include "cputimer.h"
-#include "dac.h"
-#include "dcc.h"
-#include "dcsm.h"
-#include "debug.h"
-#include "dma.h"
-#include "ecap.h"
-#include "emif.h"
-#include "epwm.h"
-#include "eqep.h"
-#include "erad.h"
-#include "escss.h"
-#include "flash.h"
-#include "fsi.h"
-#include "gpio.h"
-#include "hrcap.h"
-#include "hrpwm.h"
-#include "i2c.h"
-#include "interrupt.h"
-#include "ipc.h"
-#include "mcan.h"
-#include "mcbsp.h"
-#include "memcfg.h"
-#include "pin_map.h"
-#include "sci.h"
-#include "sdfm.h"
-#include "spi.h"
-#include "sysctl.h"
-#include "usb.h"
-#include "xbar.h"
-
-#define KICK_DOG SysCtl_serviceWatchdog()
-#define disableWatchdog SysCtl_disableWatchdog
-#define disableInterrupts Interrupt_disableMaster
+#include <sysctl.h>
+#define KICK_DOG \
+    do { \
+        SysCtl_serviceWatchdog(); \
+    } while (0)
 
 #elif defined(X2C_SERIES_TMS320F28003X)
 #include <sysctl.h>
@@ -668,6 +593,8 @@ defined(__DSPIC33EP128GM604__) || defined(X2C_DSPIC33EP512GM604)
         SysCtl_serviceWatchdog(); \
     } while (0)
 
+#elif defined(X2C_SERIES_TMS320F28P55X) || defined(X2C_SERIES_MSPM0G)
+/* do nothing, just avoid compiler errors */
 #elif defined(__MATLAB__) || defined(__SCILAB__) || defined(__VENDOR_KEBA__)
 /* do nothing, just avoid compiler errors */
 #else
@@ -699,7 +626,7 @@ typedef double float64;
 #endif
 #elif defined(__TMS320F2806X__) || defined(__TMS320F2833X__) || \
 	defined(__TMS320F280X__) || defined(__TMS320F281X__)
-#include <stdbool.h>    /* support for boolean datatype */														  
+#include <stdbool.h>
 /* int16, int32, int64 already defined in TI header files */
 typedef signed char int8;
 typedef unsigned char uint8;
@@ -707,7 +634,7 @@ typedef unsigned int uint16;
 typedef unsigned long uint32;
 typedef unsigned long long uint64;
 #elif defined(__TMS320F2803X__) || defined(__TMS320F2802X__)
-#include <stdbool.h>    /* support for boolean datatype */														  
+#include <stdbool.h>
 /* int16, int32 already defined in TI header file */
 typedef signed char int8;
 typedef long long int64;
@@ -716,14 +643,18 @@ typedef unsigned int uint16;
 typedef unsigned long uint32;
 typedef unsigned long long uint64;
 #elif defined(X2C_SERIES_TMS32F2837X)
-#include <stdbool.h>    /* support for boolean datatype */
+#include <stdbool.h>
 #include <stdint.h>
-/* int16, int32, int64, float32, float64 already defined in TI files */
-typedef int8_t int8;
-typedef uint8_t uint8;
+typedef int_least8_t int8;
+typedef uint_least8_t uint8;
+typedef int16_t int16;
 typedef uint16_t uint16;
+typedef int32_t int32;
 typedef uint32_t uint32;
+typedef int64_t int64;
 typedef uint64_t uint64;
+typedef float float32;
+typedef long double float64;
 #elif defined(X2C_SERIES_TMS320F28004X)
 #include <stdbool.h>
 #include <stdint.h>
@@ -741,7 +672,20 @@ typedef uint64_t uint64;
 #elif defined(X2C_SERIES_TMS320F2838X)
 #include <stdbool.h>
 #include <stdint.h>
-/* int16, int32, int64 already defined in TI header files */
+typedef int_least8_t int8;
+typedef uint_least8_t uint8;
+typedef int16_t int16;
+typedef uint16_t uint16;
+typedef int32_t int32;
+typedef uint32_t uint32;
+typedef uint64_t uint64;
+typedef int64_t int64;
+typedef float float32;
+typedef double float64;
+
+#elif defined(X2C_SERIES_TMS320F28P55X)
+#include <stdbool.h>
+#include <stdint.h>
 typedef int_least8_t int8;
 typedef uint_least8_t uint8;
 typedef int16_t int16;
@@ -779,6 +723,19 @@ typedef double float64;
 #include <stdint.h>
 #include <stdbool.h>    /* support for boolean datatype */
 #include <string.h>		/* support for memcpy (amongst other things) */
+typedef int8_t int8;
+typedef uint8_t uint8;
+typedef int16_t int16;
+typedef uint16_t uint16;
+typedef int32_t int32;
+typedef uint32_t uint32;
+typedef int64_t int64;
+typedef uint64_t uint64;
+typedef float float32;
+typedef double float64;
+#elif defined(X2C_SERIES_MSPM0G)
+#include <stdbool.h>
+#include <stdint.h>
 typedef int8_t int8;
 typedef uint8_t uint8;
 typedef int16_t int16;

@@ -33,8 +33,8 @@
  */
 /*
  * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 1894 $
- * $LastChangedDate:: 2020-04-28 23:26:04 +0200#$
+ * $LastChangedRevision: 3474 $
+ * $LastChangedDate:: 2024-11-06 18:00:53 +0100#$
  */
 #ifndef SCOPE_MAIN_H
 #define SCOPE_MAIN_H
@@ -99,14 +99,14 @@ extern "C" {
     (void (*)(void*))Scope_Main_Init, \
     (uint8 (*)(const void*, uint8[], uint16*, uint16))Scope_Main_Load, \
     (uint8 (*)(void*, const uint8[], uint16))Scope_Main_Save, \
-    (void* (*)(const void*, uint16))Scope_Main_GetAddress }
+    (void* (*)(void*, uint16))Scope_Main_GetAddress }
 
-/* public prototypes */
-void Scope_Main_Update(SCOPE_MAIN *pTGain_FiP16);
-void Scope_Main_Init(SCOPE_MAIN *pTGain_FiP16);
-uint8 Scope_Main_Load(const SCOPE_MAIN *pTGain_FiP16, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 Scope_Main_Save(SCOPE_MAIN *pTGain_FiP16, const uint8 data[], uint16 dataLength);
-void* Scope_Main_GetAddress(const SCOPE_MAIN *block, uint16 elementId);
+/* Public prototypes */
+void Scope_Main_Update(SCOPE_MAIN *pTScope);
+void Scope_Main_Init(SCOPE_MAIN *pTScope);
+uint8 Scope_Main_Load(const SCOPE_MAIN *pTScope, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 Scope_Main_Save(SCOPE_MAIN *pTScope, const uint8 data[], uint16 dataLength);
+void* Scope_Main_GetAddress(SCOPE_MAIN *block, uint16 elementId);
 
 #ifdef __cplusplus
 }

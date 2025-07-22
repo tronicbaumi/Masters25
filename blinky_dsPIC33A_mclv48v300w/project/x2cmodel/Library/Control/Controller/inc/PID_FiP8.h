@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,8 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2800 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3785 $
+ * $LastChangedDate:: 2025-07-03 18:42:24 +0200#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description: */
@@ -48,7 +49,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int8            *In;
     int8            *Init;
     bool            *Enable;
@@ -58,9 +59,9 @@ typedef struct {
     int8            b0d;
     int8            b1d;
     int8            a0d;
-    int8            sfrb0;
-    int8            sfrb1;
-    int8            sfrd;
+    uint8           sfrb0;
+    uint8           sfrb1;
+    uint8           sfrd;
     int8            in_old;
     int16           i_old;
     int8            d_old;
@@ -68,7 +69,7 @@ typedef struct {
 } PID_FIP8;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT8_PTR        In;
     INT8_PTR        Init;
     BOOL_PTR        Enable;
@@ -78,9 +79,9 @@ typedef struct {
     int8            b0d;
     int8            b1d;
     int8            a0d;
-    int8            sfrb0;
-    int8            sfrb1;
-    int8            sfrd;
+    uint8           sfrb0;
+    uint8           sfrb1;
+    uint8           sfrd;
     int8            in_old;
     int16           i_old;
     int8            d_old;
@@ -94,16 +95,16 @@ typedef struct {
     (void (*)(void*))PID_FiP8_Init, \
     (tLoadImplementationParameter)PID_FiP8_Load, \
     (tSaveImplementationParameter)PID_FiP8_Save, \
-    (void* (*)(const void*, uint16))PID_FiP8_GetAddress }
+    (void* (*)(void*, uint16))PID_FiP8_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void PID_FiP8_Update(PID_FIP8 *pTPID_FiP8);
-void PID_FiP8_Init(PID_FIP8 *pTPID_FiP8);
-uint8 PID_FiP8_Load(const PID_FIP8 *pTPID_FiP8, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 PID_FiP8_Save(PID_FIP8 *pTPID_FiP8, const uint8 data[], uint16 dataLength);
-void* PID_FiP8_GetAddress(const PID_FIP8 *block, uint16 elementId);
+void PID_FiP8_Update(PID_FIP8 *block);
+void PID_FiP8_Init(PID_FIP8 *block);
+uint8 PID_FiP8_Load(const PID_FIP8 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 PID_FiP8_Save(PID_FIP8 *block, const uint8 data[], uint16 dataLength);
+void* PID_FiP8_GetAddress(PID_FIP8 *block, uint16 elementId);
 
 #endif
 

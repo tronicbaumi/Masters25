@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2014, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,15 +28,16 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/*      Description:    Sine Calculation						              */
+/*      Description:    Sine Calculation                                      */
 /*                      Calculation:                                          */
-/* 							u = sin(y)								 		  */
-/* 									--> with -pi..pi ~ -1..1				  */
-/* 																			  */
+/*                          u = sin(y)                                        */
+/*                                  --> with -pi..pi ~ -1..1                  */
+/*                                                                            */
 /* USERCODE-END:Description                                                                                           */
 #ifndef SIN_FIP16_H
 #define SIN_FIP16_H
@@ -52,13 +53,13 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int16           *In;
     int16           Out;
 } SIN_FIP16;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT16_PTR       In;
     int16           Out;
 } SIN_FIP16;
@@ -70,14 +71,14 @@ typedef struct {
     (void (*)(void*))Sin_FiP16_Init, \
     (tLoadImplementationParameter)Common_Load, \
     (tSaveImplementationParameter)Common_Save, \
-    (void* (*)(const void*, uint16))Sin_FiP16_GetAddress }
+    (void* (*)(void*, uint16))Sin_FiP16_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Sin_FiP16_Update(SIN_FIP16 *pTSin_FiP16);
-void Sin_FiP16_Init(SIN_FIP16 *pTSin_FiP16);
-void* Sin_FiP16_GetAddress(const SIN_FIP16 *block, uint16 elementId);
+void Sin_FiP16_Update(SIN_FIP16 *block);
+void Sin_FiP16_Init(SIN_FIP16 *block);
+void* Sin_FiP16_GetAddress(SIN_FIP16 *block, uint16 elementId);
 
 #endif
 

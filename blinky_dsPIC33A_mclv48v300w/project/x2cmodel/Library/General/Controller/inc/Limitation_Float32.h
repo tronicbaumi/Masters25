@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,12 +28,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/* 		Description:	Limitation of input signal to min and max             */
-/*																			  */
+/*      Description:    Limitation of input signal to min and max             */
+/*                                                                            */
 /* USERCODE-END:Description                                                                                           */
 #ifndef LIMITATION_FLOAT32_H
 #define LIMITATION_FLOAT32_H
@@ -49,7 +50,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float32         *In;
     float32         *max;
     float32         *min;
@@ -57,7 +58,7 @@ typedef struct {
 } LIMITATION_FLOAT32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT32_PTR     In;
     FLOAT32_PTR     max;
     FLOAT32_PTR     min;
@@ -71,14 +72,14 @@ typedef struct {
     (void (*)(void*))Limitation_Float32_Init, \
     (tLoadImplementationParameter)Common_Load, \
     (tSaveImplementationParameter)Common_Save, \
-    (void* (*)(const void*, uint16))Limitation_Float32_GetAddress }
+    (void* (*)(void*, uint16))Limitation_Float32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Limitation_Float32_Update(LIMITATION_FLOAT32 *pTLimitation_Float32);
-void Limitation_Float32_Init(LIMITATION_FLOAT32 *pTLimitation_Float32);
-void* Limitation_Float32_GetAddress(const LIMITATION_FLOAT32 *block, uint16 elementId);
+void Limitation_Float32_Update(LIMITATION_FLOAT32 *block);
+void Limitation_Float32_Init(LIMITATION_FLOAT32 *block);
+void* Limitation_Float32_GetAddress(LIMITATION_FLOAT32 *block, uint16 elementId);
 
 #endif
 

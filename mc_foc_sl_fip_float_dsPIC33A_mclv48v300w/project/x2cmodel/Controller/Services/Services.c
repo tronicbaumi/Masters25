@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,15 +28,16 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 3417 $
- * $LastChangedDate:: 2024-08-29 21:03:43 +0200#$
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3655 $
+ * $LastChangedDate:: 2025-02-27 12:52:53 +0100#$
  */
+#include <stddef.h>
 #include "TableStruct.h"
 #include "Services.h"
 
 /* bootloader program version */
-#define DEVINFO_BOOTLOADER_VERSION ((uint16)0x0006)
+#define DEVINFO_BOOTLOADER_VERSION (0x0006u)
 
 #if defined(__GENERIC_TI_C28X__)
 #define DEVINFO_PROCESSOR_ID ((uint16)0x8110)
@@ -129,6 +130,8 @@
 #warning THIS DEVICE IDENTIFIER SHALL NOT BE USED FOR NEW IMPLEMENTATIONS - USE DEVICE IDENTIFIER 0x0192 INSTEAD
 #elif defined(X2C_TMS320F28379D_NVM_RM)
 #define DEVINFO_PROCESSOR_ID ((uint16)0x0192)
+#elif defined(X2C_TMS320F28377S)
+#define DEVINFO_PROCESSOR_ID ((uint16)0x0193)
 
 /* TMS320F28004x */
 #elif defined(X2C_TMS320F280049)
@@ -151,6 +154,18 @@
 /* TMS320F28001x */
 #elif defined(X2C_TMS320F2800137)
 #define DEVINFO_PROCESSOR_ID ((uint16)0x01D1)
+
+/* TMS320F28P55x */
+#elif defined(X2C_TMS320F28P550SJ9)
+#define DEVINFO_PROCESSOR_ID ((uint16)0x01E1)
+#elif defined(X2C_TMS320F28P559SJ9)
+#define DEVINFO_PROCESSOR_ID ((uint16)0x01E2)
+
+/* MSPM0G */
+#elif defined(X2C_MSPM0G3507)
+#define DEVINFO_PROCESSOR_ID (0x01F1u)
+#elif defined(X2C_MSPM0G1107)
+#define DEVINFO_PROCESSOR_ID (0x01F2u)
 
 /* DSPIC33F */
 #elif defined(__DSPIC33FJ256MC710__)
@@ -269,11 +284,11 @@
 
 /* STM32H5 */
 #elif defined(X2C_STM32H562ZG)
-#define DEVINFO_PROCESSOR_ID (0x0391U)
+#define DEVINFO_PROCESSOR_ID (0x0391u)
 #elif defined(X2C_STM32H563ZI)
-#define DEVINFO_PROCESSOR_ID (0x0392U)
+#define DEVINFO_PROCESSOR_ID (0x0392u)
 #elif defined(X2C_STM32H562VG)
-#define DEVINFO_PROCESSOR_ID (0x0393U)
+#define DEVINFO_PROCESSOR_ID (0x0393u)
 
 /* MC56F8xxx */
 #elif defined(__MC56F8XXX__)
@@ -328,17 +343,17 @@ static void saveMaskParameter(tProtocol* protocol);
 /* send service not available error */
 void sendSvNotAvailable(tProtocol* protocol)
 {
-	protocol->ucFRAMESize = 2;
-	protocol->ucFRAMEData[1] = ERRORServiceNotAvail;
-	protocol->pSnd_Enable(protocol);
+    protocol->ucFRAMESize = 2u;
+    protocol->ucFRAMEData[1] = ERRORServiceNotAvail;
+    protocol->pSnd_Enable(protocol);
 }
 
 /* send error */
 void sendError(tProtocol* protocol, uint8 errorId)
 {
-	protocol->ucFRAMESize = 2;
-	protocol->ucFRAMEData[1] = errorId;
-	protocol->pSnd_Enable(protocol);
+    protocol->ucFRAMESize = 2u;
+    protocol->ucFRAMEData[1] = errorId;
+    protocol->pSnd_Enable(protocol);
 }
 
 /*
@@ -346,193 +361,191 @@ void sendError(tProtocol* protocol, uint8 errorId)
  */
 static void getDeviceInfo(tProtocol* protocol)
 {
-	uint8 i;
-	uint32 tableStructAddr;
+    uint8 i;
+    uint32 tableStructAddr;
 
-	/* check frame buffer length */
-	if (protocol->ucMaxCommSize < 47)
-	{
-		sendError(protocol, ERRORSizeTooLarge);
-		return;
-	}
+    /* check frame buffer length */
+    if (protocol->ucMaxCommSize < 47u)
+    {
+        sendError(protocol, ERRORSizeTooLarge);
+        return;
+    }
 
-	protocol->ucFRAMESize = 47;
-	protocol->ucFRAMEData[1] = ERRORSuccess;
+    protocol->ucFRAMESize = 47u;
+    protocol->ucFRAMEData[1] = ERRORSuccess;
 
-	/* bootloader program version */
-	protocol->ucFRAMEData[2] = (uint8)(DEVINFO_BOOTLOADER_VERSION & 0x00FF);
-	protocol->ucFRAMEData[3] = (uint8)(DEVINFO_BOOTLOADER_VERSION >> 8);
+    /* bootloader program version */
+    protocol->ucFRAMEData[2] = (uint8)(DEVINFO_BOOTLOADER_VERSION & 0xFFu);
+    protocol->ucFRAMEData[3] = (uint8)((uint16)DEVINFO_BOOTLOADER_VERSION >> 8u);
 
-	/* frame program version */
-	protocol->ucFRAMEData[4] = \
-			(uint8)(TableStruct->framePrgVersion & (uint16)0x00FF);
-	protocol->ucFRAMEData[5] = (uint8)(TableStruct->framePrgVersion >> 8);
+    /* frame program version */
+    protocol->ucFRAMEData[4] = (uint8)(TableStruct->framePrgVersion & 0xFFu);
+    protocol->ucFRAMEData[5] = (uint8)(TableStruct->framePrgVersion >> 8u);
 
-	/* max comm size */
-	protocol->ucFRAMEData[6] = (uint8)(protocol->ucMaxCommSize & 0xFF);
-	protocol->ucFRAMEData[7] = (uint8)(protocol->ucMaxCommSize >> 8);
+    /* max comm size */
+    protocol->ucFRAMEData[6] = (uint8)(protocol->ucMaxCommSize & 0xFFu);
+    protocol->ucFRAMEData[7] = (uint8)(protocol->ucMaxCommSize >> 8u);
 
-	protocol->ucFRAMEData[8] = (uint8)(DEVINFO_PROCESSOR_ID & 0x00FF);
-	protocol->ucFRAMEData[9] = (uint8)(DEVINFO_PROCESSOR_ID >> 8);
+    protocol->ucFRAMEData[8] = (uint8)(DEVINFO_PROCESSOR_ID & 0xFFu);
+    protocol->ucFRAMEData[9] = (uint8)((uint16)DEVINFO_PROCESSOR_ID >> 8u);
 
-	/* bootloader program compilation date as ASCII string */
-	/* 9 ... 11 -> first 3 letters of month (e.g. Oct, Dec) */
-	/* 12 ... 13 -> day as DD */
-	/* 14 ... 17 -> year as YYYY */
-	protocol->ucFRAMEData[10] = __DATE__[0];
-	protocol->ucFRAMEData[11] = __DATE__[1];
-	protocol->ucFRAMEData[12] = __DATE__[2];
-	protocol->ucFRAMEData[13] = __DATE__[4];
-	protocol->ucFRAMEData[14] = __DATE__[5];
-	protocol->ucFRAMEData[15] = __DATE__[7];
-	protocol->ucFRAMEData[16] = __DATE__[8];
-	protocol->ucFRAMEData[17] = __DATE__[9];
-	protocol->ucFRAMEData[18] = __DATE__[10];
+    /* bootloader program compilation date as ASCII string */
+    /* 9 ... 11 -> first 3 letters of month (e.g. Oct, Dec) */
+    /* 12 ... 13 -> day as DD */
+    /* 14 ... 17 -> year as YYYY */
+    protocol->ucFRAMEData[10] = (uint8)__DATE__[0];
+    protocol->ucFRAMEData[11] = (uint8)__DATE__[1];
+    protocol->ucFRAMEData[12] = (uint8)__DATE__[2];
+    protocol->ucFRAMEData[13] = (uint8)__DATE__[4];
+    protocol->ucFRAMEData[14] = (uint8)__DATE__[5];
+    protocol->ucFRAMEData[15] = (uint8)__DATE__[7];
+    protocol->ucFRAMEData[16] = (uint8)__DATE__[8];
+    protocol->ucFRAMEData[17] = (uint8)__DATE__[9];
+    protocol->ucFRAMEData[18] = (uint8)__DATE__[10];
 
-	/* bootloader program compilation time as ASCII string */
-	/* 18 ... 19 -> hour as HH */
-	/* 20 ... 21 -> minute as MM */
-	protocol->ucFRAMEData[19] = __TIME__[0];
-	protocol->ucFRAMEData[20] = __TIME__[1];
-	protocol->ucFRAMEData[21] = __TIME__[3];
-	protocol->ucFRAMEData[22] = __TIME__[4];
+    /* bootloader program compilation time as ASCII string */
+    /* 18 ... 19 -> hour as HH */
+    /* 20 ... 21 -> minute as MM */
+    protocol->ucFRAMEData[19] = (uint8)__TIME__[0];
+    protocol->ucFRAMEData[20] = (uint8)__TIME__[1];
+    protocol->ucFRAMEData[21] = (uint8)__TIME__[3];
+    protocol->ucFRAMEData[22] = (uint8)__TIME__[4];
 
-	if (TableStruct->framePrgCompDateTime == 0)
-	{
-		i = 12;
-		do
-		{
-			protocol->ucFRAMEData[23+i] = '-';
-		} while (i-- > 0);
-	}
-	else
-	{
-		/* frame program compilation date as ASCII string */
-		/* 22 ... 24 -> first 3 letters of month (e.g. Oct, Dec) */
-		/* 25 ... 26 -> day as DD */
-		/* 27 ... 30 -> year as YYYY */
-		/* frame program compilation time as ASCII string */
-		/* 31 ... 32 -> hour as HH */
-		/* 23 ... 24 -> minute as MM */
-		protocol->ucFRAMEData[23] = TableStruct->framePrgCompDateTime[0];
-		protocol->ucFRAMEData[24] = TableStruct->framePrgCompDateTime[1];
-		protocol->ucFRAMEData[25] = TableStruct->framePrgCompDateTime[2];
-		protocol->ucFRAMEData[26] = TableStruct->framePrgCompDateTime[4];
-		protocol->ucFRAMEData[27] = TableStruct->framePrgCompDateTime[5];
-		protocol->ucFRAMEData[28] = TableStruct->framePrgCompDateTime[7];
-		protocol->ucFRAMEData[29] = TableStruct->framePrgCompDateTime[8];
-		protocol->ucFRAMEData[30] = TableStruct->framePrgCompDateTime[9];
-		protocol->ucFRAMEData[31] = TableStruct->framePrgCompDateTime[10];
-		protocol->ucFRAMEData[32] = TableStruct->framePrgCompDateTime[11];
-		protocol->ucFRAMEData[33] = TableStruct->framePrgCompDateTime[12];
-		protocol->ucFRAMEData[34] = TableStruct->framePrgCompDateTime[14];
-		protocol->ucFRAMEData[35] = TableStruct->framePrgCompDateTime[15];
-	}
+    if (TableStruct->framePrgCompDateTime == NULL)
+    {
+        i = 12u;
+        do
+        {
+            protocol->ucFRAMEData[23u + i] = (uint8)'-';
+        } while (i-- > 0u);
+    }
+    else
+    {
+        /* frame program compilation date as ASCII string */
+        /* 22 ... 24 -> first 3 letters of month (e.g. Oct, Dec) */
+        /* 25 ... 26 -> day as DD */
+        /* 27 ... 30 -> year as YYYY */
+        /* frame program compilation time as ASCII string */
+        /* 31 ... 32 -> hour as HH */
+        /* 23 ... 24 -> minute as MM */
+        protocol->ucFRAMEData[23] = TableStruct->framePrgCompDateTime[0];
+        protocol->ucFRAMEData[24] = TableStruct->framePrgCompDateTime[1];
+        protocol->ucFRAMEData[25] = TableStruct->framePrgCompDateTime[2];
+        protocol->ucFRAMEData[26] = TableStruct->framePrgCompDateTime[4];
+        protocol->ucFRAMEData[27] = TableStruct->framePrgCompDateTime[5];
+        protocol->ucFRAMEData[28] = TableStruct->framePrgCompDateTime[7];
+        protocol->ucFRAMEData[29] = TableStruct->framePrgCompDateTime[8];
+        protocol->ucFRAMEData[30] = TableStruct->framePrgCompDateTime[9];
+        protocol->ucFRAMEData[31] = TableStruct->framePrgCompDateTime[10];
+        protocol->ucFRAMEData[32] = TableStruct->framePrgCompDateTime[11];
+        protocol->ucFRAMEData[33] = TableStruct->framePrgCompDateTime[12];
+        protocol->ucFRAMEData[34] = TableStruct->framePrgCompDateTime[14];
+        protocol->ucFRAMEData[35] = TableStruct->framePrgCompDateTime[15];
+    }
 
-	protocol->ucFRAMEData[36] = (uint8)(TableStruct->DSPState & 0x00FF);
-	protocol->ucFRAMEData[37] = (uint8)(TableStruct->eventType & 0x00FF);
-	protocol->ucFRAMEData[38] = (uint8)(TableStruct->eventType >> 8);
-	protocol->ucFRAMEData[39] = (uint8)(TableStruct->eventId & 0x00FF);
-	protocol->ucFRAMEData[40] = (uint8)(TableStruct->eventId >> 8);
-	protocol->ucFRAMEData[41] = (uint8)(TableStruct->eventId >> 16);
-	protocol->ucFRAMEData[42] = (uint8)(TableStruct->eventId >> 24);
+    protocol->ucFRAMEData[36] = (uint8)TableStruct->DSPState & 0xFFu;
+    protocol->ucFRAMEData[37] = (uint8)(TableStruct->eventType & 0xFFu);
+    protocol->ucFRAMEData[38] = (uint8)(TableStruct->eventType >> 8u);
+    protocol->ucFRAMEData[39] = (uint8)(TableStruct->eventId & 0xFFu);
+    protocol->ucFRAMEData[40] = (uint8)(TableStruct->eventId >> 8u);
+    protocol->ucFRAMEData[41] = (uint8)(TableStruct->eventId >> 16u);
+    protocol->ucFRAMEData[42] = (uint8)(TableStruct->eventId >> 24u);
 
-	tableStructAddr = (uint32)TableStruct;
-	protocol->ucFRAMEData[43] = (uint8)(tableStructAddr & 0xFF);
-	protocol->ucFRAMEData[44] = (uint8)((tableStructAddr >> 8) & 0xFF);
-	protocol->ucFRAMEData[45] = (uint8)((tableStructAddr >> 16) & 0xFF);
-	protocol->ucFRAMEData[46] = (uint8)((tableStructAddr >> 24) & 0xFF);
+    tableStructAddr = (uint32)TableStruct;
+    protocol->ucFRAMEData[43] = (uint8)(tableStructAddr & 0xFFu);
+    protocol->ucFRAMEData[44] = (uint8)((tableStructAddr >> 8u) & 0xFFu);
+    protocol->ucFRAMEData[45] = (uint8)((tableStructAddr >> 16u) & 0xFFu);
+    protocol->ucFRAMEData[46] = (uint8)((tableStructAddr >> 24u) & 0xFFu);
 
-	protocol->pSnd_Enable(protocol);
+    protocol->pSnd_Enable(protocol);
 }
 
 static void loadMaskParameter(tProtocol* protocol)
 {
-	tMaskParameterEntry mpEntry;
-	uint16 paramId, tblIndex;
-	uint8 error;
+    tMaskParameterEntry mpEntry;
+    uint16 paramId, tblIndex;
+    uint8 error;
 
-	if (protocol->ucFRAMESize != 3)
-	{
-		sendError(protocol, ERRORFormat);
-		return;
-	}
+    if (protocol->ucFRAMESize != 3u)
+    {
+        sendError(protocol, ERRORFormat);
+        return;
+    }
 
-	paramId = (uint16)((protocol->ucFRAMEData[2]<<8) + protocol->ucFRAMEData[1]);
-	error = getMaskParamIndex(TableStruct->maskParameterTable, paramId, &tblIndex);
-	if (error != ERROR_SUCCESS)
-	{
-		switch (error)
-		{
-			case ERROR_TABLE_NOT_INIT:
-				sendError(protocol, SvErrorMaskParamTableNotInit);
-				break;
-			case ERROR_INVALID_ID:
-				sendError(protocol, SvErrorInvalidParamId);
-				break;
-			default:
-				sendError(protocol, SvErrorUnknown);
-				break;
-		}
-		return;
-	}
+    paramId = ((uint16)protocol->ucFRAMEData[2] << 8u) | protocol->ucFRAMEData[1];
+    error = getMaskParamIndex(TableStruct->maskParameterTable, paramId, &tblIndex);
+    if (error != ERROR_SUCCESS)
+    {
+        switch (error)
+        {
+            case ERROR_TABLE_NOT_INIT:
+                sendError(protocol, SvErrorMaskParamTableNotInit);
+                break;
+            case ERROR_INVALID_ID:
+                sendError(protocol, SvErrorInvalidParamId);
+                break;
+            default:
+                sendError(protocol, SvErrorUnknown);
+                break;
+        }
+        return;
+    }
 
-	mpEntry = TableStruct->maskParameterTable[tblIndex];
-	if (mpEntry.loadMaskParameter(mpEntry.maskParameter, &(protocol->ucFRAMEData[2]),
-			&(protocol->ucFRAMESize), protocol->ucMaxCommSize - 2))
-	{
-		sendError(protocol, SvErrorLoadMaskParam);
-	}
-	else
-	{
-		protocol->ucFRAMESize += 2; /* add overhead size */
-		protocol->ucFRAMEData[1] = ERRORSuccess;
-		protocol->pSnd_Enable(protocol);
-	}
+    mpEntry = TableStruct->maskParameterTable[tblIndex];
+    if (mpEntry.loadMaskParameter(mpEntry.maskParameter, &protocol->ucFRAMEData[2], &protocol->ucFRAMESize, protocol->ucMaxCommSize - 2u) != 0u)
+    {
+        sendError(protocol, SvErrorLoadMaskParam);
+    }
+    else
+    {
+        protocol->ucFRAMESize += 2u; /* add overhead size */
+        protocol->ucFRAMEData[1] = ERRORSuccess;
+        protocol->pSnd_Enable(protocol);
+    }
 }
 
 static void saveMaskParameter(tProtocol* protocol)
 {
-	tMaskParameterEntry mpEntry;
-	uint16 paramId, tblIndex;
-	uint8 error;
+    tMaskParameterEntry mpEntry;
+    uint16 paramId, tblIndex;
+    uint8 error;
 
-	if (protocol->ucFRAMESize < 3)
-	{
-		sendError(protocol, ERRORFormat);
-		return;
-	}
+    if (protocol->ucFRAMESize < 3u)
+    {
+        sendError(protocol, ERRORFormat);
+        return;
+    }
 
-	paramId = (uint16)((protocol->ucFRAMEData[2]<<8) + protocol->ucFRAMEData[1]);
-	error = getMaskParamIndex(TableStruct->maskParameterTable, paramId, &tblIndex);
-	if (error != ERROR_SUCCESS)
-	{
-		switch (error)
-		{
-			case ERROR_TABLE_NOT_INIT:
-				sendError(protocol, SvErrorMaskParamTableNotInit);
-				break;
-			case ERROR_INVALID_ID:
-				sendError(protocol, SvErrorInvalidParamId);
-				break;
-			default:
-				sendError(protocol, SvErrorUnknown);
-				break;
-		}
-		return;
-	}
+    paramId = ((uint16)protocol->ucFRAMEData[2] << 8u) | protocol->ucFRAMEData[1];
+    error = getMaskParamIndex(TableStruct->maskParameterTable, paramId, &tblIndex);
+    if (error != ERROR_SUCCESS)
+    {
+        switch (error)
+        {
+            case ERROR_TABLE_NOT_INIT:
+                sendError(protocol, SvErrorMaskParamTableNotInit);
+                break;
+            case ERROR_INVALID_ID:
+                sendError(protocol, SvErrorInvalidParamId);
+                break;
+            default:
+                sendError(protocol, SvErrorUnknown);
+                break;
+        }
+        return;
+    }
 
-	mpEntry = TableStruct->maskParameterTable[tblIndex];
-	if (mpEntry.saveMaskParameter(mpEntry.block, mpEntry.maskParameter, &(protocol->ucFRAMEData[3]), protocol->ucFRAMESize-3))
-	{
-		sendError(protocol, SvErrorSaveMaskParam);
-	}
-	else
-	{
-		protocol->ucFRAMESize = 2;
-		protocol->ucFRAMEData[1] = ERRORSuccess;
-		protocol->pSnd_Enable(protocol);
-	}
+    mpEntry = TableStruct->maskParameterTable[tblIndex];
+    if (mpEntry.saveMaskParameter(mpEntry.block, mpEntry.maskParameter, &protocol->ucFRAMEData[3], protocol->ucFRAMESize - 3u) != 0u)
+    {
+        sendError(protocol, SvErrorSaveMaskParam);
+    }
+    else
+    {
+        protocol->ucFRAMESize = 2u;
+        protocol->ucFRAMEData[1] = ERRORSuccess;
+        protocol->pSnd_Enable(protocol);
+    }
 }
 
 /*
@@ -540,91 +553,90 @@ static void saveMaskParameter(tProtocol* protocol)
  */
 static void saveParameter(tProtocol* protocol)
 {
-	uint16 blockId, paramId, tblIndex;
-	uint8 error;
-	void* blockAddr;
+    uint16 blockId, paramId, tblIndex;
+    uint8 error;
+    void* blockAddr;
 
-	if (protocol->ucFRAMESize < 3)
-	{
-		sendError(protocol, ERRORFormat);
-		return;
-	}
+    if (protocol->ucFRAMESize < 3u)
+    {
+        sendError(protocol, ERRORFormat);
+        return;
+    }
 
-	/* get parameter id from frame */
-	paramId = (uint16)((protocol->ucFRAMEData[2]<<8) + protocol->ucFRAMEData[1]);
+    /* get parameter id from frame */
+    paramId = ((uint16)protocol->ucFRAMEData[2] << 8u) | protocol->ucFRAMEData[1];
 
-	error = getBlockParamIndex(TableStruct->TParamTable, paramId, &tblIndex);
-	if (error != ERROR_SUCCESS)
-	{
-		switch (error)
-		{
-			case ERROR_TABLE_NOT_INIT:
-				sendError(protocol, SvErrorParamTableNotInit);
-				break;
-			case ERROR_INVALID_ID:
-				sendError(protocol, SvErrorInvalidParamId);
-				break;
-			default:
-				sendError(protocol, SvErrorUnknown);
-				break;
-		}
-		return;
-	}
-	blockAddr = TableStruct->TParamTable[tblIndex].pAdr;
+    error = getBlockParamIndex(TableStruct->TParamTable, paramId, &tblIndex);
+    if (error != ERROR_SUCCESS)
+    {
+        switch (error)
+        {
+            case ERROR_TABLE_NOT_INIT:
+                sendError(protocol, SvErrorParamTableNotInit);
+                break;
+            case ERROR_INVALID_ID:
+                sendError(protocol, SvErrorInvalidParamId);
+                break;
+            default:
+                sendError(protocol, SvErrorUnknown);
+                break;
+        }
+        return;
+    }
+    blockAddr = TableStruct->TParamTable[tblIndex].pAdr;
 
-	/* try to execute limit-save function if limit-save function table is initialized */
-	if (TableStruct->TLimitSaveFncTable != 0)
-	{
-		uint16 i = 0;
-		/* look if parameter id has limit function */
-		while ((paramId != (TableStruct->TLimitSaveFncTable)[i].uiParID) && \
-				((TableStruct->TLimitSaveFncTable)[i].uiParID != 0))
-		{
-			i++;
-		}
+    /* try to execute limit-save function if limit-save function table is initialized */
+    if (TableStruct->TLimitSaveFncTable != NULL)
+    {
+        uint16 i = 0u;
+        /* look if parameter id has limit function */
+        while ((paramId != TableStruct->TLimitSaveFncTable[i].uiParID) && (TableStruct->TLimitSaveFncTable[i].uiParID != 0u))
+        {
+            i++;
+        }
 
-		if ((TableStruct->TLimitSaveFncTable)[i].uiParID != 0)
-		{
-			/* if limit-save function fails -> send error */
-			if ((TableStruct->TLimitSaveFncTable)[i].pFLimitSave(blockAddr, &(protocol->ucFRAMEData[3]), protocol->ucFRAMESize-3))
-			{
-				sendError(protocol, ERRORParLimit);
-			}
-			return;
-		}
-	}
+        if (TableStruct->TLimitSaveFncTable[i].uiParID != 0u)
+        {
+            /* if limit-save function fails -> send error */
+            if (TableStruct->TLimitSaveFncTable[i].pFLimitSave(blockAddr, &protocol->ucFRAMEData[3], protocol->ucFRAMESize - 3u) != 0u)
+            {
+                sendError(protocol, ERRORParLimit);
+            }
+            return;
+        }
+    }
 
-	/* get block functions */
-	blockId = *(uint16*)blockAddr;
-	error = getBlockFunctionIndex(TableStruct->TFncTable, blockId, &tblIndex);
-	if (error != ERROR_SUCCESS)
-	{
-		switch (error)
-		{
-			case ERROR_TABLE_NOT_INIT:
-				sendError(protocol, SvErrorFncTableNotInit);
-				break;
-			case ERROR_INVALID_ID:
-				sendError(protocol, ERRORBlkID);
-				break;
-			default:
-				sendError(protocol, SvErrorUnknown);
-				break;
-		}
-		return;
-	}
+    /* get block functions */
+    blockId = *(uint16*)blockAddr;
+    error = getBlockFunctionIndex(TableStruct->TFncTable, blockId, &tblIndex);
+    if (error != ERROR_SUCCESS)
+    {
+        switch (error)
+        {
+            case ERROR_TABLE_NOT_INIT:
+                sendError(protocol, SvErrorFncTableNotInit);
+                break;
+            case ERROR_INVALID_ID:
+                sendError(protocol, ERRORBlkID);
+                break;
+            default:
+                sendError(protocol, SvErrorUnknown);
+                break;
+        }
+        return;
+    }
 
-	/* if default save function fails -> send error */
-	if ((TableStruct->TFncTable)[tblIndex].pFSave(blockAddr, &(protocol->ucFRAMEData[3]), protocol->ucFRAMESize-3))
-	{
-		sendError(protocol, ERRORFormat);
-	}
-	else
-	{
-		protocol->ucFRAMESize = 2;
-		protocol->ucFRAMEData[1] = ERRORSuccess;
-		protocol->pSnd_Enable(protocol);
-	}
+    /* if default save function fails -> send error */
+    if (TableStruct->TFncTable[tblIndex].pFSave(blockAddr, &protocol->ucFRAMEData[3], protocol->ucFRAMESize - 3u) != 0u)
+    {
+        sendError(protocol, ERRORFormat);
+    }
+    else
+    {
+        protocol->ucFRAMESize = 2u;
+        protocol->ucFRAMEData[1] = ERRORSuccess;
+        protocol->pSnd_Enable(protocol);
+    }
 }
 
 
@@ -633,71 +645,70 @@ static void saveParameter(tProtocol* protocol)
  */
 static void loadParameter(tProtocol* protocol)
 {
-	void* blockAddr;
-	uint16 blockId, paramId, tblIndex;
-	uint8 error;
+    void* blockAddr;
+    uint16 blockId, paramId, tblIndex;
+    uint8 error;
 
-	if (protocol->ucFRAMESize != 3)
-	{
-		sendError(protocol, ERRORFormat);
-		return;
-	}
+    if (protocol->ucFRAMESize != 3u)
+    {
+        sendError(protocol, ERRORFormat);
+        return;
+    }
 
-	/* get parameter id from frame */
-	paramId = (uint16)((protocol->ucFRAMEData[2]<<8) + protocol->ucFRAMEData[1]);
+    /* get parameter id from frame */
+    paramId = ((uint16)protocol->ucFRAMEData[2] << 8u) | protocol->ucFRAMEData[1];
 
-	/* look for parameter identifier in parameter table */
-	error = getBlockParamIndex(TableStruct->TParamTable, paramId, &tblIndex);
-	if (error != ERROR_SUCCESS)
-	{
-		switch (error)
-		{
-			case ERROR_TABLE_NOT_INIT:
-				sendError(protocol, SvErrorParamTableNotInit);
-				break;
-			case ERROR_INVALID_ID:
-				sendError(protocol, SvErrorInvalidParamId);
-				break;
-			default:
-				sendError(protocol, SvErrorUnknown);
-				break;
-		}
-		return;
-	}
-	blockAddr = TableStruct->TParamTable[tblIndex].pAdr;
+    /* look for parameter identifier in parameter table */
+    error = getBlockParamIndex(TableStruct->TParamTable, paramId, &tblIndex);
+    if (error != ERROR_SUCCESS)
+    {
+        switch (error)
+        {
+            case ERROR_TABLE_NOT_INIT:
+                sendError(protocol, SvErrorParamTableNotInit);
+                break;
+            case ERROR_INVALID_ID:
+                sendError(protocol, SvErrorInvalidParamId);
+                break;
+            default:
+                sendError(protocol, SvErrorUnknown);
+                break;
+        }
+        return;
+    }
+    blockAddr = TableStruct->TParamTable[tblIndex].pAdr;
 
-	/* get block functions */
-	blockId = *(uint16*)blockAddr;
-	error = getBlockFunctionIndex(TableStruct->TFncTable, blockId, &tblIndex);
-	if (error != ERROR_SUCCESS)
-	{
-		switch (error)
-		{
-			case ERROR_TABLE_NOT_INIT:
-				sendError(protocol, SvErrorFncTableNotInit);
-				break;
-			case ERROR_INVALID_ID:
-				sendError(protocol, ERRORBlkID);
-				break;
-			default:
-				sendError(protocol, SvErrorUnknown);
-				break;
-		}
-		return;
-	}
+    /* get block functions */
+    blockId = *(uint16*)blockAddr;
+    error = getBlockFunctionIndex(TableStruct->TFncTable, blockId, &tblIndex);
+    if (error != ERROR_SUCCESS)
+    {
+        switch (error)
+        {
+            case ERROR_TABLE_NOT_INIT:
+                sendError(protocol, SvErrorFncTableNotInit);
+                break;
+            case ERROR_INVALID_ID:
+                sendError(protocol, ERRORBlkID);
+                break;
+            default:
+                sendError(protocol, SvErrorUnknown);
+                break;
+        }
+        return;
+    }
 
-	/* checks load function return value */
-	if ((TableStruct->TFncTable)[tblIndex].pFLoad(blockAddr,
-			&(protocol->ucFRAMEData[2]), &(protocol->ucFRAMESize), protocol->ucMaxCommSize-2))
-	{
-		sendError(protocol, ERRORFormat);
-	}
-	else
-	{
-		protocol->ucFRAMESize += 2; /* add overhead size */
-		protocol->ucFRAMEData[1] = ERRORSuccess;
-		protocol->pSnd_Enable(protocol);
-	}
+    /* checks load function return value */
+    if (TableStruct->TFncTable[tblIndex].pFLoad(blockAddr, &protocol->ucFRAMEData[2], &protocol->ucFRAMESize, protocol->ucMaxCommSize - 2u) != 0u)
+    {
+        sendError(protocol, ERRORFormat);
+    }
+    else
+    {
+        protocol->ucFRAMESize += 2u; /* add overhead size */
+        protocol->ucFRAMEData[1] = ERRORSuccess;
+        protocol->pSnd_Enable(protocol);
+    }
 }
 
 /**
@@ -707,114 +718,114 @@ static void loadParameter(tProtocol* protocol)
  */
 static void loadIoBlockData(tProtocol* protocol)
 {
-	uint16 id, tblIndex;
-	uint8 error, size, isOutport;
-	const tIoParamIdEntry* paramTbl;
-	void* addr;
+    uint16 id, tblIndex;
+    uint8 error, size, isOutport;
+    const tIoParamIdEntry* paramTbl;
+    void* addr;
 
-	if (protocol->ucFRAMESize != 4)
-	{
-		sendError(protocol, ERRORFormat);
-		return;
-	}
+    if (protocol->ucFRAMESize != 4u)
+    {
+        sendError(protocol, ERRORFormat);
+        return;
+    }
 
-	id = (uint16)((protocol->ucFRAMEData[2] << 8) + protocol->ucFRAMEData[1]);
-	isOutport = protocol->ucFRAMEData[3];
+    id = ((uint16)protocol->ucFRAMEData[2] << 8u) | protocol->ucFRAMEData[1];
+    isOutport = protocol->ucFRAMEData[3];
 
-	if (isOutport)
-	{
-		paramTbl = TableStruct->outportParamTable;
-		if (paramTbl == 0)
-		{
-			sendError(protocol, SvErrorOutportParamTableNotInit);
-			return;
-		}
-	}
-	else
-	{
-		paramTbl = TableStruct->inportParamTable;
-		if (paramTbl == 0)
-		{
-			sendError(protocol, SvErrorInportParamTableNotInit);
-			return;
-		}
-	}
+    if (isOutport)
+    {
+        paramTbl = TableStruct->outportParamTable;
+        if (paramTbl == NULL)
+        {
+            sendError(protocol, SvErrorOutportParamTableNotInit);
+            return;
+        }
+    }
+    else
+    {
+        paramTbl = TableStruct->inportParamTable;
+        if (paramTbl == NULL)
+        {
+            sendError(protocol, SvErrorInportParamTableNotInit);
+            return;
+        }
+    }
 
-	error = getIoParamIndex(paramTbl, id, &tblIndex);
-	if (error != ERROR_SUCCESS)
-	{
-		switch (error)
-		{
-			case ERROR_TABLE_NOT_INIT:
-				sendError(protocol, SvErrorParamTableNotInit);
-				break;
-			case ERROR_INVALID_ID:
-				sendError(protocol, SvErrorInvalidParamId);
-				break;
-			default:
-				sendError(protocol, SvErrorUnknown);
-				break;
-		}
-		return;
-	}
+    error = getIoParamIndex(paramTbl, id, &tblIndex);
+    if (error != ERROR_SUCCESS)
+    {
+        switch (error)
+        {
+            case ERROR_TABLE_NOT_INIT:
+                sendError(protocol, SvErrorParamTableNotInit);
+                break;
+            case ERROR_INVALID_ID:
+                sendError(protocol, SvErrorInvalidParamId);
+                break;
+            default:
+                sendError(protocol, SvErrorUnknown);
+                break;
+        }
+        return;
+    }
 
-	/* if outport type -> pointer does point to a pointer instead of a value */
-	if (isOutport)
-	{
-		addr = *(void**)paramTbl[tblIndex].data;
-	}
-	else
-	{
-		addr = paramTbl[tblIndex].data;
-	}
+    /* if outport type -> pointer does point to a pointer instead of a value */
+    if (isOutport)
+    {
+        addr = *(void**)paramTbl[tblIndex].data;
+    }
+    else
+    {
+        addr = paramTbl[tblIndex].data;
+    }
 
-	/* data type byte size */
-	size = paramTbl[tblIndex].size;
-	switch (size)
-	{
-		case 1:
-		{
-			uint8 data = *(uint8*)addr;
-			protocol->ucFRAMEData[2] = data;
-			break;
-		}
-		case 2:
-		{
-			uint16 data = *(uint16*)addr;
-			protocol->ucFRAMEData[2] = (uint8)(data & 0xFF);
-			protocol->ucFRAMEData[3] = (uint8)((data >> 8) & 0xFF);
-			break;
-		}
-		case 4:
-		{
-			uint32 data = *(uint32*)addr;
-			protocol->ucFRAMEData[2] = (uint8)(data & 0xFF);
-			protocol->ucFRAMEData[3] = (uint8)((data >> 8) & 0xFF);
-			protocol->ucFRAMEData[4] = (uint8)((data >> 16) & 0xFF);
-			protocol->ucFRAMEData[5] = (uint8)((data >> 24) & 0xFF);
-			break;
-		}
-		case 8:
-		{
-			uint64 data = *(uint64*)addr;
-			protocol->ucFRAMEData[2] = (uint8)(data & 0xFF);
-			protocol->ucFRAMEData[3] = (uint8)((data >> 8) & 0xFF);
-			protocol->ucFRAMEData[4] = (uint8)((data >> 16) & 0xFF);
-			protocol->ucFRAMEData[5] = (uint8)((data >> 24) & 0xFF);
-			protocol->ucFRAMEData[6] = (uint8)((data >> 32) & 0xFF);
-			protocol->ucFRAMEData[7] = (uint8)((data >> 40) & 0xFF);
-			protocol->ucFRAMEData[8] = (uint8)((data >> 48) & 0xFF);
-			protocol->ucFRAMEData[9] = (uint8)((data >> 56) & 0xFF);
-			break;
-		}
-		default:
-			sendError(protocol, SvErrorInvalidDataType);
-			return;
-	}
+    /* data type byte size */
+    size = paramTbl[tblIndex].size;
+    switch (size)
+    {
+        case 1:
+        {
+            uint8 data = *(uint8*)addr;
+            protocol->ucFRAMEData[2] = data;
+            break;
+        }
+        case 2:
+        {
+            uint16 data = *(uint16*)addr;
+            protocol->ucFRAMEData[2] = (uint8)(data & 0xFFu);
+            protocol->ucFRAMEData[3] = (uint8)((data >> 8u) & 0xFFu);
+            break;
+        }
+        case 4:
+        {
+            uint32 data = *(uint32*)addr;
+            protocol->ucFRAMEData[2] = (uint8)(data & 0xFFu);
+            protocol->ucFRAMEData[3] = (uint8)((data >> 8u) & 0xFFu);
+            protocol->ucFRAMEData[4] = (uint8)((data >> 16u) & 0xFFu);
+            protocol->ucFRAMEData[5] = (uint8)((data >> 24u) & 0xFFu);
+            break;
+        }
+        case 8:
+        {
+            uint64 data = *(uint64*)addr;
+            protocol->ucFRAMEData[2] = (uint8)(data & 0xFFu);
+            protocol->ucFRAMEData[3] = (uint8)((data >> 8u) & 0xFFu);
+            protocol->ucFRAMEData[4] = (uint8)((data >> 16u) & 0xFFu);
+            protocol->ucFRAMEData[5] = (uint8)((data >> 24u) & 0xFFu);
+            protocol->ucFRAMEData[6] = (uint8)((data >> 32u) & 0xFFu);
+            protocol->ucFRAMEData[7] = (uint8)((data >> 40u) & 0xFFu);
+            protocol->ucFRAMEData[8] = (uint8)((data >> 48u) & 0xFFu);
+            protocol->ucFRAMEData[9] = (uint8)((data >> 56u) & 0xFFu);
+            break;
+        }
+        default:
+            sendError(protocol, SvErrorInvalidDataType);
+            return;
+    }
 
-	protocol->ucFRAMEData[1] = ERRORSuccess;
-	protocol->ucFRAMESize = 2 + size;
-	protocol->pSnd_Enable(protocol);
+    protocol->ucFRAMEData[1] = ERRORSuccess;
+    protocol->ucFRAMESize = (uint16)size + 2u;
+    protocol->pSnd_Enable(protocol);
 }
 
 
@@ -823,36 +834,36 @@ static void loadIoBlockData(tProtocol* protocol)
  */
 static void setTargetState(tProtocol* protocol)
 {
-	uint8 error = ERRORSuccess;
+    uint8 error = ERRORSuccess;
 
-	switch (protocol->ucFRAMEData[1])
-	{
-	case 0:
-		TableStruct->DSPState = BOOTLOADER_STATE;
-		break;
-	case 1:
-		TableStruct->DSPState = PRG_LOADED_STATE;
-		break;
-	case 2:
-		TableStruct->DSPState = IDLE_STATE;
-		break;
-	case 3:
-		TableStruct->DSPState = INIT_STATE;
-		break;
-	case 4:
-		TableStruct->DSPState = RUN_STATE_POWER_OFF;
-		break;
-	case 5:
-		TableStruct->DSPState = RUN_STATE_POWER_ON;
-		break;
-	default:
-		error = SvErrorInvalidDspState;
-		break;
-	}
+    switch (protocol->ucFRAMEData[1])
+    {
+    case 0:
+        TableStruct->DSPState = BOOTLOADER_STATE;
+        break;
+    case 1:
+        TableStruct->DSPState = PRG_LOADED_STATE;
+        break;
+    case 2:
+        TableStruct->DSPState = IDLE_STATE;
+        break;
+    case 3:
+        TableStruct->DSPState = INIT_STATE;
+        break;
+    case 4:
+        TableStruct->DSPState = RUN_STATE_POWER_OFF;
+        break;
+    case 5:
+        TableStruct->DSPState = RUN_STATE_POWER_ON;
+        break;
+    default:
+        error = SvErrorInvalidDspState;
+        break;
+    }
 
-	protocol->ucFRAMEData[1] = error;
-	protocol->ucFRAMESize = (uint8)2;
-	protocol->pSnd_Enable(protocol);
+    protocol->ucFRAMEData[1] = error;
+    protocol->ucFRAMESize = 2u;
+    protocol->pSnd_Enable(protocol);
 }
 
 /*
@@ -860,41 +871,78 @@ static void setTargetState(tProtocol* protocol)
  */
 static void getTargetState(tProtocol* protocol)
 {
-	protocol->ucFRAMEData[1] = ERRORSuccess;
-	protocol->ucFRAMEData[2] = (uint8)(TableStruct->DSPState & 0xFF);
-	protocol->ucFRAMESize = (uint8)3;
-	protocol->pSnd_Enable(protocol);
+    protocol->ucFRAMEData[1] = ERRORSuccess;
+    protocol->ucFRAMEData[2] = (uint8)TableStruct->DSPState & 0xFFu;
+    protocol->ucFRAMESize = 3u;
+    protocol->pSnd_Enable(protocol);
 }
 
-
-/*
- * Initializes service table.
+/**
+ * This function initializes the protocol service table.
+ * @param protocol Protocol
  */
 void initServiceTable(tProtocol* protocol)
 {
-	uint16 i;
+    uint16 i;
 
-	for (i = 0; i <= MAX_SERVICE_ID; i++)
-	{
-		serviceTable[i] = sendSvNotAvailable;
-	}
+    for (i = 0; i <= MAX_SERVICE_ID; i++)
+    {
+        serviceTable[i] = &sendSvNotAvailable;
+    }
 
-	/* adds service table pointer to protocol structure */
-	protocol->pServiceTable = (void*)serviceTable;
+    /* Add service table pointer to protocol structure */
+    protocol->pServiceTable = (void*)serviceTable;
 }
 
 /*
- * Adds core services to service table.
+ * This function adds all core services.
+ * @param protocol Protocol
  */
 void addCoreServices(tProtocol* protocol)
 {
-	tSERVICEFunction* svTable = (tSERVICEFunction*)protocol->pServiceTable;
-	svTable[SV_ID_SVDEVICEINFO] = getDeviceInfo;
-	svTable[SV_ID_GETTARGETSTATE] = getTargetState;
-	svTable[SV_ID_SETTARGETSTATE] = setTargetState;
-	svTable[SV_ID_SVSAVEPARAM] = saveParameter;
-	svTable[SV_ID_SVLOADPARAM] = loadParameter;
-	svTable[SV_ID_LOAD_IO_PARAM] = loadIoBlockData;
-	svTable[SV_ID_SAVEMASKPARAM] = saveMaskParameter;
-	svTable[SV_ID_LOADMASKPARAM] = loadMaskParameter;
+    tSERVICEFunction* svTable = (tSERVICEFunction*)protocol->pServiceTable;
+    svTable[SV_ID_SVDEVICEINFO] = &getDeviceInfo;
+    svTable[SV_ID_GETTARGETSTATE] = &getTargetState;
+    svTable[SV_ID_SETTARGETSTATE] = &setTargetState;
+    svTable[SV_ID_SVSAVEPARAM] = &saveParameter;
+    svTable[SV_ID_SVLOADPARAM] = &loadParameter;
+    svTable[SV_ID_LOAD_IO_PARAM] = &loadIoBlockData;
+    svTable[SV_ID_SAVEMASKPARAM] = &saveMaskParameter;
+    svTable[SV_ID_LOADMASKPARAM] = &loadMaskParameter;
+}
+
+/**
+ * This functions adds core services required for X2C Bootloader operation.
+ * The following services are added:
+ * - #getDeviceInfo Get target device information
+ * - #getTargetState Get target state
+ * - #setTargetState Set target state (may be moved to the Application core services)
+ * @param protocol Protocol
+ */
+void addCoreBootloaderServices(tProtocol* protocol)
+{
+    tSERVICEFunction* svTable = (tSERVICEFunction*)protocol->pServiceTable;
+    svTable[SV_ID_SVDEVICEINFO] = &getDeviceInfo;
+    svTable[SV_ID_GETTARGETSTATE] = &getTargetState;
+    svTable[SV_ID_SETTARGETSTATE] = &setTargetState;
+}
+
+/**
+ * This functions adds core services required for X2C Application operation.
+ * The following services are added:
+ * - #saveParameter Block parameter download (by Parameter ID)
+ * - #loadParameter Block parameter upload (by Parameter ID)
+ * - #loadIoBlockData Upload IO block data (by Parameter ID)
+ * - #saveMaskParameter Download Mask parameter data for CoT Blocks
+ * - #loadMaskParameter Upload Mask parameter data for CoT Blocks
+ * @param protocol Protocol
+ */
+void addCoreApplicationServices(tProtocol* protocol)
+{
+    tSERVICEFunction* svTable = (tSERVICEFunction*)protocol->pServiceTable;
+    svTable[SV_ID_SVSAVEPARAM] = &saveParameter;
+    svTable[SV_ID_SVLOADPARAM] = &loadParameter;
+    svTable[SV_ID_LOAD_IO_PARAM] = &loadIoBlockData;
+    svTable[SV_ID_SAVEMASKPARAM] = &saveMaskParameter;
+    svTable[SV_ID_LOADMASKPARAM] = &loadMaskParameter;
 }

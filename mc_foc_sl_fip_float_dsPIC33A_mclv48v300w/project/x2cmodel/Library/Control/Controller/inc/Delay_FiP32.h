@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2014, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,12 +28,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/* Description:	  Delay the input signal by one sample time interval.   	  */
-/*																			  */
+/* Description:   Delay the input signal by one sample time interval.         */
+/*                                                                            */
 /* USERCODE-END:Description                                                                                           */
 #ifndef DELAY_FIP32_H
 #define DELAY_FIP32_H
@@ -49,14 +50,14 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int32           *In;
     int32           Out;
     int32           In_old;
 } DELAY_FIP32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT32_PTR       In;
     int32           Out;
     int32           In_old;
@@ -69,14 +70,14 @@ typedef struct {
     (void (*)(void*))Delay_FiP32_Init, \
     (tLoadImplementationParameter)Common_Load, \
     (tSaveImplementationParameter)Common_Save, \
-    (void* (*)(const void*, uint16))Delay_FiP32_GetAddress }
+    (void* (*)(void*, uint16))Delay_FiP32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Delay_FiP32_Update(DELAY_FIP32 *pTDelay_FiP32);
-void Delay_FiP32_Init(DELAY_FIP32 *pTDelay_FiP32);
-void* Delay_FiP32_GetAddress(const DELAY_FIP32 *block, uint16 elementId);
+void Delay_FiP32_Update(DELAY_FIP32 *block);
+void Delay_FiP32_Init(DELAY_FIP32 *block);
+void* Delay_FiP32_GetAddress(DELAY_FIP32 *block, uint16 elementId);
 
 #endif
 

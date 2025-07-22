@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,12 +28,13 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/* 		Description:	Maximum of two values                                 */
-/*																			  */
+/*      Description:    Maximum of two values                                 */
+/*                                                                            */
 /* USERCODE-END:Description                                                                                           */
 #ifndef MAXIMUM_FLOAT32_H
 #define MAXIMUM_FLOAT32_H
@@ -49,14 +50,14 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float32         *In1;
     float32         *In2;
     float32         Out;
 } MAXIMUM_FLOAT32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT32_PTR     In1;
     FLOAT32_PTR     In2;
     float32         Out;
@@ -69,14 +70,14 @@ typedef struct {
     (void (*)(void*))Maximum_Float32_Init, \
     (tLoadImplementationParameter)Common_Load, \
     (tSaveImplementationParameter)Common_Save, \
-    (void* (*)(const void*, uint16))Maximum_Float32_GetAddress }
+    (void* (*)(void*, uint16))Maximum_Float32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Maximum_Float32_Update(MAXIMUM_FLOAT32 *pTMaximum_Float32);
-void Maximum_Float32_Init(MAXIMUM_FLOAT32 *pTMaximum_Float32);
-void* Maximum_Float32_GetAddress(const MAXIMUM_FLOAT32 *block, uint16 elementId);
+void Maximum_Float32_Update(MAXIMUM_FLOAT32 *block);
+void Maximum_Float32_Init(MAXIMUM_FLOAT32 *block);
+void* Maximum_Float32_GetAddress(MAXIMUM_FLOAT32 *block, uint16 elementId);
 
 #endif
 

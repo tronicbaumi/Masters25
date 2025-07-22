@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,17 +28,18 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/**     Description:	Sum of all inputs.                                   										 **/
-/**																													 **/
-/**						Sign bit field:																				 **/
-/**							00->0 ... Input will be ignored.														 **/
-/**							01->+ ... Input will be added to result.												 **/
-/**							10->- ... Input will be subtracted from result.	 										 **/
-/**																			 										 **/
+/**     Description:    Sum of all inputs.                                                                           **/
+/**                                                                                                                  **/
+/**                     Sign bit field:                                                                              **/
+/**                         00->0 ... Input will be ignored.                                                         **/
+/**                         01->+ ... Input will be added to result.                                                 **/
+/**                         10->- ... Input will be subtracted from result.                                          **/
+/**                                                                                                                  **/
 /* USERCODE-END:Description                                                                                           */
 #ifndef SUM_FIP32_H
 #define SUM_FIP32_H
@@ -54,7 +55,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int32           *In1;
     int32           *In2;
     int32           *In3;
@@ -68,7 +69,7 @@ typedef struct {
 } SUM_FIP32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT32_PTR       In1;
     INT32_PTR       In2;
     INT32_PTR       In3;
@@ -88,16 +89,16 @@ typedef struct {
     (void (*)(void*))Sum_FiP32_Init, \
     (tLoadImplementationParameter)Sum_FiP32_Load, \
     (tSaveImplementationParameter)Sum_FiP32_Save, \
-    (void* (*)(const void*, uint16))Sum_FiP32_GetAddress }
+    (void* (*)(void*, uint16))Sum_FiP32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Sum_FiP32_Update(SUM_FIP32 *pTSum_FiP32);
-void Sum_FiP32_Init(SUM_FIP32 *pTSum_FiP32);
-uint8 Sum_FiP32_Load(const SUM_FIP32 *pTSum_FiP32, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 Sum_FiP32_Save(SUM_FIP32 *pTSum_FiP32, const uint8 data[], uint16 dataLength);
-void* Sum_FiP32_GetAddress(const SUM_FIP32 *block, uint16 elementId);
+void Sum_FiP32_Update(SUM_FIP32 *block);
+void Sum_FiP32_Init(SUM_FIP32 *block);
+uint8 Sum_FiP32_Load(const SUM_FIP32 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 Sum_FiP32_Save(SUM_FIP32 *block, const uint8 data[], uint16 dataLength);
+void* Sum_FiP32_GetAddress(SUM_FIP32 *block, uint16 elementId);
 
 #endif
 

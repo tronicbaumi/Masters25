@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,20 +28,21 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /**     Description:    First order proportional element                     **/
-/**						Calculation:										 **/
-/**	       						 b1.z + b0							   		 **/
-/** 						y = ----------- u						   		 **/
-/**          					   z + a0									 **/
-/**							-> y(k) = u(k).b1 + u(k-1).b0 - y(k-1).a0        **/
-/**																			 **/
-/**						Note:												 **/
-/**							TF1 source code is used!						 **/
-/**																			 **/
+/**                     Calculation:                                         **/
+/**                              b1.z + b0                                   **/
+/**                         y = ----------- u                                **/
+/**                                z + a0                                    **/
+/**                         -> y(k) = u(k).b1 + u(k-1).b0 - y(k-1).a0        **/
+/**                                                                          **/
+/**                     Note:                                                **/
+/**                         TF1 source code is used!                         **/
+/**                                                                          **/
 /* USERCODE-END:Description                                                                                           */
 #ifndef PT1_FIP32_H
 #define PT1_FIP32_H
@@ -57,26 +58,26 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int32           *In;
     int32           Out;
     int32           b0;
     int32           b1;
     int32           a0;
-    int8            sfrb;
-    int8            sfra;
+    uint8           sfrb;
+    uint8           sfra;
     int32           in_old;
 } PT1_FIP32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT32_PTR       In;
     int32           Out;
     int32           b0;
     int32           b1;
     int32           a0;
-    int8            sfrb;
-    int8            sfra;
+    uint8           sfrb;
+    uint8           sfra;
     int32           in_old;
 } PT1_FIP32;
 #endif
@@ -87,16 +88,16 @@ typedef struct {
     (void (*)(void*))PT1_FiP32_Init, \
     (tLoadImplementationParameter)PT1_FiP32_Load, \
     (tSaveImplementationParameter)PT1_FiP32_Save, \
-    (void* (*)(const void*, uint16))PT1_FiP32_GetAddress }
+    (void* (*)(void*, uint16))PT1_FiP32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void PT1_FiP32_Update(PT1_FIP32 *pTPT1_FiP32);
-void PT1_FiP32_Init(PT1_FIP32 *pTPT1_FiP32);
-uint8 PT1_FiP32_Load(const PT1_FIP32 *pTPT1_FiP32, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 PT1_FiP32_Save(PT1_FIP32 *pTPT1_FiP32, const uint8 data[], uint16 dataLength);
-void* PT1_FiP32_GetAddress(const PT1_FIP32 *block, uint16 elementId);
+void PT1_FiP32_Update(PT1_FIP32 *block);
+void PT1_FiP32_Init(PT1_FIP32 *block);
+uint8 PT1_FiP32_Load(const PT1_FIP32 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 PT1_FiP32_Save(PT1_FIP32 *block, const uint8 data[], uint16 dataLength);
+void* PT1_FiP32_GetAddress(PT1_FIP32 *block, uint16 elementId);
 
 #endif
 

@@ -1,9 +1,9 @@
 /* This file is part of X2C. http://x2c.lcm.at/                                                                       */
 
 /* Model: blinky_dspic33a_mclv48v300w                                                                                 */
-/* Date:  2025-06-27 16:30                                                                                            */
+/* Date:  2025-07-22 11:03                                                                                            */
 
-/* X2C-Version: 6.5.3765                                                                                              */
+/* X2C-Version: 6.5.3797                                                                                              */
 /* X2C-Edition: Free                                                                                                  */
 
 /* Common includes                                                                                                    */
@@ -98,8 +98,8 @@ void X2C_Init(void)
     x2cModel.blocks.bAutoSwitch1.Status = &RamTable_int16[1];
 
     /* Block: Constant                                                                                                */
-    /* Value = 0.05                                                                                                   */
-    x2cModel.blocks.bConstant.K = 1638;
+    /* Value = 0.2                                                                                                    */
+    x2cModel.blocks.bConstant.K = 6554;
 
     /* Block: Constant1                                                                                               */
     /* Value = 1.0                                                                                                    */

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,11 +28,12 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/**     Description:	Calculation of moving average value over n numbers.  **/
+/**     Description:    Calculation of moving average value over n numbers.  **/
 /**                                                                          **/
 /* USERCODE-END:Description                                                                                           */
 #ifndef AVERAGE_FIP32_H
@@ -49,7 +50,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int32           *In;
     int32           Out;
     uint16          n;
@@ -60,7 +61,7 @@ typedef struct {
 } AVERAGE_FIP32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT32_PTR       In;
     int32           Out;
     uint16          n;
@@ -77,16 +78,16 @@ typedef struct {
     (void (*)(void*))Average_FiP32_Init, \
     (tLoadImplementationParameter)Average_FiP32_Load, \
     (tSaveImplementationParameter)Average_FiP32_Save, \
-    (void* (*)(const void*, uint16))Average_FiP32_GetAddress }
+    (void* (*)(void*, uint16))Average_FiP32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Average_FiP32_Update(AVERAGE_FIP32 *pTAverage_FiP32);
-void Average_FiP32_Init(AVERAGE_FIP32 *pTAverage_FiP32);
-uint8 Average_FiP32_Load(const AVERAGE_FIP32 *pTAverage_FiP32, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 Average_FiP32_Save(AVERAGE_FIP32 *pTAverage_FiP32, const uint8 data[], uint16 dataLength);
-void* Average_FiP32_GetAddress(const AVERAGE_FIP32 *block, uint16 elementId);
+void Average_FiP32_Update(AVERAGE_FIP32 *block);
+void Average_FiP32_Init(AVERAGE_FIP32 *block);
+uint8 Average_FiP32_Load(const AVERAGE_FIP32 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 Average_FiP32_Save(AVERAGE_FIP32 *block, const uint8 data[], uint16 dataLength);
+void* Average_FiP32_GetAddress(AVERAGE_FIP32 *block, uint16 elementId);
 
 #endif
 

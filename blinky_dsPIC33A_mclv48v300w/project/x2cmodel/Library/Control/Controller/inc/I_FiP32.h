@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,20 +28,21 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2800 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/**     Description:	I Controller with                                   **/
-/**							- Enable Input									 **/
-/**							- Initial Condition Input	 					 **/
-/**						Calculation ZOH:									 **/
-/**	       						           1          				 		 **/
-/** 						y = ( Ki*Ts* -----  ) * u						 **/
-/**          					         z - 1	   							 **/
-/**																			 **/
-/**						-> y(k) = b1.u(k) + b0.u(k-1) + y(k-1)				 **/
-/**																			 **/
+/**     Description:    I Controller with                                   **/
+/**                         - Enable Input                                   **/
+/**                         - Initial Condition Input                        **/
+/**                     Calculation ZOH:                                     **/
+/**                                        1                                 **/
+/**                         y = ( Ki*Ts* -----  ) * u                        **/
+/**                                      z - 1                               **/
+/**                                                                          **/
+/**                     -> y(k) = b1.u(k) + b0.u(k-1) + y(k-1)               **/
+/**                                                                          **/
 /* USERCODE-END:Description                                                                                           */
 #ifndef I_FIP32_H
 #define I_FIP32_H
@@ -57,25 +58,25 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int32           *In;
     int32           *I0;
     bool            *Enable;
     int32           Out;
     int32           b0;
-    int8            sfr;
+    uint8           sfr;
     int64           i_old;
     bool            enable_old;
 } I_FIP32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT32_PTR       In;
     INT32_PTR       I0;
     BOOL_PTR        Enable;
     int32           Out;
     int32           b0;
-    int8            sfr;
+    uint8           sfr;
     int64           i_old;
     bool            enable_old;
 } I_FIP32;
@@ -87,16 +88,16 @@ typedef struct {
     (void (*)(void*))I_FiP32_Init, \
     (tLoadImplementationParameter)I_FiP32_Load, \
     (tSaveImplementationParameter)I_FiP32_Save, \
-    (void* (*)(const void*, uint16))I_FiP32_GetAddress }
+    (void* (*)(void*, uint16))I_FiP32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void I_FiP32_Update(I_FIP32 *pTI_FiP32);
-void I_FiP32_Init(I_FIP32 *pTI_FiP32);
-uint8 I_FiP32_Load(const I_FIP32 *pTI_FiP32, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 I_FiP32_Save(I_FIP32 *pTI_FiP32, const uint8 data[], uint16 dataLength);
-void* I_FiP32_GetAddress(const I_FIP32 *block, uint16 elementId);
+void I_FiP32_Update(I_FIP32 *block);
+void I_FiP32_Init(I_FIP32 *block);
+uint8 I_FiP32_Load(const I_FIP32 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 I_FiP32_Save(I_FIP32 *block, const uint8 data[], uint16 dataLength);
+void* I_FiP32_GetAddress(I_FIP32 *block, uint16 elementId);
 
 #endif
 

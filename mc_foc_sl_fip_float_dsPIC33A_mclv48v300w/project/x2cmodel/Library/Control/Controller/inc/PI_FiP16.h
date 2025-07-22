@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,24 +28,25 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2710 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/**     Description:	PI Controller with                                  **/
-/**							- Enable Input									 **/
-/**							- Anti Wind-up									 **/
-/**							- Initial Condition Input	 					 **/
-/**						Calculation ZOH:									 **/
-/**	       						                1          			 		 **/
-/** 						y = ( Kp + Ki*Ts* -----  ) * u					 **/
-/**          					              z - 1	   						 **/
-/**																			 **/
-/**						-> y(k) = b1.u(k) + b0.u(k-1) + y(k-1)				 **/
-/**																			 **/
-/**						Note:												 **/
-/**							PILimit source code is used!					 **/
-/**																			 **/
+/**     Description:    PI Controller with                                  **/
+/**                         - Enable Input                                   **/
+/**                         - Anti Wind-up                                   **/
+/**                         - Initial Condition Input                        **/
+/**                     Calculation ZOH:                                     **/
+/**                                             1                            **/
+/**                         y = ( Kp + Ki*Ts* -----  ) * u                   **/
+/**                                           z - 1                          **/
+/**                                                                          **/
+/**                     -> y(k) = b1.u(k) + b0.u(k-1) + y(k-1)               **/
+/**                                                                          **/
+/**                     Note:                                                **/
+/**                         PILimit source code is used!                     **/
+/**                                                                          **/
 /* USERCODE-END:Description                                                                                           */
 #ifndef PI_FIP16_H
 #define PI_FIP16_H
@@ -61,29 +62,29 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int16           *In;
     int16           *Init;
     bool            *Enable;
     int16           Out;
     int16           b0;
     int16           b1;
-    int8            sfrb0;
-    int8            sfrb1;
+    uint8           sfrb0;
+    uint8           sfrb1;
     int32           i_old;
     bool            enable_old;
 } PI_FIP16;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT16_PTR       In;
     INT16_PTR       Init;
     BOOL_PTR        Enable;
     int16           Out;
     int16           b0;
     int16           b1;
-    int8            sfrb0;
-    int8            sfrb1;
+    uint8           sfrb0;
+    uint8           sfrb1;
     int32           i_old;
     bool            enable_old;
 } PI_FIP16;
@@ -95,16 +96,16 @@ typedef struct {
     (void (*)(void*))PI_FiP16_Init, \
     (tLoadImplementationParameter)PI_FiP16_Load, \
     (tSaveImplementationParameter)PI_FiP16_Save, \
-    (void* (*)(const void*, uint16))PI_FiP16_GetAddress }
+    (void* (*)(void*, uint16))PI_FiP16_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void PI_FiP16_Update(PI_FIP16 *pTPI_FiP16);
-void PI_FiP16_Init(PI_FIP16 *pTPI_FiP16);
-uint8 PI_FiP16_Load(const PI_FIP16 *pTPI_FiP16, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 PI_FiP16_Save(PI_FIP16 *pTPI_FiP16, const uint8 data[], uint16 dataLength);
-void* PI_FiP16_GetAddress(const PI_FIP16 *block, uint16 elementId);
+void PI_FiP16_Update(PI_FIP16 *block);
+void PI_FiP16_Init(PI_FIP16 *block);
+uint8 PI_FiP16_Load(const PI_FIP16 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 PI_FiP16_Save(PI_FIP16 *block, const uint8 data[], uint16 dataLength);
+void* PI_FiP16_GetAddress(PI_FIP16 *block, uint16 elementId);
 
 #endif
 

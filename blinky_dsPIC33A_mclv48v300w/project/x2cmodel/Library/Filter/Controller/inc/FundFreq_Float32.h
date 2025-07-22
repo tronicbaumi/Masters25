@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2018, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,9 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 3344 $
- * $LastChangedDate:: 2024-07-04 13:08:58 +0200#$
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description: Calculation of fundamental wave.                              */
@@ -49,7 +49,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float32         *In;
     float32         *phi;
     float32         Out;
@@ -62,7 +62,7 @@ typedef struct {
 } FUNDFREQ_FLOAT32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT32_PTR     In;
     FLOAT32_PTR     phi;
     float32         Out;
@@ -81,14 +81,14 @@ typedef struct {
     (void (*)(void*))FundFreq_Float32_Init, \
     (tLoadImplementationParameter)Common_Load, \
     (tSaveImplementationParameter)Common_Save, \
-    (void* (*)(const void*, uint16))FundFreq_Float32_GetAddress }
+    (void* (*)(void*, uint16))FundFreq_Float32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void FundFreq_Float32_Update(FUNDFREQ_FLOAT32 *pTFundFreq_Float32);
-void FundFreq_Float32_Init(FUNDFREQ_FLOAT32 *pTFundFreq_Float32);
-void* FundFreq_Float32_GetAddress(const FUNDFREQ_FLOAT32 *block, uint16 elementId);
+void FundFreq_Float32_Update(FUNDFREQ_FLOAT32 *block);
+void FundFreq_Float32_Init(FUNDFREQ_FLOAT32 *block);
+void* FundFreq_Float32_GetAddress(FUNDFREQ_FLOAT32 *block, uint16 elementId);
 
 #endif
 

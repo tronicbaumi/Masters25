@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,8 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description: */
@@ -48,13 +49,13 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int32           Out;
     int32           K;
 } UCONSTANT_INT32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int32           Out;
     int32           K;
 } UCONSTANT_INT32;
@@ -66,15 +67,15 @@ typedef struct {
     (void (*)(void*))uConstant_Int32_Init, \
     (tLoadImplementationParameter)uConstant_Int32_Load, \
     (tSaveImplementationParameter)uConstant_Int32_Save, \
-    (void* (*)(const void*, uint16))uConstant_Int32_GetAddress }
+    (void* (*)(void*, uint16))uConstant_Int32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void uConstant_Int32_Init(UCONSTANT_INT32 *pTuConstant_Int32);
-uint8 uConstant_Int32_Load(const UCONSTANT_INT32 *pTuConstant_Int32, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 uConstant_Int32_Save(UCONSTANT_INT32 *pTuConstant_Int32, const uint8 data[], uint16 dataLength);
-void* uConstant_Int32_GetAddress(const UCONSTANT_INT32 *block, uint16 elementId);
+void uConstant_Int32_Init(UCONSTANT_INT32 *block);
+uint8 uConstant_Int32_Load(const UCONSTANT_INT32 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 uConstant_Int32_Save(UCONSTANT_INT32 *block, const uint8 data[], uint16 dataLength);
+void* uConstant_Int32_GetAddress(UCONSTANT_INT32 *block, uint16 elementId);
 
 #endif
 

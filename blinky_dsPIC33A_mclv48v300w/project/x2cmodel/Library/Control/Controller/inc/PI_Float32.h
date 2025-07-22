@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,20 +28,21 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2710 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/**     Description:	PI Controller with                                  **/
-/**							- Enable Input									 **/
-/**							- Anti Wind-up									 **/
-/**							- Initial Condition Input	 					 **/
-/**						Calculation ZOH:									 **/
-/**	       						                1          			 		 **/
-/** 						y = ( Kp + Ki*Ts* -----  ) * u					 **/
-/**          					              z - 1	   						 **/
-/**						-> y(k) = b1.u(k) + b0.u(k-1) + y(k-1)				 **/
-/**																			 **/
+/**     Description:    PI Controller with                                  **/
+/**                         - Enable Input                                   **/
+/**                         - Anti Wind-up                                   **/
+/**                         - Initial Condition Input                        **/
+/**                     Calculation ZOH:                                     **/
+/**                                             1                            **/
+/**                         y = ( Kp + Ki*Ts* -----  ) * u                   **/
+/**                                           z - 1                          **/
+/**                     -> y(k) = b1.u(k) + b0.u(k-1) + y(k-1)               **/
+/**                                                                          **/
 /* USERCODE-END:Description                                                                                           */
 #ifndef PI_FLOAT32_H
 #define PI_FLOAT32_H
@@ -57,7 +58,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float32         *In;
     float32         *Init;
     bool            *Enable;
@@ -69,7 +70,7 @@ typedef struct {
 } PI_FLOAT32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT32_PTR     In;
     FLOAT32_PTR     Init;
     BOOL_PTR        Enable;
@@ -87,16 +88,16 @@ typedef struct {
     (void (*)(void*))PI_Float32_Init, \
     (tLoadImplementationParameter)PI_Float32_Load, \
     (tSaveImplementationParameter)PI_Float32_Save, \
-    (void* (*)(const void*, uint16))PI_Float32_GetAddress }
+    (void* (*)(void*, uint16))PI_Float32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void PI_Float32_Update(PI_FLOAT32 *pTPI_Float32);
-void PI_Float32_Init(PI_FLOAT32 *pTPI_Float32);
-uint8 PI_Float32_Load(const PI_FLOAT32 *pTPI_Float32, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 PI_Float32_Save(PI_FLOAT32 *pTPI_Float32, const uint8 data[], uint16 dataLength);
-void* PI_Float32_GetAddress(const PI_FLOAT32 *block, uint16 elementId);
+void PI_Float32_Update(PI_FLOAT32 *block);
+void PI_Float32_Init(PI_FLOAT32 *block);
+uint8 PI_Float32_Load(const PI_FLOAT32 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 PI_Float32_Save(PI_FLOAT32 *block, const uint8 data[], uint16 dataLength);
+void* PI_Float32_GetAddress(PI_FLOAT32 *block, uint16 elementId);
 
 #endif
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,14 +28,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
-/**     Description: Subtraction of Input Plus from Input Minus									                     **/
-/**						Calculation:																				 **/
-/**							Out = Plus - Minus																		 **/
-/**																			 										 **/
+/**     Description: Subtraction of Input Plus from Input Minus                                                      **/
+/**                     Calculation:                                                                                 **/
+/**                         Out = Plus - Minus                                                                       **/
+/**                                                                                                                  **/
 /* USERCODE-END:Description                                                                                           */
 #ifndef SUB_FLOAT64_H
 #define SUB_FLOAT64_H
@@ -51,14 +52,14 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     float64         *Plus;
     float64         *Minus;
     float64         Out;
 } SUB_FLOAT64;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     FLOAT64_PTR     Plus;
     FLOAT64_PTR     Minus;
     float64         Out;
@@ -71,14 +72,14 @@ typedef struct {
     (void (*)(void*))Sub_Float64_Init, \
     (tLoadImplementationParameter)Common_Load, \
     (tSaveImplementationParameter)Common_Save, \
-    (void* (*)(const void*, uint16))Sub_Float64_GetAddress }
+    (void* (*)(void*, uint16))Sub_Float64_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Sub_Float64_Update(SUB_FLOAT64 *pTSub_Float64);
-void Sub_Float64_Init(SUB_FLOAT64 *pTSub_Float64);
-void* Sub_Float64_GetAddress(const SUB_FLOAT64 *block, uint16 elementId);
+void Sub_Float64_Update(SUB_FLOAT64 *block);
+void Sub_Float64_Init(SUB_FLOAT64 *block);
+void* Sub_Float64_GetAddress(SUB_FLOAT64 *block, uint16 elementId);
 
 #endif
 

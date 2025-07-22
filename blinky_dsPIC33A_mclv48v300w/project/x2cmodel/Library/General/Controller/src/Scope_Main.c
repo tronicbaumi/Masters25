@@ -29,15 +29,17 @@
  */
 /*
  * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 1894 $
- * $LastChangedDate:: 2020-04-28 23:26:04 +0200#$
+ * $LastChangedRevision: 3474 $
+ * $LastChangedDate:: 2024-11-06 18:00:53 +0100#$
  */
+#include <stdbool.h>
+#include <stddef.h>
 #include "CommonFcts.h"
 #include "TableStruct.h"
 #include "Scope_Main.h"
 
-/* private prototypes */
-static uint8 isTriggerEvent(SCOPE_MAIN *pTScope, uint64 curTrgValue);
+/* Private prototypes */
+static bool isTriggerEvent(SCOPE_MAIN *pTScope, uint64 curTrgValue);
 static uint64 getTriggerValue(SCOPE_MAIN *pTScope);
 static void sampleData(SCOPE_MAIN *pTScope);
 
@@ -46,15 +48,15 @@ ALIGNTYPE ScopeArray[SCOPE_SIZE];
 /**
  * Scope version.
  */
-#define SCOPE_VERSION ((uint8)3)
+#define SCOPE_VERSION (3U)
 
-#define SOURCE_TYPE_ADDRESS ((uint8)0)
-#define SOURCE_TYPE_CONTROLBLOCK ((uint8)1)
-#define SOURCE_TYPE_INPORTBLOCK ((uint8)2)
-#define SOURCE_TYPE_OUTPORTBLOCK ((uint8)3)
+#define SOURCE_TYPE_ADDRESS      (0U)
+#define SOURCE_TYPE_CONTROLBLOCK (1U)
+#define SOURCE_TYPE_INPORTBLOCK  (2U)
+#define SOURCE_TYPE_OUTPORTBLOCK (3U)
 
-#define TRG_MODE_AUTO ((uint8)0)
-#define TRG_MODE_NORMAL ((uint8)1)
+#define TRG_MODE_AUTO   (0U)
+#define TRG_MODE_NORMAL (1U)
 
 /************************************************/
 /*  Scope_Main_Init                             */
@@ -64,29 +66,29 @@ void Scope_Main_Init(SCOPE_MAIN *pTScope)
 	uint8 i;
 
 	pTScope->ID = SCOPE_MAIN_ID;
-	for (i=0;i<MAX_SCOPE_CHANNELS;i++)
+	for (i=0; i<MAX_SCOPE_CHANNELS; i++)
 	{
-		pTScope->channelAddr[i] = (void*)0;
-		pTScope->dataSize[i] = (uint8)0;
+		pTScope->channelAddr[i] = NULL;
+		pTScope->dataSize[i] = 0U;
 	}
 
 	pTScope->arrayAddr = (void*)ScopeArray;
-	pTScope->trgLevel = (int32)0;
-	pTScope->trgLastValue = (int32)0;
-	pTScope->trgAddr = (void*)0;
-	pTScope->trgDataType = (uint8)0;
+	pTScope->trgLevel = 0U;
+	pTScope->trgLastValue = 0U;
+	pTScope->trgAddr = NULL;
+	pTScope->trgDataType = 0U;
 	pTScope->state = SCOPE_IDLE;
-	pTScope->offlinePtr = (uint32)0;
-	pTScope->dataSizeTotal = (uint8)0;
-	pTScope->noChannels = (uint8)0;
-	pTScope->stf = (uint16)0;
-    pTScope->stfCnt = (uint16)0;
-	pTScope->timestamp = (uint16)0;
-    pTScope->txFrameSize = (uint8)0;
-	pTScope->trgDelay = (int32)0;
-	pTScope->trgEventPos = (int32)0;
-	pTScope->trgCountReached = (uint8)0;
-	pTScope->trgCount = (uint32)0;
+	pTScope->offlinePtr = 0U;
+	pTScope->dataSizeTotal = 0U;
+	pTScope->noChannels = 0U;
+	pTScope->stf = 0U;
+    pTScope->stfCnt = 0U;
+	pTScope->timestamp = 0U;
+    pTScope->txFrameSize = 0U;
+	pTScope->trgDelay = 0;
+	pTScope->trgEventPos = 0;
+	pTScope->trgCountReached = 0U;
+	pTScope->trgCount = 0U;
 	pTScope->maxUsedLength = SCOPE_SIZE;
 	pTScope->trgEdge = EDGE_RISING;
 	pTScope->arraySize = SCOPE_SIZE;
@@ -113,10 +115,10 @@ void Scope_Main_Update(SCOPE_MAIN *pTScope)
             pTScope->stfCnt++;
             break;
         case SCOPE_SAMPLE_OFFLINE:
-            /* check if sample time prescaler is reached */
-            if (pTScope->stfCnt++ >= pTScope->stf)
+            /* Check if sample time prescaler is reached */
+            if (pTScope->stfCnt >= pTScope->stf)
             {
-                pTScope->stfCnt = (uint16)0;
+                pTScope->stfCnt = 0U;
 
 				sampleData(pTScope);
 
@@ -126,6 +128,10 @@ void Scope_Main_Update(SCOPE_MAIN *pTScope)
                 {
                     pTScope->state = SCOPE_IDLE;
                 }
+            }
+            else
+            {
+                pTScope->stfCnt++;
             }
             pTScope->timestamp++;
             break;
@@ -145,23 +151,22 @@ void Scope_Main_Update(SCOPE_MAIN *pTScope)
 
         /* wait for trigger in offline mode */
 		case SCOPE_WAITTRG_OFFLINE:
-			if (pTScope->stfCnt++ >= pTScope->stf)
+			if (pTScope->stfCnt >= pTScope->stf)
 			{
-				pTScope->stfCnt = (uint16)0;
+				pTScope->stfCnt = 0U;
 				/* reset array ptr if next dataset would exceed scope buffer size */
-				if (pTScope->offlinePtr + pTScope->dataSizeTotal > SCOPE_SIZE)
+				if ((pTScope->offlinePtr + pTScope->dataSizeTotal) > SCOPE_SIZE)
 				{
-					pTScope->offlinePtr = (int32)0;
+					pTScope->offlinePtr = 0U;
 				}
 
-				i = 0;
+				i = 0U;
 				do
 				   {
-					j = 0;
+					j = 0U;
 					do
 					{
-						*(ALIGNCASTPTR pTScope->arrayAddr + pTScope->offlinePtr++) = \
-							*(ALIGNCASTPTR pTScope->channelAddr[i] + j);
+						*(ALIGNCASTPTR pTScope->arrayAddr + pTScope->offlinePtr++) = *(ALIGNCASTPTR pTScope->channelAddr[i] + j);
 						j++;
 					}
 					while (j < pTScope->dataSize[i]);
@@ -172,22 +177,26 @@ void Scope_Main_Update(SCOPE_MAIN *pTScope)
 				/* checks for minimum samples (= trigger delay) */
 				if (pTScope->offlinePtr >= pTScope->trgCount)
 				{
-					pTScope->trgCountReached = 1;
+					pTScope->trgCountReached = 1U;
 				}
+			}
+			else
+			{
+			    pTScope->stfCnt++;
 			}
 
 			curTrgValue = getTriggerValue(pTScope);
 			if (isTriggerEvent(pTScope, curTrgValue) && pTScope->trgCountReached)
 			{
-				if (pTScope->trgDelay < (int32)0)
+				if (pTScope->trgDelay < 0)
 				{
 					pTScope->trgEventPos = pTScope->trgDelay;
-					pTScope->offlinePtr = (uint32)0;
+					pTScope->offlinePtr = 0U;
 					pTScope->state = SCOPE_WAIT_TRG_NEG_DELAY;
 				}
 				else
 				{
-					if (pTScope->offlinePtr > 0)
+					if (pTScope->offlinePtr > 0U)
 					{
 						/**
 						 * In case of STF > 0:
@@ -197,7 +206,7 @@ void Scope_Main_Update(SCOPE_MAIN *pTScope)
 						 * Current sample is first 'after trigger' sample, so the 'trigger event sample'
 						 * was the previous sample.
 						 */
-						if (pTScope->stfCnt != 0)
+						if (pTScope->stfCnt != 0U)
 						{
 							pTScope->trgEventPos = pTScope->offlinePtr;
 						}
@@ -221,9 +230,9 @@ void Scope_Main_Update(SCOPE_MAIN *pTScope)
 
 		case SCOPE_WAIT_TRG_NEG_DELAY:
 			/* in case of negative delay wait until delay time has been passed */
-			if (pTScope->stfCnt++ >= pTScope->stf)
+			if (pTScope->stfCnt >= pTScope->stf)
 			{
-				pTScope->stfCnt = (uint16)0;
+				pTScope->stfCnt = 0U;
 
 				pTScope->trgEventPos += pTScope->dataSizeTotal;
 				if (pTScope->trgEventPos >= 0)
@@ -231,28 +240,40 @@ void Scope_Main_Update(SCOPE_MAIN *pTScope)
 					pTScope->state = SCOPE_SAMPLE_OFFLINE;
 				}
 			}
+			else
+			{
+			    pTScope->stfCnt++;
+			}
 			break;
 
 		case SCOPE_TRG_SAMPLE_OFFLINE:
-            if (pTScope->stfCnt++ >= pTScope->stf)
+            if (pTScope->stfCnt >= pTScope->stf)
             {
-                pTScope->stfCnt = (uint16)0;
+                pTScope->stfCnt = 0U;
 
 				if ((pTScope->offlinePtr + pTScope->dataSizeTotal) > SCOPE_SIZE)
 				{
-					pTScope->offlinePtr = (uint32)0;
+					pTScope->offlinePtr = 0U;
 				}
 
 				sampleData(pTScope);
 
-				if (((pTScope->trgEventPos - pTScope->offlinePtr) <= pTScope->trgDelay) || \
+				if (((pTScope->trgEventPos - pTScope->offlinePtr) <= pTScope->trgDelay) ||
 					((pTScope->trgEventPos - pTScope->offlinePtr + pTScope->maxUsedLength) <= pTScope->trgDelay))
 				{
 					pTScope->state = SCOPE_IDLE;
 				}
 
 			}
+            else
+            {
+                pTScope->stfCnt++;
+            }
 			break;
+		default:
+            /* Invalid state -> Reset to IDLE state */
+            pTScope->state = SCOPE_IDLE;
+            break;
 	}
 }
 
@@ -261,48 +282,48 @@ void Scope_Main_Update(SCOPE_MAIN *pTScope)
 /************************************************/
 uint8 Scope_Main_Load(const SCOPE_MAIN *pTScope, uint8 data[], uint16 *dataLength, uint16 maxSize)
 {
-	uint8 error = (uint8)0;
-	if ((uint16)29 > maxSize)
+	uint8 error = 0U;
+	if (maxSize < 29U)
 	{
-		error = (uint8)1;
+		error = 1U;
 	}
 	else
 	{
-		data[0] = pTScope->state;
+		data[0] = (uint8)pTScope->state;
 		data[1] = pTScope->noChannels;
-		data[2] = (uint8)(pTScope->stf & 0xFF);
-		data[3] = (uint8)((pTScope->stf >> 8) & 0xFF);
-		data[4] = (uint8)(pTScope->offlinePtr & 0xFF);
-		data[5] = (uint8)((pTScope->offlinePtr >> 8) & 0xFF);
-		data[6] = (uint8)((pTScope->offlinePtr >> 16) & 0xFF);
-		data[7] = (uint8)((pTScope->offlinePtr >> 24) & 0xFF);
-		data[8] = (uint8)((uint32)pTScope->arrayAddr & 0xFF);
-		data[9] = (uint8)(((uint32)pTScope->arrayAddr >> 8) & 0xFF);
-		data[10] = (uint8)(((uint32)pTScope->arrayAddr >> 16) & 0xFF);
-		data[11] = (uint8)(((uint32)pTScope->arrayAddr >> 24) & 0xFF);
+		data[2] = (uint8)(pTScope->stf & 0xFFU);
+		data[3] = (uint8)((pTScope->stf >> 8) & 0xFFU);
+		data[4] = (uint8)(pTScope->offlinePtr & 0xFFU);
+		data[5] = (uint8)((pTScope->offlinePtr >> 8) & 0xFFU);
+		data[6] = (uint8)((pTScope->offlinePtr >> 16) & 0xFFU);
+		data[7] = (uint8)((pTScope->offlinePtr >> 24) & 0xFFU);
+		data[8] = (uint8)((uint32)pTScope->arrayAddr & 0xFFU);
+		data[9] = (uint8)(((uint32)pTScope->arrayAddr >> 8) & 0xFFU);
+		data[10] = (uint8)(((uint32)pTScope->arrayAddr >> 16) & 0xFFU);
+		data[11] = (uint8)(((uint32)pTScope->arrayAddr >> 24) & 0xFFU);
 
-		data[12] = (uint8)(pTScope->trgDelay & 0xFF);
-		data[13] = (uint8)((pTScope->trgDelay >> 8) & 0xFF);
-		data[14] = (uint8)((pTScope->trgDelay >> 16) & 0xFF);
-		data[15] = (uint8)((pTScope->trgDelay >> 24) & 0xFF);
-		data[16] = (uint8)(pTScope->trgEventPos & 0xFF);
-		data[17] = (uint8)((pTScope->trgEventPos >> 8) & 0xFF);
-		data[18] = (uint8)((pTScope->trgEventPos >> 16) & 0xFF);
-		data[19] = (uint8)((pTScope->trgEventPos >> 24) & 0xFF);
+		data[12] = (uint8)((uint32)pTScope->trgDelay & 0xFFU);
+		data[13] = (uint8)(((uint32)pTScope->trgDelay >> 8) & 0xFFU);
+		data[14] = (uint8)(((uint32)pTScope->trgDelay >> 16) & 0xFFU);
+		data[15] = (uint8)(((uint32)pTScope->trgDelay >> 24) & 0xFFU);
+		data[16] = (uint8)((uint32)pTScope->trgEventPos & 0xFFU);
+		data[17] = (uint8)(((uint32)pTScope->trgEventPos >> 8) & 0xFFU);
+		data[18] = (uint8)(((uint32)pTScope->trgEventPos >> 16) & 0xFFU);
+		data[19] = (uint8)(((uint32)pTScope->trgEventPos >> 24) & 0xFFU);
 
-		data[20] = (uint8)(pTScope->maxUsedLength & 0xFF);
-		data[21] = (uint8)((pTScope->maxUsedLength >> 8) & 0xFF);
-		data[22] = (uint8)((pTScope->maxUsedLength >> 16) & 0xFF);
-		data[23] = (uint8)((pTScope->maxUsedLength >> 24) & 0xFF);
+		data[20] = (uint8)(pTScope->maxUsedLength & 0xFFU);
+		data[21] = (uint8)((pTScope->maxUsedLength >> 8) & 0xFFU);
+		data[22] = (uint8)((pTScope->maxUsedLength >> 16) & 0xFFU);
+		data[23] = (uint8)((pTScope->maxUsedLength >> 24) & 0xFFU);
 
-		data[24] = (uint8)(pTScope->arraySize & 0xFF);
-		data[25] = (uint8)((pTScope->arraySize >> 8) & 0xFF);
-		data[26] = (uint8)((pTScope->arraySize >> 16) & 0xFF);
-		data[27] = (uint8)((pTScope->arraySize >> 24) & 0xFF);
+		data[24] = (uint8)(pTScope->arraySize & 0xFFU);
+		data[25] = (uint8)((pTScope->arraySize >> 8) & 0xFFU);
+		data[26] = (uint8)((pTScope->arraySize >> 16) & 0xFFU);
+		data[27] = (uint8)((pTScope->arraySize >> 24) & 0xFFU);
 
-		data[28] = (uint8)0x80 + SCOPE_VERSION;
+		data[28] = 0x80U | SCOPE_VERSION;
 
-		*dataLength = (uint16)29;
+		*dataLength = 29U;
 	}
 
 	return (error);
@@ -311,29 +332,29 @@ uint8 Scope_Main_Load(const SCOPE_MAIN *pTScope, uint8 data[], uint16 *dataLengt
 /************************************************/
 /*  Scope_Main_Save                             */
 /************************************************/
-uint8 Scope_Main_Save(SCOPE_MAIN *pTScope, const uint8 data[], uint16 ucFRMlen)
+uint8 Scope_Main_Save(SCOPE_MAIN *pTScope, const uint8 data[], uint16 dataLength)
 {
-   const uint8 offset = (uint8)4;
-   uint8 i = (uint8)0;
-   uint8 ptr = offset;
-
+   const uint16 offset = 4U;
+   uint8 i = 0U;
+   uint16 ptr = offset;
    uint8 sourceType;
 
-   if (ucFRMlen < offset)
-       return ((uint8)1);
+   if (dataLength < offset)
+   {
+       return (1U);
+   }
+   else if (data[1] > MAX_SCOPE_CHANNELS)
+   {
+       /* Send error if selected channels > max channels */
+       return (1U);
+   }
+   else if (data[1] == 0U)
+   {
+       /* Send error if no channels are configured */
+       return (1U);
+   }
    else
    {
-       /* send error if selected channels > max channels */
-       if (data[1] > MAX_SCOPE_CHANNELS)
-       {
-    	   return ((uint8)1);
-       }
-       /* send error if no channels are configured */
-       else if (data[1] == (uint8)0)
-       {
-    	   return ((uint8)1);
-       }
-
 	   /* IMPORTANT - DO NOT MOVE THIS SETION TO OTHER PARTS */
 	   /* OF THE SAVE FUNCTION */
 	   /* set state to idle & number of inputs to 0 to avoid */
@@ -341,7 +362,7 @@ uint8 Scope_Main_Save(SCOPE_MAIN *pTScope, const uint8 data[], uint16 ucFRMlen)
 	   /* & scope values if Scope Update function is */
 	   /* executed in sample time irq */
 	   pTScope->state = SCOPE_IDLE;
-	   pTScope->noChannels = (uint8)0;
+	   pTScope->noChannels = 0U;
 
        /* Scope Save Frame contains the following parameters: */
        /* - Scope State (1 byte) */
@@ -361,18 +382,18 @@ uint8 Scope_Main_Save(SCOPE_MAIN *pTScope, const uint8 data[], uint16 ucFRMlen)
 	   /* - Trigger Delay (4 bytes) */
 	   /* - Trigger Edge (1 byte) */
 	   /* - Trigger mode (1 byte) */
-       pTScope->timestamp = (uint16)0;
-       pTScope->offlinePtr = (uint32)0;
-       pTScope->stf = (uint16)data[2] + ((uint16)data[3] << 8);
+       pTScope->timestamp = 0U;
+       pTScope->offlinePtr = 0U;
+       pTScope->stf = (uint16)data[2] | ((uint16)data[3] << 8);
        pTScope->stfCnt = pTScope->stf;
-       pTScope->trgLastValue = (int32)0;
+       pTScope->trgLastValue = 0U;
 
-       pTScope->dataSizeTotal = (uint8)0;
+       pTScope->dataSizeTotal = 0U;
        /* 2 bytes for 16 bit timestamp */
-       pTScope->txFrameSize = (uint8)2;
+       pTScope->txFrameSize = 2U;
 
-	   pTScope->trgCountReached = (uint8)0;
-	   pTScope->trgEventPos = (int32)0;
+	   pTScope->trgCountReached = 0U;
+	   pTScope->trgEventPos = 0;
 
        while (i < data[1])
        {
@@ -385,12 +406,12 @@ uint8 Scope_Main_Save(SCOPE_MAIN *pTScope, const uint8 data[], uint16 ucFRMlen)
 			   {
 				   void* blockAddr;
 				   uint16 tblIndex, blockId;
-				   uint16 elementId = (uint16)data[ptr] + ((uint16)data[ptr + 1] << 8);
-				   uint16 paramId = (uint16)data[ptr + 2] + ((uint16)data[ptr + 3] << 8);
+				   uint16 elementId = (uint16)data[ptr] | ((uint16)data[ptr + 1U] << 8);
+				   uint16 paramId = (uint16)data[ptr + 2U] | ((uint16)data[ptr + 3U] << 8);
 				   uint8 error = getBlockParamIndex(TableStruct->TParamTable, paramId, &tblIndex);
 				   if (error != ERROR_SUCCESS)
 				   {
-					   return ((uint8)1);
+					   return (1U);
 				   }
 				   blockAddr = TableStruct->TParamTable[tblIndex].pAdr;
 
@@ -398,23 +419,23 @@ uint8 Scope_Main_Save(SCOPE_MAIN *pTScope, const uint8 data[], uint16 ucFRMlen)
 				   error = getBlockFunctionIndex(TableStruct->TFncTable, blockId, &tblIndex);
 				   if (error != ERROR_SUCCESS)
 				   {
-					   return ((uint8)1);
+					   return (1U);
 				   }
 				   pTScope->channelAddr[i] = TableStruct->TFncTable[tblIndex].pFGetAddress(blockAddr, elementId);
-				   if (pTScope->channelAddr[i] == (void*)0)
+				   if (pTScope->channelAddr[i] == NULL)
 				   {
-					   return ((uint8)1);
+					   return (1U);
 				   }
 				   break;
 			   }
 			   case SOURCE_TYPE_INPORTBLOCK:
 			   {
 				   uint16 tblIndex;
-				   uint16 paramId = (uint16)data[ptr + 2] + ((uint16)data[ptr + 3] << 8);
+				   uint16 paramId = (uint16)data[ptr + 2U] | ((uint16)data[ptr + 3U] << 8);
 				   uint8 error = getIoParamIndex(TableStruct->inportParamTable, paramId, &tblIndex);
 				   if (error != ERROR_SUCCESS)
 				   {
-					   return ((uint8)1);
+					   return (1U);
 				   }
 				   pTScope->channelAddr[i] = TableStruct->inportParamTable[tblIndex].data;
 				   break;
@@ -422,24 +443,25 @@ uint8 Scope_Main_Save(SCOPE_MAIN *pTScope, const uint8 data[], uint16 ucFRMlen)
 			   case SOURCE_TYPE_OUTPORTBLOCK:
 			   {
 				   uint16 tblIndex;
-				   uint16 paramId = (uint16)data[ptr + 2] + ((uint16)data[ptr + 3] << 8);
+				   uint16 paramId = (uint16)data[ptr + 2U] | ((uint16)data[ptr + 3U] << 8);
 				   uint8 error = getIoParamIndex(TableStruct->outportParamTable, paramId, &tblIndex);
 				   if (error != ERROR_SUCCESS)
 				   {
-					   return ((uint8)1);
+					   return (1U);
 				   }
 				   pTScope->channelAddr[i] = *(void**)TableStruct->outportParamTable[tblIndex].data;
 				   break;
 			   }
 			   case SOURCE_TYPE_ADDRESS:
-				   pTScope->channelAddr[i] = (void*)((uint32)data[ptr] + ((uint32)data[ptr + 1] << 8) + \
-						   ((uint32)data[ptr + 2] << 16) + ((uint32)data[ptr + 3] << 24));
+				   pTScope->channelAddr[i] = (void*)((uint32)data[ptr] | ((uint32)data[ptr + 1U] << 8) |
+						   ((uint32)data[ptr + 2U] << 16) | ((uint32)data[ptr + 3U] << 24));
 				   break;
 			   default:
-				   return ((uint8)1);
+			       /* Unsupported source type */
+			       return (1U);
     	   }
 
-          pTScope->dataSize[i] = (uint16)data[ptr + 4];
+          pTScope->dataSize[i] = data[ptr + 4U];
 
           pTScope->dataSizeTotal += pTScope->dataSize[i];
 #if defined(__DATA_WIDTH_16BIT__)
@@ -450,10 +472,9 @@ uint8 Scope_Main_Save(SCOPE_MAIN *pTScope, const uint8 data[], uint16 ucFRMlen)
 #error DATA WIDTH NOT DEFINED
 #endif
 
-          pTScope->maxUsedLength = SCOPE_SIZE - \
-        		  (SCOPE_SIZE % pTScope->dataSizeTotal);
+          pTScope->maxUsedLength = SCOPE_SIZE - (SCOPE_SIZE % pTScope->dataSizeTotal);
 
-          ptr += (uint8)5;
+          ptr += 5U;
           i++;
        }
 
@@ -478,12 +499,12 @@ uint8 Scope_Main_Save(SCOPE_MAIN *pTScope, const uint8 data[], uint16 ucFRMlen)
 		   {
 			   void* blockAddr;
 			   uint16 tblIndex, blockId;
-			   uint16 elementId = (uint16)data[ptr] + ((uint16)data[ptr + 1] << 8);
-			   uint16 paramId = (uint16)data[ptr + 2] + ((uint16)data[ptr + 3] << 8);
+			   uint16 elementId = (uint16)data[ptr] | ((uint16)data[ptr + 1U] << 8);
+			   uint16 paramId = (uint16)data[ptr + 2U] | ((uint16)data[ptr + 3U] << 8);
 			   uint8 error = getBlockParamIndex(TableStruct->TParamTable, paramId, &tblIndex);
 			   if (error != ERROR_SUCCESS)
 			   {
-				   return ((uint8)1);
+				   return (1U);
 			   }
 			   blockAddr = TableStruct->TParamTable[tblIndex].pAdr;
 			   blockId = *(uint16*)blockAddr;
@@ -491,23 +512,23 @@ uint8 Scope_Main_Save(SCOPE_MAIN *pTScope, const uint8 data[], uint16 ucFRMlen)
 			   error = getBlockFunctionIndex(TableStruct->TFncTable, blockId, &tblIndex);
 			   if (error != ERROR_SUCCESS)
 			   {
-				   return ((uint8)1);
+				   return (1U);
 			   }
 			   pTScope->trgAddr = TableStruct->TFncTable[tblIndex].pFGetAddress(blockAddr, elementId);
-			   if (pTScope->trgAddr == (void*)0)
+			   if (pTScope->trgAddr == NULL)
 			   {
-				   return ((uint8)1);
+				   return (1U);
 			   }
 			   break;
 		   }
 		   case SOURCE_TYPE_INPORTBLOCK:
 		   {
 			   uint16 tblIndex;
-			   uint16 paramId = (uint16)data[ptr + 2] + ((uint16)data[ptr + 3] << 8);
+			   uint16 paramId = (uint16)data[ptr + 2U] | ((uint16)data[ptr + 3U] << 8);
 			   uint8 error = getIoParamIndex(TableStruct->inportParamTable, paramId, &tblIndex);
 			   if (error != ERROR_SUCCESS)
 			   {
-				   return ((uint8)1);
+				   return (1U);
 			   }
 			   pTScope->trgAddr = TableStruct->inportParamTable[tblIndex].data;
 			   break;
@@ -515,27 +536,27 @@ uint8 Scope_Main_Save(SCOPE_MAIN *pTScope, const uint8 data[], uint16 ucFRMlen)
 		   case SOURCE_TYPE_OUTPORTBLOCK:
 		   {
 			   uint16 tblIndex;
-			   uint16 paramId = (uint16)data[ptr + 2] + ((uint16)data[ptr + 3] << 8);
+			   uint16 paramId = (uint16)data[ptr + 2U] | ((uint16)data[ptr + 3U] << 8);
 			   uint8 error = getIoParamIndex(TableStruct->outportParamTable, paramId, &tblIndex);
 			   if (error != ERROR_SUCCESS)
 			   {
-				   return ((uint8)1);
+				   return (1U);
 			   }
 			   pTScope->trgAddr = *(void**)TableStruct->outportParamTable[tblIndex].data;
 			   break;
 		   }
 		   case SOURCE_TYPE_ADDRESS:
-			   pTScope->trgAddr = (void*)((uint32)data[ptr] + ((uint32)data[ptr + 1] << 8) + \
-					   ((uint32)data[ptr + 2] << 16) + ((uint32)data[ptr + 3] << 24));
+			   pTScope->trgAddr = (void*)((uint32)data[ptr] | ((uint32)data[ptr + 1U] << 8) |
+					   ((uint32)data[ptr + 2U] << 16) | ((uint32)data[ptr + 3U] << 24));
 			   break;
 		   default:
-			   return ((uint8)1);
+			   return (1U);
        }
-       ptr += (uint8)4;
+       ptr += 4U;
 
        {
-    	   uint8 trgLevelSize = pTScope->trgDataType & (uint8)0x0F;
-    	   uint8 isNewVersion = pTScope->trgDataType & (uint8)0x80;
+    	   uint8 trgLevelSize = pTScope->trgDataType & 0x0FU;
+    	   bool isNewVersion = ((pTScope->trgDataType & 0x80U) != 0U);
 
     	   switch (trgLevelSize)
     	   {
@@ -543,44 +564,43 @@ uint8 Scope_Main_Save(SCOPE_MAIN *pTScope, const uint8 data[], uint16 ucFRMlen)
     		   pTScope->trgLevel = (uint8)data[ptr];
     		   break;
     	   case 2:
-    		   pTScope->trgLevel = (uint16)data[ptr] + ((uint16)data[ptr + 1] << 8);
+    		   pTScope->trgLevel = (uint16)((uint16)data[ptr] | ((uint16)data[ptr + 1U] << 8));
     		   break;
     	   case 4:
-    		   pTScope->trgLevel = (uint32)data[ptr] + ((uint32)data[ptr + 1] << 8) + \
-    		   	   ((uint32)data[ptr + 2] << 16) + ((uint32)data[ptr + 3] << 24);
+    		   pTScope->trgLevel = (uint32)((uint32)data[ptr] | ((uint32)data[ptr + 1U] << 8) |
+    		   	   ((uint32)data[ptr + 2U] << 16) | ((uint32)data[ptr + 3U] << 24));
     		   break;
     	   case 8:
-    		   pTScope->trgLevel = (uint64)data[ptr] + ((uint64)data[ptr + 1] << 8) + \
-    		   	   ((uint64)data[ptr + 2] << 16) + ((uint64)data[ptr + 3] << 24) + \
-    		       ((uint64)data[ptr + 4] << 32) + ((uint64)data[ptr + 5] << 40) + \
-    		       ((uint64)data[ptr + 6] << 48) + ((uint64)data[ptr + 7] << 56);
+    		   pTScope->trgLevel = (uint64)((uint64)data[ptr] | ((uint64)data[ptr + 1U] << 8) |
+    		   	   ((uint64)data[ptr + 2U] << 16) | ((uint64)data[ptr + 3U] << 24) |
+    		       ((uint64)data[ptr + 4U] << 32) | ((uint64)data[ptr + 5U] << 40) |
+    		       ((uint64)data[ptr + 6U] << 48) | ((uint64)data[ptr + 7U] << 56));
     		   break;
     	   default:
-    		   /* data size not supported */
-    		   return ((uint8)1);
+    		   /* Data size not supported */
+    		   return (1U);
     	   }
 
-    	   if (!isNewVersion)
+    	   if (isNewVersion)
     	   {
-    		   pTScope->trgDataType |= (uint8)0x20;
-    		   ptr += (uint8)4;
+    	       ptr += trgLevelSize;
     	   }
     	   else
     	   {
-    		   ptr += trgLevelSize;
+    	       pTScope->trgDataType |= 0x20U;
+    	       ptr += 4U;
     	   }
        }
 
-	   pTScope->trgDelay = ((int32)data[ptr] + ((int32)data[ptr + 1] << 8) + ((int32)data[ptr + 2] << 16) + \
-			   ((int32)data[ptr + 3] << 24));
+	   pTScope->trgDelay = (int32)(uint32)((uint32)data[ptr] | ((uint32)data[ptr + 1U] << 8) | ((uint32)data[ptr + 2U] << 16) | ((uint32)data[ptr + 3U] << 24));
 	   pTScope->trgCount = (uint32)getAbsValI32(pTScope->trgDelay);
-	   ptr += (uint8)4;
+	   ptr += 4U;
 
 	   pTScope->trgEdge = (tTrgEdgeType)data[ptr];
        ptr++;
        
        /* check if trigger mode information is being sent (compatibility check for previous Scope versions) */
-       if (ucFRMlen > ptr)
+       if (dataLength > ptr)
        {
            /* get current trigger value if trigger mode is set to NORMAL */
            if (data[ptr] == TRG_MODE_NORMAL)
@@ -589,6 +609,15 @@ uint8 Scope_Main_Save(SCOPE_MAIN *pTScope, const uint8 data[], uint16 ucFRMlen)
                /* (avoids immediate trg event due to default last */
                /* trg value = 0 and current trg value > trg level */
                pTScope->trgLastValue = getTriggerValue(pTScope);
+           }
+           else if (data[ptr] == TRG_MODE_AUTO)
+           {
+               /* No modifications required for AUTO mode */
+           }
+           else
+           {
+               /* Unsupported trigger mode */
+               return (1U);
            }
        }
        else
@@ -605,28 +634,33 @@ uint8 Scope_Main_Save(SCOPE_MAIN *pTScope, const uint8 data[], uint16 ucFRMlen)
 	   pTScope->noChannels = data[1];
 	   pTScope->state = (tScopeState)data[0];
 
-       return ((uint8)0);
+       return (0U);
    }
 }
 
 /**
  * Returns block element address.
  */
-void* Scope_Main_GetAddress(const SCOPE_MAIN* block, uint16 elementId)
+void* Scope_Main_GetAddress(SCOPE_MAIN* block, uint16 elementId)
 {
 	/* Scope doesn't have any elements so return null pointer */
-	void* addr = (void*)0;
+	void* addr = NULL;
 	return (addr);
 }
 
 
-/* this function will return 1, if the trigger was hit and */
-/* 0, if the trigger was not hit */
-static uint8 isTriggerEvent(SCOPE_MAIN *pTScope, uint64 curTrgValue)
+/**
+ * This function checks, if the provided (trigger) value causes a trigger event.
+ * @param pTScope Scope handle
+ * @param curTrgValue Trigger value
+ * @retval true Trigger event occurred
+ * @retval false No trigger event occurred
+ */
+static bool isTriggerEvent(SCOPE_MAIN *pTScope, uint64 curTrgValue)
 {
-	uint8 size = pTScope->trgDataType & (uint8)0x0F;
-	uint8 isFloat = pTScope->trgDataType & (uint8)0x40;
-	uint8 isEvent = (uint8)0;
+	uint8 size = pTScope->trgDataType & 0x0FU;
+	bool isFloat = ((pTScope->trgDataType & 0x40U) != 0U);
+	bool isEvent = false;
 	if (isFloat)
 	{
 		switch (size)
@@ -640,22 +674,22 @@ static uint8 isTriggerEvent(SCOPE_MAIN *pTScope, uint64 curTrgValue)
 				{
 					if ((trgLastValue < trgLevel) && (curValue >= trgLevel))
 					{
-						isEvent = (uint8)1;
+						isEvent = true;
 					}
 					else
 					{
-						isEvent = (uint8)0;
+						isEvent = false;
 					}
 				}
 				else
 				{
 					if ((trgLastValue > trgLevel) && (curValue <= trgLevel))
 					{
-						isEvent = (uint8)1;
+						isEvent = true;
 					}
 					else
 					{
-						isEvent = (uint8)0;
+						isEvent = false;
 					}
 				}
 				break;
@@ -669,22 +703,22 @@ static uint8 isTriggerEvent(SCOPE_MAIN *pTScope, uint64 curTrgValue)
 				{
 					if ((trgLastValue < trgLevel) && (curValue >= trgLevel))
 					{
-						isEvent = (uint8)1;
+						isEvent = true;
 					}
 					else
 					{
-						isEvent = (uint8)0;
+						isEvent = false;
 					}
 				}
 				else
 				{
 					if ((trgLastValue > trgLevel) && (curValue <= trgLevel))
 					{
-						isEvent = (uint8)1;
+						isEvent = true;
 					}
 					else
 					{
-						isEvent = (uint8)0;
+						isEvent = false;
 					}
 				}
 				break;
@@ -693,7 +727,7 @@ static uint8 isTriggerEvent(SCOPE_MAIN *pTScope, uint64 curTrgValue)
 	}
 	else
 	{
-		uint8 isSigned = pTScope->trgDataType & (uint8)0x20;
+		uint8 isSigned = ((pTScope->trgDataType & 0x20U) != 0U);
 		if (isSigned)
 		{
 			switch (size)
@@ -707,22 +741,22 @@ static uint8 isTriggerEvent(SCOPE_MAIN *pTScope, uint64 curTrgValue)
 					{
 						if ((trgLastValue < trgLevel) && (curValue >= trgLevel))
 						{
-							isEvent = (uint8)1;
+							isEvent = true;
 						}
 						else
 						{
-							isEvent = (uint8)0;
+							isEvent = false;
 						}
 					}
 					else
 					{
 						if ((trgLastValue > trgLevel) && (curValue <= trgLevel))
 						{
-							isEvent = (uint8)1;
+							isEvent = true;
 						}
 						else
 						{
-							isEvent = (uint8)0;
+							isEvent = false;
 						}
 					}
 					break;
@@ -736,22 +770,22 @@ static uint8 isTriggerEvent(SCOPE_MAIN *pTScope, uint64 curTrgValue)
 					{
 						if ((trgLastValue < trgLevel) && (curValue >= trgLevel))
 						{
-							isEvent = (uint8)1;
+							isEvent = true;
 						}
 						else
 						{
-							isEvent = (uint8)0;
+							isEvent = false;
 						}
 					}
 					else
 					{
 						if ((trgLastValue > trgLevel) && (curValue <= trgLevel))
 						{
-							isEvent = (uint8)1;
+							isEvent = true;
 						}
 						else
 						{
-							isEvent = (uint8)0;
+							isEvent = false;
 						}
 					}
 					break;
@@ -765,22 +799,22 @@ static uint8 isTriggerEvent(SCOPE_MAIN *pTScope, uint64 curTrgValue)
 					{
 						if ((trgLastValue < trgLevel) && (curValue >= trgLevel))
 						{
-							isEvent = (uint8)1;
+							isEvent = true;
 						}
 						else
 						{
-							isEvent = (uint8)0;
+							isEvent = false;
 						}
 					}
 					else
 					{
 						if ((trgLastValue > trgLevel) && (curValue <= trgLevel))
 						{
-							isEvent = (uint8)1;
+							isEvent = true;
 						}
 						else
 						{
-							isEvent = (uint8)0;
+							isEvent = false;
 						}
 					}
 					break;
@@ -794,22 +828,22 @@ static uint8 isTriggerEvent(SCOPE_MAIN *pTScope, uint64 curTrgValue)
 					{
 						if ((trgLastValue < trgLevel) && (curValue >= trgLevel))
 						{
-							isEvent = (uint8)1;
+							isEvent = true;
 						}
 						else
 						{
-							isEvent = (uint8)0;
+							isEvent = false;
 						}
 					}
 					else
 					{
 						if ((trgLastValue > trgLevel) && (curValue <= trgLevel))
 						{
-							isEvent = (uint8)1;
+							isEvent = true;
 						}
 						else
 						{
-							isEvent = (uint8)0;
+							isEvent = false;
 						}
 					}
 					break;
@@ -829,22 +863,22 @@ static uint8 isTriggerEvent(SCOPE_MAIN *pTScope, uint64 curTrgValue)
 					{
 						if ((trgLastValue < trgLevel) && (curValue >= trgLevel))
 						{
-							isEvent = (uint8)1;
+							isEvent = true;
 						}
 						else
 						{
-							isEvent = (uint8)0;
+							isEvent = false;
 						}
 					}
 					else
 					{
 						if ((trgLastValue > trgLevel) && (curValue <= trgLevel))
 						{
-							isEvent = (uint8)1;
+							isEvent = true;
 						}
 						else
 						{
-							isEvent = (uint8)0;
+							isEvent = false;
 						}
 					}
 					break;
@@ -858,22 +892,22 @@ static uint8 isTriggerEvent(SCOPE_MAIN *pTScope, uint64 curTrgValue)
 					{
 						if ((trgLastValue < trgLevel) && (curValue >= trgLevel))
 						{
-							isEvent = (uint8)1;
+							isEvent = true;
 						}
 						else
 						{
-							isEvent = (uint8)0;
+							isEvent = false;
 						}
 					}
 					else
 					{
 						if ((trgLastValue > trgLevel) && (curValue <= trgLevel))
 						{
-							isEvent = (uint8)1;
+							isEvent = true;
 						}
 						else
 						{
-							isEvent = (uint8)0;
+							isEvent = false;
 						}
 					}
 					break;
@@ -887,22 +921,22 @@ static uint8 isTriggerEvent(SCOPE_MAIN *pTScope, uint64 curTrgValue)
 					{
 						if ((trgLastValue < trgLevel) && (curValue >= trgLevel))
 						{
-							isEvent = (uint8)1;
+							isEvent = true;
 						}
 						else
 						{
-							isEvent = (uint8)0;
+							isEvent = false;
 						}
 					}
 					else
 					{
 						if ((trgLastValue > trgLevel) && (curValue <= trgLevel))
 						{
-							isEvent = (uint8)1;
+							isEvent = true;
 						}
 						else
 						{
-							isEvent = (uint8)0;
+							isEvent = false;
 						}
 					}
 					break;
@@ -916,22 +950,22 @@ static uint8 isTriggerEvent(SCOPE_MAIN *pTScope, uint64 curTrgValue)
 					{
 						if ((trgLastValue < trgLevel) && (curValue >= trgLevel))
 						{
-							isEvent = (uint8)1;
+							isEvent = true;
 						}
 						else
 						{
-							isEvent = (uint8)0;
+							isEvent = false;
 						}
 					}
 					else
 					{
 						if ((trgLastValue > trgLevel) && (curValue <= trgLevel))
 						{
-							isEvent = (uint8)1;
+							isEvent = true;
 						}
 						else
 						{
-							isEvent = (uint8)0;
+							isEvent = false;
 						}
 					}
 					break;
@@ -942,11 +976,15 @@ static uint8 isTriggerEvent(SCOPE_MAIN *pTScope, uint64 curTrgValue)
 	return (isEvent);
 }
 
-/* return current trigger value */
+/**
+ * Reads and returns current trigger value.
+ * @param pTScope Scope handle
+ * @returns Trigger value
+ */
 static uint64 getTriggerValue(SCOPE_MAIN *pTScope)
 {
 	uint64 trgValue;
-	uint8 trgLevelSize = pTScope->trgDataType & (uint8)0x0F;
+	uint8 trgLevelSize = pTScope->trgDataType & 0x0FU;
 	switch (trgLevelSize)
 	{
 	case 1:
@@ -962,8 +1000,8 @@ static uint64 getTriggerValue(SCOPE_MAIN *pTScope)
 		trgValue = *(uint64*)pTScope->trgAddr;
 		break;
 	default:
-		/* unsupported size */
-		trgValue = 0;
+		/* Unsupported size */
+		trgValue = 0U;
 		break;
 	}
 	return (trgValue);
@@ -972,16 +1010,16 @@ static uint64 getTriggerValue(SCOPE_MAIN *pTScope)
 /* sample offline data and write it into offline array */
 static void sampleData(SCOPE_MAIN *pTScope)
 {
-	uint8 i,j;
+    uint8 i, j;
 
-	i = 0;
+    i = 0U;
     do
     {
-    	j = 0;
+        j = 0U;
         do
         {
-        	*(ALIGNCASTPTR pTScope->arrayAddr + pTScope->offlinePtr++) = \
-				*(ALIGNCASTPTR pTScope->channelAddr[i] + j);
+            *(ALIGNCASTPTR pTScope->arrayAddr + pTScope->offlinePtr) = *(ALIGNCASTPTR pTScope->channelAddr[i] + j);
+            pTScope->offlinePtr++;
             j++;
         }
         while (j < pTScope->dataSize[i]);

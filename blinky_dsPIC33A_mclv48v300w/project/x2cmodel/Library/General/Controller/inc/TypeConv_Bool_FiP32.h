@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,8 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /**
@@ -51,13 +52,13 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     bool            *In;
     int32           Out;
 } TYPECONV_BOOL_FIP32;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     BOOL_PTR        In;
     int32           Out;
 } TYPECONV_BOOL_FIP32;
@@ -69,14 +70,14 @@ typedef struct {
     (void (*)(void*))TypeConv_Bool_FiP32_Init, \
     (tLoadImplementationParameter)Common_Load, \
     (tSaveImplementationParameter)Common_Save, \
-    (void* (*)(const void*, uint16))TypeConv_Bool_FiP32_GetAddress }
+    (void* (*)(void*, uint16))TypeConv_Bool_FiP32_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void TypeConv_Bool_FiP32_Update(TYPECONV_BOOL_FIP32 *pTTypeConv_Bool_FiP32);
-void TypeConv_Bool_FiP32_Init(TYPECONV_BOOL_FIP32 *pTTypeConv_Bool_FiP32);
-void* TypeConv_Bool_FiP32_GetAddress(const TYPECONV_BOOL_FIP32 *block, uint16 elementId);
+void TypeConv_Bool_FiP32_Update(TYPECONV_BOOL_FIP32 *block);
+void TypeConv_Bool_FiP32_Init(TYPECONV_BOOL_FIP32 *block);
+void* TypeConv_Bool_FiP32_GetAddress(TYPECONV_BOOL_FIP32 *block, uint16 elementId);
 
 #endif
 

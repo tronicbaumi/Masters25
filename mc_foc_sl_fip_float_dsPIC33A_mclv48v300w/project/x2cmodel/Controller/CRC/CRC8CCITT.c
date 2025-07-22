@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2013, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,15 +28,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 1852 $
- * $LastChangedDate:: 2020-03-10 16:35:19 +0100#$
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3474 $
+ * $LastChangedDate:: 2024-11-06 18:00:53 +0100#$
  */
 #include "CRC8CCITT.h"
 
-static const uint8 INIT_VALUE = (uint8)0xFF;
+static const uint8 INIT_VALUE = 0xFF;
 
-const uint8 CRC_TABLE[256] = {
+static const uint8 CRC_TABLE[256] = {
     0x00, 0x07, 0x0E, 0x09, 0x1C, 0x1B, 0x12, 0x15,
     0x38, 0x3F, 0x36, 0x31, 0x24, 0x23, 0x2A, 0x2D,
     0x70, 0x77, 0x7E, 0x79, 0x6C, 0x6B, 0x62, 0x65,
@@ -81,21 +81,18 @@ const uint8 CRC_TABLE[256] = {
  */
 uint8 crc8ccitt(const uint8* data, uint32 size)
 {
-	uint8 val = INIT_VALUE;
+    uint32 i;
+    uint8 val = INIT_VALUE;
 
-	uint8* pos = (uint8*)data;
-	uint8* end = pos + size;
+    const uint8* pos = data;
+    for (i = 0; i < size; i++)
+    {
+        val = CRC_TABLE[val ^ *pos];
+        pos++;
+    }
 
-	while (pos < end)
-	{
-		val = CRC_TABLE[val ^ *pos];
-		pos++;
-	}
-
-	return val;
+    return val;
 }
-
-uint8 xored, newcrc;
 
 /**
  * @brief Adds data to checksum.
@@ -107,9 +104,9 @@ uint8 xored, newcrc;
  */
 uint8 crc8ccitt_addValue(uint8 crc, uint8 data)
 {
-	xored = (uint8)(crc ^ data);
-	newcrc = CRC_TABLE[xored];
-	return (newcrc);
+    uint8 xored = (uint8)(crc ^ data);
+    uint8 newcrc = CRC_TABLE[xored];
+    return (newcrc);
 }
 
 /**
@@ -119,5 +116,5 @@ uint8 crc8ccitt_addValue(uint8 crc, uint8 data)
  */
 uint8 crc8ccitt_init(void)
 {
-	return (INIT_VALUE);
+    return (INIT_VALUE);
 }

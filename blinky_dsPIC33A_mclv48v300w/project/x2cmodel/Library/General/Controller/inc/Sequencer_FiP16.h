@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Linz Center of Mechatronics GmbH (LCM) http://www.lcm.at/
+ * Copyright (c) 2014, Linz Center of Mechatronics GmbH (LCM), web: www.lcm.at
  * All rights reserved.
  */
 /*
@@ -28,8 +28,9 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 /*
- * This file is part of X2C. http://x2c.lcm.at/
- * $LastChangedRevision: 2584 $
+ * This file is part of X2C. web: x2c.lcm.at
+ * $LastChangedRevision: 3674 $
+ * $LastChangedDate:: 2025-03-07 12:00:30 +0100#$
  */
 /* USERCODE-BEGIN:Description                                                                                         */
 /* Description: Generation of time delayed (enable) sequence.                 */
@@ -48,7 +49,7 @@ extern "C" {
 
 #if !defined(X2C_USE_UNION_FOR_POINTER)
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     int16           *Start;
     int16           Out1;
     int16           Out2;
@@ -63,7 +64,7 @@ typedef struct {
 } SEQUENCER_FIP16;
 #else
 typedef struct {
-    uint16          ID;
+    uint16          identifier;
     INT16_PTR       Start;
     int16           Out1;
     int16           Out2;
@@ -84,16 +85,16 @@ typedef struct {
     (void (*)(void*))Sequencer_FiP16_Init, \
     (tLoadImplementationParameter)Sequencer_FiP16_Load, \
     (tSaveImplementationParameter)Sequencer_FiP16_Save, \
-    (void* (*)(const void*, uint16))Sequencer_FiP16_GetAddress }
+    (void* (*)(void*, uint16))Sequencer_FiP16_GetAddress }
 
 /**********************************************************************************************************************/
 /** Public prototypes                                                                                                **/
 /**********************************************************************************************************************/
-void Sequencer_FiP16_Update(SEQUENCER_FIP16 *pTSequencer_FiP16);
-void Sequencer_FiP16_Init(SEQUENCER_FIP16 *pTSequencer_FiP16);
-uint8 Sequencer_FiP16_Load(const SEQUENCER_FIP16 *pTSequencer_FiP16, uint8 data[], uint16 *dataLength, uint16 maxSize);
-uint8 Sequencer_FiP16_Save(SEQUENCER_FIP16 *pTSequencer_FiP16, const uint8 data[], uint16 dataLength);
-void* Sequencer_FiP16_GetAddress(const SEQUENCER_FIP16 *block, uint16 elementId);
+void Sequencer_FiP16_Update(SEQUENCER_FIP16 *block);
+void Sequencer_FiP16_Init(SEQUENCER_FIP16 *block);
+uint8 Sequencer_FiP16_Load(const SEQUENCER_FIP16 *block, uint8 data[], uint16 *dataLength, uint16 maxSize);
+uint8 Sequencer_FiP16_Save(SEQUENCER_FIP16 *block, const uint8 data[], uint16 dataLength);
+void* Sequencer_FiP16_GetAddress(SEQUENCER_FIP16 *block, uint16 elementId);
 
 #endif
 

@@ -18,6 +18,7 @@
 #include "../hal/port_config.h"
 #include "qei.h"
 #include "X2CMain.h"
+#include "../hal/board_service.h"
 
 #ifndef X2C_H
 #warning "Please generate the code from the model!"
@@ -86,13 +87,13 @@ void UpdateInports(void) {
     }else{
         x2cModel.inports.bSW2 = 0;        
     }
-    x2cModel.inports.bI_a = measureInputs.current.Ia; //Compensated FIP 
+    x2cModel.inports.bI_a = ADCBUF_IA; //measureInputs.current.Ia; //Compensated FIP 
     //x2cModel.inports.bI_a =  iabc.a;                //Compensated Float
     
-    x2cModel.inports.bI_b = measureInputs.current.Ib;//Compensated FIP 
+    x2cModel.inports.bI_b = ADCBUF_IB; //measureInputs.current.Ib;//Compensated FIP 
     //x2cModel.inports.bI_b =  iabc.b;               //Compensated Float
     
-    x2cModel.inports.bV_POT = (measureInputs.potValue-2048)<<2;   
+    x2cModel.inports.bV_POT = (ADCBUF_POT-2048)<<2;  //(measureInputs.potValue-2048)<<2;   
 
     //Encoder caculation QEI not supported by AN1292
     x2cModel.inports.bQEI_POS = (int16_t) (__builtin_mulss(POS1CNT, QEI_FACT_MECH))+*x2cModel.outports.bQEI_OFFSET;
