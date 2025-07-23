@@ -11,7 +11,7 @@
 //stepSize    = 1.0E-2; 
 X2C_sampleTime =50E-6;//20kHz control loop
 
-sim_step = 0.0001;
+sim_step = 0.00005;
 sim_buffer = 250000;
 
 endTime     = 5;
@@ -20,7 +20,7 @@ stepSize    = 1.0E-2;
 
 // X2C_sampleTime = 0.0001;
 
-sim_step = 0.0001;
+sim_step = 0.00005;
 sim_buffer = 250000;
 // POWERSTAGE DATA
 U_DCLINK = 24;

@@ -91,4 +91,4 @@ end
 // clean up
 clear("fs", "CurrentDir", "vers", "opt", "arc", "ProjectPath")
 mprintf("- Init done and opening model...\n");
-xcos("mc_foc_sl_fip_dspic33ak_mclv48v300w.zcos");
+xcos("mc_foc_sl_fip_dspic33a_mclv48v300w.zcos");

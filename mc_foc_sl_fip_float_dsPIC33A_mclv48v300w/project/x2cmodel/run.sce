@@ -5,7 +5,7 @@ tic();
 mprintf('*******************************************************\n');
 mprintf('** PMSM motor sensorless FOC cloesed loop simulation\n');
 mprintf('*******************************************************\n');
-importXcosDiagram("mc_foc_sl_fip_dspic33ck_mclv48v300w_Melody.zcos");
+importXcosDiagram("mc_foc_sl_fip_dspic33a_mclv48v300w.zcos");
 mprintf('** Model loaded!\n');
 
 if isfile("gen_inputs.sce") then
