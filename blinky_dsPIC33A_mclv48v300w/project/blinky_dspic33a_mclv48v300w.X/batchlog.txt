@@ -1,7 +1,0 @@
-09-Apr-25 
-14:35
-Current directory: C:\_bitbucket\x2c_demos\mc_foc_sl_fip_float_dsPIC33A_mclv48v300w\project\pmsm_x2c_dspic33ak.X 
-Makefile: C:\_bitbucket\x2c_demos\mc_foc_sl_fip_float_dsPIC33A_mclv48v300w\project\pmsm_x2c_dspic33ak.X\Makefile 
-Hexfile: \dist\default\production\pmsm_x2c_dspic33ak.X.production.hex 
-Execute make: 
-"C:\Program Files\Microchip\MPLABX\v6.25\gnuBins\GnuWin32\bin\make" -f C:\_bitbucket\x2c_demos\mc_foc_sl_fip_float_dsPIC33A_mclv48v300w\project\pmsm_x2c_dspic33ak.X\Makefile  

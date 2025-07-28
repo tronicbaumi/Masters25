@@ -14,14 +14,9 @@ X2C_sampleTime =50E-6;//20kHz control loop
 sim_step = 0.00005;
 sim_buffer = 250000;
 
-endTime     = 5;
+endTime     = 8;
 stepSize    = 1.0E-2;
 
-
-// X2C_sampleTime = 0.0001;
-
-sim_step = 0.00005;
-sim_buffer = 250000;
 // POWERSTAGE DATA
 U_DCLINK = 24;
 Vbus = U_DCLINK;
@@ -37,14 +32,14 @@ MotorLs = 0.34; // line to line
 MotorRs = 0.40; //line to line
 BEMF_VRPM = 6.3; //V/kRPM
 n_p = 4;        // number of polepairs
-N_motorNominal = 4000;//free run
+N_motorNominal = 3000;//free run
 
 BEMFVPP = BEMF_VRPM*2;
-N_MAX = 5000; //Higher than motor max speed to avoid FIP saturations
+N_MAX = 4000; //Higher than motor max speed to avoid FIP saturations
 BEMF_D_UDC = (BEMFVPP/Vbus)*(N_MAX/N_motorNominal);//BEM/UDC scaled FiP
 
 
-PLL_INT = 5500;
+PLL_INT = 1400;
 
 
 // Speed PI
@@ -53,8 +48,8 @@ SpeedKi = 0.2;
 SpeedDemandRate = 0.2;
 
 // Current PI
-PIFluxKp =  1;
-PIFluxKi = 100;
+PIFluxKp =  0.8;
+PIFluxKi = 6;
 
 PITorqueKp = PIFluxKp;
 PITorqueKi = PIFluxKi;

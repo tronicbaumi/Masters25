@@ -137,13 +137,10 @@ void UpdateOutports(void) {
         PWM_PDC3 = ((LOOPTIME_TCY>>1) + (int16)(__builtin_mulss(*x2cModel.outports.bPWM1, (LOOPTIME_TCY>>1))>>15));     
         PWM_PDC2 = ((LOOPTIME_TCY>>1) + (int16)(__builtin_mulss(*x2cModel.outports.bPWM3, (LOOPTIME_TCY>>1))>>15));            
         PWM_PDC1 = ((LOOPTIME_TCY>>1) + (int16)(__builtin_mulss(*x2cModel.outports.bPWM2, (LOOPTIME_TCY>>1))>>15));
-
-  
     }
     else
     {
         /* if run motor command is not activated */   
-        
         PWM_TRIGA = ADC_SAMPLING_POINT;
         PWM_PDC3  = MIN_DUTY;
         PWM_PDC2  = MIN_DUTY;
@@ -183,13 +180,23 @@ void UpdateOutports(void) {
  * as the X2C_X2C_Task() call frequency. 
 */
 
- void X2C_Task (void)
- {
+#define CPULOAD
+
+void X2C_Task (void)
+{
+#ifdef CPULOAD     
+    TIMER1_CounterClear();
+#endif
     LED1 = 1;
     UpdateInports();
     X2C_Update();
     UpdateOutports();
     LED1 = 0;
+#ifdef CPULOAD 
+     CpuLoad =  (int16_t)(TIMER1_CounterRead()*32768/5000);
+#endif
+
+   
 }
 
 
