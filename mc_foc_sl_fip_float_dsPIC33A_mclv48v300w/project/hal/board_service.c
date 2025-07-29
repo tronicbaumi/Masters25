@@ -284,6 +284,7 @@ void InitPeripherals(void)
     TIMER1_InterruptPrioritySet(5);
     TIMER1_InterruptFlagClear();
     TIMER1_InterruptEnable(); 
+    TIMER1_InterruptDisable(); 
     TIMER1_ModuleStart();
     
     /* Make sure ADC does not generate interrupt while initializing parameters*/

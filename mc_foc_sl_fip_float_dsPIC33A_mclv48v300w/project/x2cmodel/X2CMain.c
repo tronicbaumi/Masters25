@@ -193,7 +193,8 @@ void X2C_Task (void)
     UpdateOutports();
     LED1 = 0;
 #ifdef CPULOAD 
-     CpuLoad =  (int16_t)(TIMER1_CounterRead()*32768/5000);
+ //    CpuLoad =  (int16_t)(TIMER1_CounterRead()*32768/5000);
+     CpuLoad =  (int16_t)(TIMER1_CounterRead());
 #endif
 
    

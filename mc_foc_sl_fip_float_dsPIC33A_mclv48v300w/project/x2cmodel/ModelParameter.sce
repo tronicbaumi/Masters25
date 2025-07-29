@@ -34,26 +34,24 @@ BEMF_VRPM = 6.3; //V/kRPM
 n_p = 4;        // number of polepairs
 N_motorNominal = 3000;//free run
 
-BEMFVPP = BEMF_VRPM*2;
-N_MAX = 4000; //Higher than motor max speed to avoid FIP saturations
+// PLL Estimator
+BEMFVPP = BEMF_VRPM*1.414;
+N_MAX = 4500; //Higher than motor max speed to avoid FIP saturations
 BEMF_D_UDC = (BEMFVPP/Vbus)*(N_MAX/N_motorNominal);//BEM/UDC scaled FiP
-
 
 PLL_INT = 1400;
 
-
 // Speed PI
-SpeedKp = 0.2;
-SpeedKi = 0.2;
-SpeedDemandRate = 0.2;
+SpeedKp = 0.8;
+SpeedKi = 12; 
+SpeedDemandRate = 2;
 
 // Current PI
 PIFluxKp =  0.8;
-PIFluxKi = 6;
+PIFluxKi = 8;
 
 PITorqueKp = PIFluxKp;
 PITorqueKi = PIFluxKi;
-
 
 // MOTORDATA for MOTOR SIMULATION MODEL
 Nm_ozin = 7.061552e-3;
@@ -81,15 +79,13 @@ psi_pm = Kell/sqrt(3)*60/(2*%pi*1000)/n_p;
 theta_r0 = theta_m0*2*%pi*n_p;
 omega_r0 = omega_m0/60*2*%pi*n_p;
 
-
-
 Ld = Ld/2;
 Lq = Lq/2;
 Rs = Rs/2;
 
 
 // initalize input for simulation
-//exec("./gen_inputs.sci");
-//exec("./qei_sim.sce");
-//exec("./qei_sim2.sce");
+exec("./gen_inputs.sci");
+exec("./qei_sim.sce");
+exec("./qei_sim2.sce");
 

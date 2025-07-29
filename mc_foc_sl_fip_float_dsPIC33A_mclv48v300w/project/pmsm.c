@@ -310,22 +310,22 @@ void __attribute__((__interrupt__,no_auto_psv)) _PWMInterrupt()
 void __attribute__((__interrupt__, no_auto_psv))_T1Interrupt(void)
 {
     
-    if (heartBeatCount < HEART_BEAT_LED_COUNT)
-    {
-        heartBeatCount += 1;
-    }
-    else
-    {
-        heartBeatCount = 0;
-        if(LED1 == 1)
-        {
-//            LED1 = 0;
-        }
-        else
-        {
-//            LED1 = 1;
-        }
-    }
+//    if (heartBeatCount < HEART_BEAT_LED_COUNT)
+//    {
+//        heartBeatCount += 1;
+//    }
+//    else
+//    {
+//        heartBeatCount = 0;
+//        if(LED1 == 1)
+//        {
+////            LED1 = 0;
+//        }
+//        else
+//        {
+////            LED1 = 1;
+//        }
+//    }
     
     TIMER1_InterruptFlagClear();
 }

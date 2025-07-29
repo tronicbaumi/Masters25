@@ -107,6 +107,7 @@ void TIMER1_Initialize(void)
     T1CONbits.TSYNC = 0;
 
     PR1 = 0; 
+    //PR1 = 0xffffffff;
     TMR1 = 0;
 
     TIMER1_InterruptDisable();
