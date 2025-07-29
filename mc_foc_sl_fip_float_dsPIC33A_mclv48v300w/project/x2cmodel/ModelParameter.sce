@@ -85,7 +85,7 @@ Rs = Rs/2;
 
 
 // initalize input for simulation
-exec("./gen_inputs.sci");
+exec("./gen_inputs.sce");
 exec("./qei_sim.sce");
 exec("./qei_sim2.sce");
 
