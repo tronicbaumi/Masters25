@@ -1,0 +1,124 @@
+{    
+    "version": "1.3",
+    "configurations": [
+        {
+            "name": "Simulink",
+            "id": "conf1",
+            "targetDevice": "dsPIC33AK128MC106",
+            "imageType": "application",
+            "imagePath": "./out/pmsm_smo/pmsm_smo.elf",
+            "platformTool": "Simulink-tool",
+            "packs": [
+                {
+                    "name": "",
+                    "vendor": "",
+                    "version": ""
+                }
+            ],
+            "fileSet": "Project files",
+            "toolchain": "Simulink-XC-DSC"
+        }
+    ],
+    "propertyGroups": [
+        {
+            "name": "Simulink-XC-DSC",
+            "type": "toolchain",
+            "provider": "microchip.toolchains:xc-dsc@3.21",
+            "properties": {
+                "compiler.extra-include-directories": [
+	"C:/_GIT/MATLAB~1/project",
+	"C:/_GIT/MATLAB~1/project/pmsm_smo.X",
+	"C:/PROGRA~1/MATLAB/R2024b/rtw/c/src",
+	"C:/PROGRA~1/MATLAB/R2024b/simulink/src",
+	"C:/PROGRA~1/MATLAB/R2024b/toolbox/simulink/blocks/src",
+	"C:/PROGRA~1/MATLAB/R2024b/extern/include",
+	"C:/PROGRA~1/MATLAB/R2024b/simulink/include",
+	"C:/PROGRA~1/MATLAB/R2024b/rtw/c/src/ext_mode/common",
+	"C:/PROGRA~1/MATLAB/R2024b/rtw/c/ert",
+	""
+],
+                "compiler.optimization-level": "2",
+                "compiler.preprocessor-macros": "MODEL=pmsm_smo;NUMST=6;NCSTATES=0;HAVESTDIO;MODEL_HAS_DYNAMICALLY_LOADED_SFCNS=0;CLASSIC_INTERFACE=0;ALLOCATIONFCN=0;TID01EQ=0;TERMFCN=1;ONESTEPFCN=1;MAT_FILE=0;MULTI_INSTANCE_CODE=0;INTEGER_CODE=0;MT=1",
+                "compiler.code-model": "default",
+                "compiler.const-model": "default",
+                "compiler.scalar-model": "default",
+                "compiler.data-model": "default",
+                "compiler.enable-large-arrays": false,
+                "compiler.enable-unroll-loops": false,
+                "compiler.enable-procedural-abstraction": false,
+                "compiler.oXC16gcc-large-aggregate": false,
+                "compiler.enable-omit-frame-pointer": false,
+                "compiler.enable-short-double": false,
+                "compiler.enable-symbols": true,
+                "compiler.appendMe": [
+	"-DMODEL=pmsm_smo",
+	"-DNUMST=6",
+	"-DNCSTATES=0",
+	"-DHAVESTDIO",
+	"-DMODEL_HAS_DYNAMICALLY_LOADED_SFCNS=0",
+	"-DCLASSIC_INTERFACE=0",
+	"-DALLOCATIONFCN=0",
+	"-DTID01EQ=0",
+	"-DTERMFCN=1",
+	"-DONESTEPFCN=1",
+	"-DMAT_FILE=0",
+	"-DMULTI_INSTANCE_CODE=0",
+	"-DINTEGER_CODE=0",
+	"-DMT=1"
+],
+                "linker.extra-lib-directories": [
+	"C:/_GIT/MATLAB~1/project",
+	"C:/_GIT/MATLAB~1/project/pmsm_smo.X",
+	"C:/PROGRA~1/MATLAB/R2024b/rtw/c/src",
+	"C:/PROGRA~1/MATLAB/R2024b/simulink/src",
+	"C:/PROGRA~1/MATLAB/R2024b/toolbox/simulink/blocks/src",
+	"C:/PROGRA~1/MATLAB/R2024b/extern/include",
+	"C:/PROGRA~1/MATLAB/R2024b/simulink/include",
+	"C:/PROGRA~1/MATLAB/R2024b/rtw/c/src/ext_mode/common",
+	"C:/PROGRA~1/MATLAB/R2024b/rtw/c/ert",
+	""
+],
+                "linker.heap-size": "1024",
+                "linker.oXC16ld-fill-upper": "",
+                "linker.appendMe": ["-Wl,--report-mem,-Map=pmsm_smo.map,-cref,-lq-dsp,--memorysummary,memoryfile.xml" ]
+            }
+        },
+        {
+            "name": "Simulink-tool",
+            "type": "tool",
+            "properties": {}
+        }
+    ],
+    "fileSets": [
+        {
+            "name": "Project files",
+            "files": [
+            	"Makefile",
+	"rtGetInf.h",
+	"rtGetNaN.h",
+	"rt_nonfinite.h",
+	"rt_r32zcfcn.h",
+	"MCHP_modelInclude.h",
+	"complex_types.h",
+	"pmsm_smo.h",
+	"pmsm_smo_private.h",
+	"pmsm_smo_types.h",
+	"rtmodel.h",
+	"zero_crossing_types.h",
+	"C:/Program Files/MATLAB/R2024b/simulink/include/solver_zc.h",
+	"MCHP_UART1_Rx_Interrupt.c",
+	"MCHP_UART1_Tx_Interrupt.c",
+	"MCHP_UART2_Rx_Interrupt.c",
+	"MCHP_UART2_Tx_Interrupt.c",
+	"pmsm_smo.c",
+	"pmsm_smo_data.c",
+	"pmsm_smo_main.c",
+	"rtGetInf.c",
+	"rtGetNaN.c",
+	"rt_nonfinite.c",
+	"rt_r32zcfcn.c"
+            ],
+            "encoding": "UTF-8"
+        }
+    ]
+}

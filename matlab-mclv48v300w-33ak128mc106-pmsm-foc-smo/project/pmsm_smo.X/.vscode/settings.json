@@ -1,0 +1,6 @@
+{
+    "mplab.clangd.arguments": [
+        "--compile-commands-dir=${workspaceRoot}\\_build\\pmsm_smo\\pmsm_smo"
+    ],
+    "mplab.clangd.path": "C:\\PROGRA~1\\MICROC~1\\xc-dsc\\v3.21\\bin\\xc-dsc-clangd.exe"
+}

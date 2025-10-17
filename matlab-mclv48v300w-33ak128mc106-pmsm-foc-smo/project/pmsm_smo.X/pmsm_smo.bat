@@ -1,0 +1,1 @@
+"C:\Program Files\MATLAB\R2024b\bin\win64\gmake" -f pmsm_smo.mk  GENERATE_ASAP2=0 MCHP_AUTO_FLASH=1 MCHP_MULTITHREAD_COMPILATION=1 LinkWithMaster=0 OPTS="-DTID01EQ=0" -j 17 -l 17

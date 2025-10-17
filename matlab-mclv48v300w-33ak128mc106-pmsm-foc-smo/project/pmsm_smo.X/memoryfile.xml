@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project>
+  <executable name="dist/Simulink/production/pmsm_smo.X.production.elf">
+    <memory name="data">
+      <units>bytes</units>
+      <length>16384</length>
+      <used>5300</used>
+      <free>11084</free>
+    </memory>
+    <memory name="program">
+      <units>bytes</units>
+      <length>131068</length>
+      <used>28104</used>
+      <free>102964</free>
+    </memory>
+  </executable>
+</project>
